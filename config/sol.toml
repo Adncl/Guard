@@ -1,0 +1,19 @@
+[database]
+path = "../output/sol-analysis"
+[llm]
+llm_api_platform = "https://api.deepseek.com/v1"
+llm_model_deepseek_v3 = "deepseek-chat"
+llm_model_deepseek_r1 = "deepseek-reasoner"
+llm_query_max_attempts = 3
+llm_violation_repeat_times = 3
+[project]
+project_path = "../output/sol-source"
+project_name = "Sol"
+protocol_name = "MQTT"
+protocol_version = "3.1.1"
+rule_path = "../output/rules.json"
+original_llvm_ir_path = "../output/sol-ir/sol.bc"
+[wpa]
+path = "../output/sol-ir/ffp.txt"
+[debug]
+code_slice_replace_mode = 0

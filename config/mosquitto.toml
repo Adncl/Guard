@@ -1,0 +1,20 @@
+[database]
+path = "../output/mosquitto-analysis"
+[llm]
+llm_api_platform = "https://api.deepseek.com/v1"
+llm_model_deepseek_v3 = "deepseek-chat"
+llm_model_deepseek_r1 = "deepseek-reasoner"
+llm_query_max_attempts = 5
+llm_violation_repeat_times = 3
+[project]
+project_path = "../output/mosquitto-source"
+project_name = "Mosquitto"
+protocol_name = "MQTT"
+protocol_version = "5.0"
+rule_path = "../output/rules_mosquitto_mqtt5.json"
+original_llvm_ir_path = "../output/mosquitto-ir/mosquitto.bc"
+[wpa]
+path = "../output/mosquitto-ir/ffp.txt"
+[debug]
+code_slice_replace_mode = 1
+

@@ -1,0 +1,44 @@
+{
+  "api_settings": {
+    "base_url": "https://api.deepseek.com/v1",
+    "model": "deepseek-chat"
+  },
+  "processing": {
+    "keyword_sources": [
+      "txt"
+    ]
+  },
+  "paths": {
+    "specify_keywords": "documentProcess/directoryStore/specify_keywords.txt",
+    "input_json": "documentProcess/directoryStore/filtered_headings.json",
+    "keyword_list": "keywordProcess/directoryStore/keyword_list.json",
+    "paragraph_output": "./directoryStore/paragraphs_output.json",
+    "specify_output": "./directoryStore/specify_keywords_update_r1.json",
+    "modal_output": "./directoryStore/modal_keywords_update_r1.json",
+    "comparative_output": "./directoryStore/comparative_keywords_update_r1.json",
+    "final_output": "./directoryStore/keywords_final.json"
+  },
+  "filters": {
+    "specify": [
+      "Client",
+      "client",
+      "Server",
+      "server",
+      "Session",
+      "Network Connection",
+      "message"
+    ],
+    "comparative": [
+      "is",
+      "are",
+      "not",
+      "use",
+      "send",
+      "sending",
+      "meet",
+      "receive",
+      "MUST",
+      "uses"
+    ]
+  }
+}

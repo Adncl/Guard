@@ -1,0 +1,121 @@
+# WPA configuration
+[wpa]
+path = ""                   # TODO: Path to the WPA extracted indirect function call information file, i.e., the output of `helper_scripts/indirect_callgraph.py`
+
+# Database configuration
+[database]
+path = "/root/llvm-pass-project/"  # SQLite database path
+
+# LLM service configuration
+[llm]
+llm_api_platform = "https://www.chatgtp.cn/v1/chat/completions" # TODO: change to your own api platform
+llm_model_deepseek_v3 = "deepseek-ai/DeepSeek-V3-0324"  # TODO: change to your model name for DeepSeek-V3 in the API platform
+llm_model_deepseek_r1 = "deepseek-ai/DeepSeek-R1-0528"  # TODO: change to your model name for DeepSeek-R1 in the API platform
+llm_query_repeat_times = 1
+llm_query_max_attempts = 10
+llm_violation_repeat_times = 3 
+llm_multithread = 32 
+
+# Information of the project under test
+[project]
+project_path = "/root/llvm-pass-project/"
+packet_related_callgraph_path = ""   # TODO: Path to the packet-related callgraph report, i.e., the output of `program_slicing/build/src/libAnalyzerPass.so`
+function_arg_path = ""   # TODO: Path to the function argument summary, i.e., the output of `program_slicing/build/src/libAnalyzerPass.so`
+rule_path = ""   # TODO: Path to the rule configuration file, i.e., the output of `rule_extraction/`
+protocol_name = ""   # TODO: Name of the protocol under test
+protocol_version = ""   # TODO: Version of the protocol under test
+project_name = ""   # TODO: Name of the project under test
+original_llvm_ir_path = ""   # TODO: Path to the original LLVM IR of the project under test
+
+
+# Other debug information
+[debug]
+code_slice_replace_mode = 0  # Code slice replace mode: 0 means do not replace existing results, 1 means replace existing results
+log_print = 0              # Log print: 0 means do not print log, 1 means print log
+
+# Required configuration
+[config]
+mqtt_packet_type = ["CONNECT", "CONNACK", "PUBLISH", "PUBACK", "PUBREC", "PUBREL", "PUBCOMP", "SUBSCRIBE", "SUBACK", "UNSUBSCRIBE", "UNSUBACK", "PINGREQ", "PINGRESP", "DISCONNECT", "AUTH"]
+dhcpv6_packet_type = [
+    "DHCP6_SOLICIT",      # 1
+    "DHCP6_ADVERTISE",    # 2
+    "DHCP6_REQUEST",      # 3
+    "DHCP6_REPLY",        # 7
+    "DHCP6_CONFIRM",      # 4
+    "DHCP6_RELEASE",      # 8
+    "DHCP6_DECLINE",      # 9
+    "DHCP6_RENEW",        # 5
+    "DHCP6_REBIND",       # 6
+    "DHCP6_IREQ",         # 11
+    "DHCP6_RECONFIGURE",  # 10
+    "DHCP6_RELAYFORW",    # 12
+    "DHCP6_RELAYREPL"     # 13
+]
+
+coap_packet_type = [
+    "CONFIRMABLE",        # 0
+    "NON_CONFIRMABLE",    # 1  
+    "ACKNOWLEDGEMENT",    # 2
+    "RESET"               # 3
+]
+
+ftp_packet_type = [
+    "USER",
+    "PASS",
+    "ACCT",
+    "REIN",
+    "QUIT",
+    "PORT",
+    "PASV",
+    "TYPE",
+    "STRU",
+    "MODE",
+    "RETR",
+    "STOR",
+    "APPE",
+    "DELE",
+    "RNFR",
+    "RNTO",
+    "ABOR",
+    "CWD",
+    "CDUP",
+    "PWD",
+    "MKD",
+    "RMD",
+    "LIST",
+    "NLST",
+    "SYST",
+    "STAT",
+    "FEAT",
+    "HELP",
+    "NOOP",
+    "ALLO",
+    "REST",
+    "MLST",
+    "MLSD",
+    "OPTS",
+    "EPSV",
+    "EPRT",
+    "AUTH",
+    "ADAT",
+    "CCC",
+    "CONF",
+    "ENC",
+    "MIC",
+    "PBSZ",
+    "PROT"
+]
+
+tls13_message_type = [
+    "CLIENT_HELLO",         # 1
+    "SERVER_HELLO",         # 2
+    "NEW_SESSION_TICKET",   # 4
+    "END_OF_EARLY_DATA",    # 5
+    "ENCRYPTED_EXTENSIONS", # 8
+    "CERTIFICATE",          # 11
+    "CERTIFICATE_REQUEST",  # 13
+    "CERTIFICATE_VERIFY",   # 15
+    "FINISHED",             # 20
+    "KEY_UPDATE",           # 24
+    "HELLO_RETRY_REQUEST"
+]

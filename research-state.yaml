@@ -1,0 +1,30 @@
+project: ProtocolGuard-second-case
+question: Reproduce the paper's Mosquitto MQTT 5.0 case with the full SVF/static/dynamic pipeline.
+status: running-with-llm-credit-blocker
+target:
+  project: Mosquitto
+  protocol: MQTT
+  version: "5.0"
+  paper_revision: 849e0f5c583503b87f789ad4ba6ad7f21de0399a
+  rules: 118
+completed:
+  - fixed source archive and source manifest
+  - Clang baseline build
+  - GLLVM whole-program bitcode
+  - SVF-2.9 Andersen indirect-call report
+  - LLVM/AST analyzer artifacts
+  - MQTT 5 dynamic adapter smoke replay
+  - independent MQTT 5 wire replay probes
+in_progress:
+  - full inconsistency detection (a prior attempt completed 7 rules before HTTP 402; rows were reset after the clean live-slice checkpoint, and the current DB is pending a fresh resume)
+  - assertion generation and MQTT 5 replay
+  - bounded AFLNet smoke after verified seeds
+evidence:
+  live_llm_cache_rows: 730
+  live_detection_cache_records: 34
+  live_slice_rules: 118
+  live_detection_rules: 7
+  detection_status: pending-live-LLM-after-full-slice
+  independent_wire_discrepancy: output/mosquitto-manual-cases.json
+  current_dynamic_verification: unavailable_without_llm_and_assertion_generation
+evidence_root: output

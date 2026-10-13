@@ -1,0 +1,19 @@
+[database]
+path = "../output/bind9-analysis"
+[llm]
+llm_api_platform = "https://api.deepseek.com/v1"
+llm_model_deepseek_v3 = "deepseek-chat"
+llm_model_deepseek_r1 = "deepseek-reasoner"
+llm_query_max_attempts = 5
+llm_violation_repeat_times = 1
+[project]
+project_path = "../output/bind9-source"
+project_name = "BIND9"
+protocol_name = "DNS"
+protocol_version = "1035-2308"
+rule_path = "../output/rules_unbound_dns_run.json"
+original_llvm_ir_path = "../output/bind9-ir/bind9.bc"
+[wpa]
+path = "../output/bind9-ir/ffp.txt"
+[debug]
+code_slice_replace_mode = 1

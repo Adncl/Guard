@@ -1,0 +1,18 @@
+{
+  "api_key": "YOUR_DEEPSEEK_API_KEY",
+  "protocol": "mqtt",
+  "version": "5.0",
+  "paths": {
+    "directoryStore": "/root/projects/protocolguard_artefact/rule_extraction/documentProcess/directoryStore",
+    "html_input": "/root/projects/protocolguard_artefact/rule_extraction/documentProcess/directoryStore/mqtt.html",
+    "cleaned_html": "/root/projects/protocolguard_artefact/rule_extraction/documentProcess/directoryStore/mqtt_cleaned.html",
+    "markdown": "/root/projects/protocolguard_artefact/rule_extraction/documentProcess/directoryStore/final_mqtt.md",
+    "keywords": "/root/projects/protocolguard_artefact/rule_extraction/documentProcess/directoryStore/specify_keywords.txt",
+    "headings": "/root/projects/protocolguard_artefact/rule_extraction/documentProcess/directoryStore/headings.json",
+    "output_json": "/root/projects/protocolguard_artefact/rule_extraction/documentProcess/directoryStore/filtered_headings.json",
+    "output_excel": "/root/projects/protocolguard_artefact/rule_extraction/documentProcess/directoryStore/sentences_analysis.xlsx",
+    "text_processed": "/root/projects/protocolguard_artefact/rule_extraction/documentProcess/directoryStore/text_processed.json",
+    "dissector": "/root/projects/protocolguard_artefact/rule_extraction/documentProcess/directoryStore/packet-mqtt.c",
+    "tables": "/root/projects/protocolguard_artefact/rule_extraction/documentProcess/directoryStore/tables.json"
+  }
+}

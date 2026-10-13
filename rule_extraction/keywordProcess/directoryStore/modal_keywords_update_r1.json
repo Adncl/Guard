@@ -1,0 +1,2137 @@
+{
+  "1 Introduction -> 1.1 Organization of the MQTT specification": {},
+  "3 MQTT Control Packets": {},
+  "1 Introduction -> 1.5 Data representation -> 1.5.1 Bits": {},
+  "1 Introduction -> 1.0 Intellectual property rights policy": {},
+  "2 MQTT Control Packet format -> 2.1 Structure of an MQTT Control Packet -> 2.1.2 MQTT Control Packet type": {},
+  "1 Introduction -> 1.8 Change history -> 1.8.1 MQTT v3.1.1": {},
+  "1 Introduction -> 1.3 Normative references": {},
+  "2 MQTT Control Packet format -> 2.1 Structure of an MQTT Control Packet": {},
+  "2 MQTT Control Packet format -> 2.1 Structure of an MQTT Control Packet -> 2.1.4 Remaining Length": {},
+  "2 MQTT Control Packet format -> 2.3 Payload": {},
+  "3 MQTT Control Packets -> 3.1 CONNECT Connection Request -> 3.1.1 CONNECT Fixed Header": {},
+  "2 MQTT Control Packet format -> 2.2 Variable Header": {
+    "Mandatory requirements": [],
+    "Prohibitive requirements": [],
+    "Recommendatory suggestions": [],
+    "Non-recommendatory suggestions": [],
+    "Permissive clauses": []
+  },
+  "1 Introduction -> 1.8 Change history -> 1.8.2 MQTT v5.0": {
+    "Mandatory requirements": [],
+    "Prohibitive requirements": [],
+    "Recommendatory suggestions": [],
+    "Non-recommendatory suggestions": [],
+    "Permissive clauses": []
+  },
+  "3 MQTT Control Packets -> 3.1 CONNECT Connection Request -> 3.1.2 CONNECT Variable Header": {},
+  "1 Introduction -> 1.5 Data representation -> 1.5.3 Four Byte Integer": {
+    "Mandatory requirements": [],
+    "Prohibitive requirements": [],
+    "Recommendatory suggestions": [],
+    "Non-recommendatory suggestions": [],
+    "Permissive clauses": []
+  },
+  "1 Introduction -> 1.5 Data representation -> 1.5.6 Binary Data": {
+    "Mandatory requirements": [],
+    "Prohibitive requirements": [],
+    "Recommendatory suggestions": [],
+    "Non-recommendatory suggestions": [],
+    "Permissive clauses": []
+  },
+  "1 Introduction -> 1.6 Security": {
+    "Mandatory requirements": [],
+    "Prohibitive requirements": [],
+    "Recommendatory suggestions": [
+      "SHOULD",
+      "strongly advised to"
+    ],
+    "Non-recommendatory suggestions": [],
+    "Permissive clauses": []
+  },
+  "1 Introduction -> _1.7_ _Editing convention_": {
+    "Mandatory requirements": [],
+    "Prohibitive requirements": [],
+    "Recommendatory suggestions": [],
+    "Non-recommendatory suggestions": [],
+    "Permissive clauses": []
+  },
+  "1 Introduction -> 1.5 Data representation -> 1.5.2 Two Byte Integer": {
+    "Mandatory requirements": [],
+    "Prohibitive requirements": [],
+    "Recommendatory suggestions": [],
+    "Non-recommendatory suggestions": [],
+    "Permissive clauses": []
+  },
+  "2 MQTT Control Packet format -> 2.2 Variable Header -> 2.2.2 Properties -> 2.2.2.1 Property Length": {
+    "Mandatory requirements": [
+      "MUST"
+    ],
+    "Prohibitive requirements": [],
+    "Recommendatory suggestions": [],
+    "Non-recommendatory suggestions": [],
+    "Permissive clauses": []
+  },
+  "2 MQTT Control Packet format -> 2.4 Reason Code": {},
+  "2 MQTT Control Packet format -> 2.2 Variable Header -> 2.2.2 Properties": {
+    "Mandatory requirements": [],
+    "Prohibitive requirements": [],
+    "Recommendatory suggestions": [],
+    "Non-recommendatory suggestions": [],
+    "Permissive clauses": [
+      "optional"
+    ]
+  },
+  "2 MQTT Control Packet format -> 2.1 Structure of an MQTT Control Packet -> 2.1.3 Flags": {
+    "Mandatory requirements": [
+      "MUST be set"
+    ],
+    "Prohibitive requirements": [],
+    "Recommendatory suggestions": [],
+    "Non-recommendatory suggestions": [],
+    "Permissive clauses": []
+  },
+  "1 Introduction -> 1.5 Data representation -> 1.5.7 UTF-8 String Pair": {
+    "Mandatory requirements": [
+      "MUST",
+      "is a Malformed Packet"
+    ],
+    "Prohibitive requirements": [],
+    "Recommendatory suggestions": [],
+    "Non-recommendatory suggestions": [],
+    "Permissive clauses": []
+  },
+  "3 MQTT Control Packets -> 3.1 CONNECT Connection Request -> 3.1.2 CONNECT Variable Header -> 3.1.2.11 CONNECT Properties -> 3.1.2.11.1 Property Length": {},
+  "2 MQTT Control Packet format -> 2.2 Variable Header -> 2.2.2 Properties -> 2.2.2.2 Property": {
+    "Mandatory requirements": [],
+    "Prohibitive requirements": [],
+    "Recommendatory suggestions": [],
+    "Non-recommendatory suggestions": [],
+    "Permissive clauses": []
+  },
+  "3 MQTT Control Packets -> 3.1 CONNECT Connection Request -> 3.1.2 CONNECT Variable Header -> 3.1.2.2 Protocol Version": {
+    "Mandatory requirements": [
+      "MUST"
+    ],
+    "Prohibitive requirements": [],
+    "Recommendatory suggestions": [],
+    "Non-recommendatory suggestions": [],
+    "Permissive clauses": [
+      "MAY"
+    ]
+  },
+  "3 MQTT Control Packets -> 3.1 CONNECT Connection Request -> 3.1.2 CONNECT Variable Header -> 3.1.2.12 Variable Header non-normative example": {},
+  "3 MQTT Control Packets -> 3.1 CONNECT Connection Request -> 3.1.2 CONNECT Variable Header -> 3.1.2.3 Connect Flags": {
+    "Mandatory requirements": [
+      "MUST validate"
+    ],
+    "Prohibitive requirements": [],
+    "Recommendatory suggestions": [],
+    "Non-recommendatory suggestions": [],
+    "Permissive clauses": []
+  },
+  "3 MQTT Control Packets -> 3.1 CONNECT Connection Request -> 3.1.2 CONNECT Variable Header -> 3.1.2.7 Will Retain": {
+    "Mandatory requirements": [
+      "MUST"
+    ],
+    "Prohibitive requirements": [],
+    "Recommendatory suggestions": [],
+    "Non-recommendatory suggestions": [],
+    "Permissive clauses": []
+  },
+  "3 MQTT Control Packets -> 3.1 CONNECT Connection Request": {
+    "Mandatory requirements": [
+      "MUST"
+    ],
+    "Prohibitive requirements": [
+      "MUST NOT"
+    ],
+    "Recommendatory suggestions": [],
+    "Non-recommendatory suggestions": [],
+    "Permissive clauses": [
+      "can"
+    ]
+  },
+  "3 MQTT Control Packets -> 3.1 CONNECT Connection Request -> 3.1.2 CONNECT Variable Header -> 3.1.2.8 User Name Flag": {
+    "Mandatory requirements": [
+      "MUST"
+    ],
+    "Prohibitive requirements": [
+      "MUST NOT"
+    ],
+    "Recommendatory suggestions": [],
+    "Non-recommendatory suggestions": [],
+    "Permissive clauses": []
+  },
+  "1 Introduction -> 1.5 Data representation -> 1.5.5 Variable Byte Integer": {
+    "Mandatory requirements": [
+      "MUST"
+    ],
+    "Prohibitive requirements": [],
+    "Recommendatory suggestions": [],
+    "Non-recommendatory suggestions": [],
+    "Permissive clauses": []
+  },
+  "3 MQTT Control Packets -> 3.1 CONNECT Connection Request -> 3.1.2 CONNECT Variable Header -> 3.1.2.6 Will QoS": {
+    "Mandatory requirements": [
+      "MUST"
+    ],
+    "Prohibitive requirements": [],
+    "Recommendatory suggestions": [],
+    "Non-recommendatory suggestions": [],
+    "Permissive clauses": [
+      "can be"
+    ]
+  },
+  "2 MQTT Control Packet format -> 2.1 Structure of an MQTT Control Packet -> 2.1.1 Fixed Header": {},
+  "3 MQTT Control Packets -> 3.1 CONNECT Connection Request -> 3.1.3 CONNECT Payload": {
+    "Mandatory requirements": [
+      "MUST"
+    ]
+  },
+  "3 MQTT Control Packets -> 3.1 CONNECT Connection Request -> 3.1.2 CONNECT Variable Header -> 3.1.2.4 Clean Start": {
+    "Mandatory requirements": [
+      "MUST"
+    ],
+    "Prohibitive requirements": [],
+    "Recommendatory suggestions": [],
+    "Non-recommendatory suggestions": [],
+    "Permissive clauses": []
+  },
+  "3 MQTT Control Packets -> 3.1 CONNECT Connection Request -> 3.1.3 CONNECT Payload -> 3.1.3.2 Will Properties -> 3.1.3.2.1 Property Length": {},
+  "3 MQTT Control Packets -> 3.1 CONNECT Connection Request -> 3.1.2 CONNECT Variable Header -> 3.1.2.9 Password Flag": {
+    "Mandatory requirements": [
+      "MUST"
+    ],
+    "Prohibitive requirements": [
+      "MUST NOT"
+    ],
+    "Recommendatory suggestions": [],
+    "Non-recommendatory suggestions": [],
+    "Permissive clauses": [
+      "allows"
+    ]
+  },
+  "3 MQTT Control Packets -> 3.1 CONNECT Connection Request -> 3.1.2 CONNECT Variable Header -> 3.1.2.11 CONNECT Properties -> 3.1.2.11.10 Authentication Data": {
+    "Mandatory requirements": [],
+    "Prohibitive requirements": [
+      "is a Protocol Error to include"
+    ],
+    "Recommendatory suggestions": [],
+    "Non-recommendatory suggestions": [],
+    "Permissive clauses": []
+  },
+  "3 MQTT Control Packets -> 3.1 CONNECT Connection Request -> 3.1.2 CONNECT Variable Header -> 3.1.2.11 CONNECT Properties -> 3.1.2.11.3 Receive Maximum": {
+    "Mandatory requirements": [],
+    "Prohibitive requirements": [
+      "is a protocol error to"
+    ],
+    "Recommendatory suggestions": [],
+    "Non-recommendatory suggestions": [],
+    "Permissive clauses": []
+  },
+  "3 MQTT Control Packets -> 3.1 CONNECT Connection Request -> 3.1.2 CONNECT Variable Header -> 3.1.2.11 CONNECT Properties -> 3.1.2.11.8 User Property": {
+    "Mandatory requirements": [],
+    "Prohibitive requirements": [],
+    "Recommendatory suggestions": [],
+    "Non-recommendatory suggestions": [],
+    "Permissive clauses": [
+      "allowed to appear multiple times",
+      "allowed to appear more than once"
+    ]
+  },
+  "3 MQTT Control Packets -> 3.1 CONNECT Connection Request -> 3.1.2 CONNECT Variable Header -> 3.1.2.11 CONNECT Properties -> 3.1.2.11.9 Authentication Method": {
+    "Mandatory requirements": [],
+    "Prohibitive requirements": [
+      "MUST NOT"
+    ],
+    "Recommendatory suggestions": [],
+    "Non-recommendatory suggestions": [],
+    "Permissive clauses": []
+  },
+  "3 MQTT Control Packets -> 3.1 CONNECT Connection Request -> 3.1.3 CONNECT Payload -> 3.1.3.3 Will Topic": {
+    "Mandatory requirements": [
+      "MUST"
+    ]
+  },
+  "3 MQTT Control Packets -> 3.1 CONNECT Connection Request -> 3.1.2 CONNECT Variable Header -> 3.1.2.5 Will Flag": {
+    "Mandatory requirements": [
+      "MUST"
+    ],
+    "Prohibitive requirements": [],
+    "Recommendatory suggestions": [
+      "SHOULD"
+    ],
+    "Non-recommendatory suggestions": [],
+    "Permissive clauses": [
+      "MAY"
+    ]
+  },
+  "2 MQTT Control Packet format -> 2.2 Variable Header -> 2.2.1 Packet Identifier": {
+    "Mandatory requirements": [
+      "MUST"
+    ],
+    "Prohibitive requirements": [
+      "MUST NOT"
+    ],
+    "Recommendatory suggestions": [],
+    "Non-recommendatory suggestions": [],
+    "Permissive clauses": []
+  },
+  "1 Introduction -> 1.5 Data representation -> 1.5.4 UTF-8 Encoded String": {
+    "Mandatory requirements": [
+      "MUST"
+    ],
+    "Prohibitive requirements": [
+      "MUST NOT"
+    ],
+    "Recommendatory suggestions": [
+      "SHOULD"
+    ],
+    "Non-recommendatory suggestions": [
+      "SHOULD NOT"
+    ],
+    "Permissive clauses": [
+      "MAY"
+    ]
+  },
+  "3 MQTT Control Packets -> 3.1 CONNECT Connection Request -> 3.1.3 CONNECT Payload -> 3.1.3.2 Will Properties": {
+    "Mandatory requirements": [],
+    "Prohibitive requirements": [],
+    "Recommendatory suggestions": [],
+    "Non-recommendatory suggestions": [],
+    "Permissive clauses": []
+  },
+  "3 MQTT Control Packets -> 3.1 CONNECT Connection Request -> 3.1.2 CONNECT Variable Header -> 3.1.2.11 CONNECT Properties -> 3.1.2.11.5 Topic Alias Maximum": {
+    "Mandatory requirements": [],
+    "Prohibitive requirements": [
+      "MUST NOT"
+    ],
+    "Recommendatory suggestions": [],
+    "Non-recommendatory suggestions": [],
+    "Permissive clauses": []
+  },
+  "3 MQTT Control Packets -> 3.1 CONNECT Connection Request -> 3.1.2 CONNECT Variable Header -> 3.1.2.1 Protocol Name": {},
+  "3 MQTT Control Packets -> 3.2 CONNACK Connect acknowledgement -> 3.2.2 CONNACK Variable Header": {},
+  "3 MQTT Control Packets -> 3.1 CONNECT Connection Request -> 3.1.2 CONNECT Variable Header -> 3.1.2.11 CONNECT Properties -> 3.1.2.11.7 Request Problem Information": {
+    "Mandatory requirements": [
+      "is a Protocol Error to include",
+      "MUST NOT"
+    ],
+    "Prohibitive requirements": [
+      "MUST NOT",
+      "is a Protocol Error to include"
+    ],
+    "Permissive clauses": [
+      "MAY"
+    ]
+  },
+  "3 MQTT Control Packets -> 3.1 CONNECT Connection Request -> 3.1.3 CONNECT Payload -> 3.1.3.4 Will Payload": {
+    "Mandatory requirements": [],
+    "Prohibitive requirements": [],
+    "Recommendatory suggestions": [],
+    "Non-recommendatory suggestions": [],
+    "Permissive clauses": []
+  },
+  "3 MQTT Control Packets -> 3.1 CONNECT Connection Request -> 3.1.3 CONNECT Payload -> 3.1.3.2 Will Properties -> 3.1.3.2.6 Response Topic": {
+    "Mandatory requirements": [],
+    "Prohibitive requirements": [
+      "is a Protocol Error"
+    ],
+    "Recommendatory suggestions": [],
+    "Non-recommendatory suggestions": [],
+    "Permissive clauses": []
+  },
+  "3 MQTT Control Packets -> 3.1 CONNECT Connection Request -> 3.1.3 CONNECT Payload -> 3.1.3.2 Will Properties -> 3.1.3.2.4 Message Expiry Interval": {
+    "Mandatory requirements": [],
+    "Prohibitive requirements": [
+      "is a Protocol Error to include"
+    ],
+    "Recommendatory suggestions": [],
+    "Non-recommendatory suggestions": [],
+    "Permissive clauses": [
+      "If present",
+      "If absent"
+    ]
+  },
+  "3 MQTT Control Packets -> 3.1 CONNECT Connection Request -> 3.1.3 CONNECT Payload -> 3.1.3.2 Will Properties -> 3.1.3.2.3 Payload Format Indicator": {
+    "Mandatory requirements": [
+      "MUST"
+    ],
+    "Prohibitive requirements": [
+      "is a Protocol Error to"
+    ],
+    "Permissive clauses": [
+      "MAY"
+    ]
+  },
+  "3 MQTT Control Packets -> 3.1 CONNECT Connection Request -> 3.1.3 CONNECT Payload -> 3.1.3.2 Will Properties -> 3.1.3.2.8 User Property": {
+    "Mandatory requirements": [
+      "MUST maintain"
+    ],
+    "Permissive clauses": [
+      "allowed to appear multiple times",
+      "allowed to appear more than once"
+    ]
+  },
+  "3 MQTT Control Packets -> 3.1 CONNECT Connection Request -> 3.1.2 CONNECT Variable Header -> 3.1.2.11 CONNECT Properties -> 3.1.2.11.6 Request Response Information": {
+    "Mandatory requirements": [],
+    "Prohibitive requirements": [
+      "is a protocol error to include the Request Response Information more than once",
+      "is a protocol error to have a value other than 0 or 1",
+      "MUST NOT return Response Information"
+    ],
+    "Recommendatory suggestions": [],
+    "Non-recommendatory suggestions": [],
+    "Permissive clauses": [
+      "MAY return Response Information",
+      "can choose not to include Response Information"
+    ]
+  },
+  "3 MQTT Control Packets -> 3.1 CONNECT Connection Request -> 3.1.3 CONNECT Payload -> 3.1.3.2 Will Properties -> 3.1.3.2.5 Content Type": {
+    "Mandatory requirements": [
+      "is a Protocol Error to"
+    ],
+    "Prohibitive requirements": [],
+    "Recommendatory suggestions": [],
+    "Non-recommendatory suggestions": [],
+    "Permissive clauses": []
+  },
+  "3 MQTT Control Packets -> 3.1 CONNECT Connection Request -> 3.1.3 CONNECT Payload -> 3.1.3.2 Will Properties -> 3.1.3.2.7 Correlation Data": {
+    "Mandatory requirements": [],
+    "Prohibitive requirements": [
+      "is a Protocol Error to include"
+    ],
+    "Recommendatory suggestions": [],
+    "Non-recommendatory suggestions": [],
+    "Permissive clauses": []
+  },
+  "3 MQTT Control Packets -> 3.1 CONNECT Connection Request -> 3.1.2 CONNECT Variable Header -> 3.1.2.10 Keep Alive": {
+    "Mandatory requirements": [
+      "MUST",
+      "is the responsibility of",
+      "is obliged to"
+    ],
+    "Prohibitive requirements": [],
+    "Recommendatory suggestions": [
+      "SHOULD"
+    ],
+    "Non-recommendatory suggestions": [],
+    "Permissive clauses": [
+      "can",
+      "may"
+    ]
+  },
+  "3 MQTT Control Packets -> 3.1 CONNECT Connection Request -> 3.1.3 CONNECT Payload -> 3.1.3.5 User Name": {
+    "Mandatory requirements": [
+      "MUST"
+    ],
+    "Prohibitive requirements": [],
+    "Recommendatory suggestions": [],
+    "Non-recommendatory suggestions": [],
+    "Permissive clauses": [
+      "can be used"
+    ]
+  },
+  "3 MQTT Control Packets -> 3.1 CONNECT Connection Request -> 3.1.3 CONNECT Payload -> 3.1.3.6 Password": {
+    "Mandatory requirements": [],
+    "Prohibitive requirements": [],
+    "Recommendatory suggestions": [],
+    "Non-recommendatory suggestions": [],
+    "Permissive clauses": []
+  },
+  "3 MQTT Control Packets -> 3.2 CONNACK Connect acknowledgement -> 3.2.2 CONNACK Variable Header -> 3.2.2.3 CONNACK Properties -> 3.2.2.3.1 Property Length": {},
+  "3 MQTT Control Packets -> 3.2 CONNACK Connect acknowledgement -> 3.2.1 CONNACK Fixed Header": {
+    "Mandatory requirements": [],
+    "Prohibitive requirements": [],
+    "Recommendatory suggestions": [],
+    "Non-recommendatory suggestions": [],
+    "Permissive clauses": []
+  },
+  "3 MQTT Control Packets -> 3.1 CONNECT Connection Request -> 3.1.2 CONNECT Variable Header -> 3.1.2.11 CONNECT Properties -> 3.1.2.11.4 Maximum Packet Size": {
+    "Mandatory requirements": [
+      "is a Protocol Error to",
+      "MUST"
+    ],
+    "Prohibitive requirements": [
+      "MUST NOT"
+    ],
+    "Permissive clauses": [
+      "can choose",
+      "could"
+    ]
+  },
+  "3 MQTT Control Packets -> 3.2 CONNACK Connect acknowledgement -> 3.2.2 CONNACK Variable Header -> 3.2.2.1 Connect Acknowledge Flags": {
+    "Mandatory requirements": [
+      "MUST"
+    ]
+  },
+  "3 MQTT Control Packets -> 3.2 CONNACK Connect acknowledgement": {
+    "Mandatory requirements": [
+      "MUST"
+    ],
+    "Prohibitive requirements": [
+      "MUST NOT"
+    ],
+    "Recommendatory suggestions": [
+      "SHOULD"
+    ],
+    "Non-recommendatory suggestions": [],
+    "Permissive clauses": []
+  },
+  "3 MQTT Control Packets -> 3.1 CONNECT Connection Request -> 3.1.3 CONNECT Payload -> 3.1.3.2 Will Properties -> 3.1.3.2.2 Will Delay Interval": {
+    "Mandatory requirements": [],
+    "Prohibitive requirements": [
+      "MUST NOT"
+    ],
+    "Recommendatory suggestions": [],
+    "Non-recommendatory suggestions": [],
+    "Permissive clauses": []
+  },
+  "3 MQTT Control Packets -> 3.3 PUBLISH Publish message": {},
+  "3 MQTT Control Packets -> 3.1 CONNECT Connection Request -> 3.1.3 CONNECT Payload -> 3.1.3.1 Client Identifier (ClientID)": {
+    "Mandatory requirements": [
+      "MUST"
+    ],
+    "Prohibitive requirements": [],
+    "Recommendatory suggestions": [
+      "should"
+    ],
+    "Non-recommendatory suggestions": [],
+    "Permissive clauses": [
+      "MAY"
+    ]
+  },
+  "3 MQTT Control Packets -> 3.2 CONNACK Connect acknowledgement -> 3.2.2 CONNACK Variable Header -> 3.2.2.3 CONNACK Properties -> 3.2.2.3.2 Session Expiry Interval": {
+    "Mandatory requirements": [],
+    "Prohibitive requirements": [
+      "is a Protocol Error to"
+    ],
+    "Recommendatory suggestions": [],
+    "Non-recommendatory suggestions": [],
+    "Permissive clauses": []
+  },
+  "3 MQTT Control Packets -> 3.2 CONNACK Connect acknowledgement -> 3.2.2 CONNACK Variable Header -> 3.2.2.3 CONNACK Properties -> 3.2.2.3.7 Assigned Client Identifier": {
+    "Mandatory requirements": [
+      "MUST"
+    ],
+    "Prohibitive requirements": [
+      "is a Protocol Error to"
+    ],
+    "Recommendatory suggestions": [],
+    "Non-recommendatory suggestions": [],
+    "Permissive clauses": []
+  },
+  "3 MQTT Control Packets -> 3.2 CONNACK Connect acknowledgement -> 3.2.2 CONNACK Variable Header -> 3.2.2.3 CONNACK Properties -> 3.2.2.3.3 Receive Maximum": {
+    "Mandatory requirements": [],
+    "Prohibitive requirements": [
+      "is a Protocol Error to"
+    ],
+    "Recommendatory suggestions": [],
+    "Non-recommendatory suggestions": [],
+    "Permissive clauses": []
+  },
+  "3 MQTT Control Packets -> 3.2 CONNACK Connect acknowledgement -> 3.2.2 CONNACK Variable Header -> 3.2.2.3 CONNACK Properties -> 3.2.2.3.6 Maximum Packet Size": {
+    "Mandatory requirements": [],
+    "Prohibitive requirements": [
+      "MUST NOT"
+    ],
+    "Recommendatory suggestions": [],
+    "Non-recommendatory suggestions": [],
+    "Permissive clauses": []
+  },
+  "3 MQTT Control Packets -> 3.2 CONNACK Connect acknowledgement -> 3.2.2 CONNACK Variable Header -> 3.2.2.2 Connect Reason Code": {
+    "Mandatory requirements": [
+      "MUST"
+    ],
+    "Prohibitive requirements": [],
+    "Recommendatory suggestions": [],
+    "Non-recommendatory suggestions": [],
+    "Permissive clauses": [
+      "MAY",
+      "may"
+    ]
+  },
+  "3 MQTT Control Packets -> 3.2 CONNACK Connect acknowledgement -> 3.2.2 CONNACK Variable Header -> 3.2.2.3 CONNACK Properties -> 3.2.2.3.10 User Property": {
+    "Mandatory requirements": [],
+    "Prohibitive requirements": [
+      "MUST NOT"
+    ],
+    "Recommendatory suggestions": [],
+    "Non-recommendatory suggestions": [],
+    "Permissive clauses": [
+      "MAY"
+    ]
+  },
+  "3 MQTT Control Packets -> 3.3 PUBLISH Publish message -> 3.3.1 PUBLISH Fixed Header": {},
+  "1 Introduction -> 1.2 Terminology": {
+    "Mandatory requirements": [
+      "MUST",
+      "SHALL",
+      "REQUIRED"
+    ],
+    "Prohibitive requirements": [
+      "MUST NOT",
+      "SHALL NOT"
+    ],
+    "Recommendatory suggestions": [
+      "SHOULD",
+      "RECOMMENDED"
+    ],
+    "Non-recommendatory suggestions": [
+      "SHOULD NOT"
+    ],
+    "Permissive clauses": [
+      "MAY",
+      "OPTIONAL"
+    ]
+  },
+  "3 MQTT Control Packets -> 3.2 CONNACK Connect acknowledgement -> 3.2.2 CONNACK Variable Header -> 3.2.2.3 CONNACK Properties -> 3.2.2.3.9 Reason String": {
+    "Mandatory requirements": [],
+    "Prohibitive requirements": [
+      "MUST NOT",
+      "is a Protocol Error"
+    ],
+    "Recommendatory suggestions": [],
+    "Non-recommendatory suggestions": [
+      "SHOULD NOT"
+    ],
+    "Permissive clauses": []
+  },
+  "3 MQTT Control Packets -> 3.2 CONNACK Connect acknowledgement -> 3.2.2 CONNACK Variable Header -> 3.2.2.3 CONNACK Properties -> 3.2.2.3.17 Authentication Method": {
+    "Mandatory requirements": [],
+    "Prohibitive requirements": [
+      "is a protocol error"
+    ],
+    "Recommendatory suggestions": [],
+    "Non-recommendatory suggestions": [],
+    "Permissive clauses": []
+  },
+  "3 MQTT Control Packets -> 3.3 PUBLISH Publish message -> 3.3.1 PUBLISH Fixed Header -> 3.3.1.4 Remaining Length": {},
+  "3 MQTT Control Packets -> 3.3 PUBLISH Publish message -> 3.3.2 PUBLISH Variable Header": {},
+  "3 MQTT Control Packets -> 3.2 CONNACK Connect acknowledgement -> 3.2.2 CONNACK Variable Header -> 3.2.2.3 CONNACK Properties -> 3.2.2.3.8 Topic Alias Maximum": {
+    "Mandatory requirements": [],
+    "Prohibitive requirements": [
+      "MUST NOT"
+    ],
+    "Recommendatory suggestions": [],
+    "Non-recommendatory suggestions": [],
+    "Permissive clauses": []
+  },
+  "3 MQTT Control Packets -> 3.2 CONNACK Connect acknowledgement -> 3.2.2 CONNACK Variable Header -> 3.2.2.3 CONNACK Properties -> 3.2.2.3.11 Wildcard Subscription Available": {
+    "Mandatory requirements": [
+      "is required to"
+    ],
+    "Prohibitive requirements": [
+      "is a Protocol Error to"
+    ],
+    "Permissive clauses": [
+      "MAY"
+    ]
+  },
+  "3 MQTT Control Packets -> 3.2 CONNACK Connect acknowledgement -> 3.2.2 CONNACK Variable Header -> 3.2.2.3 CONNACK Properties -> 3.2.2.3.5 Retain Available": {
+    "Mandatory requirements": [
+      "MUST",
+      "is a Protocol Error",
+      "is a Protocol Error"
+    ],
+    "Prohibitive requirements": [
+      "MUST NOT"
+    ],
+    "Recommendatory suggestions": [
+      "SHOULD",
+      "SHOULD"
+    ],
+    "Non-recommendatory suggestions": [],
+    "Permissive clauses": []
+  },
+  "3 MQTT Control Packets -> 3.2 CONNACK Connect acknowledgement -> 3.2.3 CONNACK Payload": {},
+  "1 Introduction -> 1.4 Non-normative references": {
+    "Mandatory requirements": [],
+    "Prohibitive requirements": [],
+    "Recommendatory suggestions": [],
+    "Non-recommendatory suggestions": [],
+    "Permissive clauses": []
+  },
+  "3 MQTT Control Packets -> 3.2 CONNACK Connect acknowledgement -> 3.2.2 CONNACK Variable Header -> 3.2.2.3 CONNACK Properties -> 3.2.2.3.14 Server Keep Alive": {
+    "Mandatory requirements": [
+      "MUST"
+    ],
+    "Prohibitive requirements": [],
+    "Recommendatory suggestions": [],
+    "Non-recommendatory suggestions": [],
+    "Permissive clauses": []
+  },
+  "3 MQTT Control Packets -> 3.2 CONNACK Connect acknowledgement -> 3.2.2 CONNACK Variable Header -> 3.2.2.3 CONNACK Properties -> 3.2.2.3.18 Authentication Data": {
+    "Mandatory requirements": [],
+    "Prohibitive requirements": [
+      "Protocol Error"
+    ],
+    "Recommendatory suggestions": [],
+    "Non-recommendatory suggestions": [],
+    "Permissive clauses": []
+  },
+  "3 MQTT Control Packets -> 3.3 PUBLISH Publish message -> 3.3.2 PUBLISH Variable Header -> 3.3.2.2 Packet Identifier": {
+    "Mandatory requirements": [],
+    "Prohibitive requirements": [],
+    "Recommendatory suggestions": [],
+    "Non-recommendatory suggestions": [],
+    "Permissive clauses": []
+  },
+  "3 MQTT Control Packets -> 3.4 PUBACK Publish acknowledgement": {},
+  "3 MQTT Control Packets -> 3.2 CONNACK Connect acknowledgement -> 3.2.2 CONNACK Variable Header -> 3.2.2.3 CONNACK Properties -> 3.2.2.3.16 Server Reference": {
+    "Mandatory requirements": [],
+    "Prohibitive requirements": [
+      "is a Protocol Error to"
+    ],
+    "Recommendatory suggestions": [
+      "can be used"
+    ],
+    "Non-recommendatory suggestions": [],
+    "Permissive clauses": []
+  },
+  "3 MQTT Control Packets -> 3.2 CONNACK Connect acknowledgement -> 3.2.2 CONNACK Variable Header -> 3.2.2.3 CONNACK Properties -> 3.2.2.3.4 Maximum QoS": {
+    "Mandatory requirements": [
+      "MUST"
+    ],
+    "Prohibitive requirements": [
+      "MUST NOT"
+    ],
+    "Recommendatory suggestions": [
+      "SHOULD"
+    ],
+    "Non-recommendatory suggestions": [],
+    "Permissive clauses": []
+  },
+  "3 MQTT Control Packets -> 3.3 PUBLISH Publish message -> 3.3.1 PUBLISH Fixed Header -> 3.3.1.2 QoS": {
+    "Mandatory requirements": [],
+    "Prohibitive requirements": [
+      "MUST NOT"
+    ],
+    "Recommendatory suggestions": [],
+    "Non-recommendatory suggestions": [],
+    "Permissive clauses": []
+  },
+  "3 MQTT Control Packets -> 3.4 PUBACK Publish acknowledgement -> 3.4.1 PUBACK Fixed Header": {},
+  "3 MQTT Control Packets -> 3.3 PUBLISH Publish message -> 3.3.3 PUBLISH Payload": {
+    "Mandatory requirements": [],
+    "Prohibitive requirements": [],
+    "Recommendatory suggestions": [],
+    "Non-recommendatory suggestions": [],
+    "Permissive clauses": []
+  },
+  "3 MQTT Control Packets -> 3.2 CONNACK Connect acknowledgement -> 3.2.2 CONNACK Variable Header -> 3.2.2.3 CONNACK Properties -> 3.2.2.3.15 Response Information": {
+    "Mandatory requirements": [],
+    "Prohibitive requirements": [
+      "is a Protocol Error to"
+    ],
+    "Recommendatory suggestions": [],
+    "Non-recommendatory suggestions": [],
+    "Permissive clauses": [
+      "OPTIONAL"
+    ]
+  },
+  "3 MQTT Control Packets -> 3.3 PUBLISH Publish message -> 3.3.2 PUBLISH Variable Header -> 3.3.2.3 PUBLISH Properties -> 3.3.2.3.8 Subscription Identifier": {
+    "Mandatory requirements": [],
+    "Prohibitive requirements": [
+      "is a Protocol Error"
+    ],
+    "Recommendatory suggestions": [],
+    "Non-recommendatory suggestions": [],
+    "Permissive clauses": []
+  },
+  "3 MQTT Control Packets -> 3.4 PUBACK Publish acknowledgement -> 3.4.3 PUBACK Payload": {},
+  "3 MQTT Control Packets -> 3.2 CONNACK Connect acknowledgement -> 3.2.2 CONNACK Variable Header -> 3.2.2.3 CONNACK Properties -> 3.2.2.3.12 Subscription Identifiers Available": {
+    "Mandatory requirements": [
+      "is a Protocol Error",
+      "is a Protocol Error"
+    ],
+    "Prohibitive requirements": [
+      "cannot",
+      "must not include",
+      "shall not send"
+    ],
+    "Recommendatory suggestions": [],
+    "Non-recommendatory suggestions": [],
+    "Permissive clauses": [
+      "If present",
+      "If not present"
+    ]
+  },
+  "3 MQTT Control Packets -> 3.3 PUBLISH Publish message -> 3.3.2 PUBLISH Variable Header -> 3.3.2.1 Topic Name": {
+    "Mandatory requirements": [
+      "MUST",
+      "is required to"
+    ],
+    "Prohibitive requirements": [
+      "MUST NOT",
+      "is a Protocol Error if"
+    ],
+    "Permissive clauses": [
+      "is permitted to",
+      "can use"
+    ]
+  },
+  "3 MQTT Control Packets -> 3.2 CONNACK Connect acknowledgement -> 3.2.2 CONNACK Variable Header -> 3.2.2.3 CONNACK Properties -> 3.2.2.3.13 Shared Subscription Available": {
+    "Mandatory requirements": [
+      "is a Protocol Error to include",
+      "is a Protocol Error to send"
+    ],
+    "Prohibitive requirements": [
+      "is a Protocol Error to include",
+      "is a Protocol Error to send",
+      "are not supported",
+      "does not support"
+    ],
+    "Recommendatory suggestions": [],
+    "Non-recommendatory suggestions": [],
+    "Permissive clauses": [
+      "If present",
+      "If not present"
+    ]
+  },
+  "3 MQTT Control Packets -> 3.1 CONNECT Connection Request -> 3.1.2 CONNECT Variable Header -> 3.1.2.11 CONNECT Properties -> 3.1.2.11.2 Session Expiry Interval": {
+    "Mandatory requirements": [
+      "is a Protocol Error to",
+      "MUST"
+    ],
+    "Prohibitive requirements": [
+      "is a Protocol Error to"
+    ],
+    "Recommendatory suggestions": [
+      "should"
+    ],
+    "Non-recommendatory suggestions": [
+      "need not"
+    ],
+    "Permissive clauses": [
+      "may",
+      "can",
+      "might"
+    ]
+  },
+  "3 MQTT Control Packets -> 3.4 PUBACK Publish acknowledgement -> 3.4.2 PUBACK Variable Header": {
+    "Mandatory requirements": [],
+    "Prohibitive requirements": [],
+    "Recommendatory suggestions": [],
+    "Non-recommendatory suggestions": [],
+    "Permissive clauses": []
+  },
+  "3 MQTT Control Packets -> 3.4 PUBACK Publish acknowledgement -> 3.4.4 PUBACK Actions": {},
+  "3 MQTT Control Packets -> 3.3 PUBLISH Publish message -> 3.3.2 PUBLISH Variable Header -> 3.3.2.3 PUBLISH Properties -> 3.3.2.3.2 Payload Format Indicator": {
+    "Mandatory requirements": [
+      "MUST",
+      "MUST"
+    ],
+    "Prohibitive requirements": [],
+    "Recommendatory suggestions": [],
+    "Non-recommendatory suggestions": [],
+    "Permissive clauses": [
+      "MAY"
+    ]
+  },
+  "3 MQTT Control Packets -> 3.5 PUBREC Publish received (QoS 2 delivery part 1)": {},
+  "3 MQTT Control Packets -> 3.5 PUBREC Publish received (QoS 2 delivery part 1) -> 3.5.1 PUBREC Fixed Header": {},
+  "3 MQTT Control Packets -> 3.5 PUBREC Publish received (QoS 2 delivery part 1) -> 3.5.2 PUBREC Variable Header": {},
+  "3 MQTT Control Packets -> 3.3 PUBLISH Publish message -> 3.3.2 PUBLISH Variable Header -> 3.3.2.3 PUBLISH Properties -> 3.3.2.3.7 User Property": {
+    "Mandatory requirements": [
+      "MUST"
+    ],
+    "Prohibitive requirements": [],
+    "Recommendatory suggestions": [],
+    "Non-recommendatory suggestions": [],
+    "Permissive clauses": [
+      "allowed to",
+      "allowed to"
+    ]
+  },
+  "3 MQTT Control Packets -> 3.4 PUBACK Publish acknowledgement -> 3.4.2 PUBACK Variable Header -> 3.4.2.2 PUBACK Properties -> 3.4.2.2.1 Property Length": {
+    "Mandatory requirements": [],
+    "Prohibitive requirements": [],
+    "Recommendatory suggestions": [],
+    "Non-recommendatory suggestions": [],
+    "Permissive clauses": []
+  },
+  "3 MQTT Control Packets -> 3.2 CONNACK Connect acknowledgement -> 3.2.2 CONNACK Variable Header -> 3.2.2.1 Connect Acknowledge Flags -> 3.2.2.1.1 Session Present": {
+    "Mandatory requirements": [
+      "MUST"
+    ],
+    "Prohibitive requirements": [],
+    "Recommendatory suggestions": [],
+    "Non-recommendatory suggestions": [],
+    "Permissive clauses": [
+      "can"
+    ]
+  },
+  "3 MQTT Control Packets -> 3.4 PUBACK Publish acknowledgement -> 3.4.2 PUBACK Variable Header -> 3.4.2.1 PUBACK Reason Code": {
+    "Mandatory requirements": [
+      "MUST use one of the PUBACK Reason Codes"
+    ]
+  },
+  "3 MQTT Control Packets -> 3.5 PUBREC Publish received (QoS 2 delivery part 1) -> 3.5.4 PUBREC Actions": {},
+  "3 MQTT Control Packets -> 3.5 PUBREC Publish received (QoS 2 delivery part 1) -> 3.5.3 PUBREC Payload": {
+    "Mandatory requirements": [
+      "has no"
+    ],
+    "Prohibitive requirements": [
+      "has no"
+    ]
+  },
+  "3 MQTT Control Packets -> 3.6 PUBREL Publish release (QoS 2 delivery part 2) -> 3.6.4 PUBREL Actions": {},
+  "3 MQTT Control Packets -> 3.3 PUBLISH Publish message -> 3.3.2 PUBLISH Variable Header -> 3.3.2.3 PUBLISH Properties -> 3.3.2.3.3 Message Expiry Interval`": {},
+  "3 MQTT Control Packets -> 3.5 PUBREC Publish received (QoS 2 delivery part 1) -> 3.5.2 PUBREC Variable Header -> 3.5.2.2 PUBREC Properties -> 3.5.2.2.1 Property Length": {
+    "Mandatory requirements": [],
+    "Prohibitive requirements": [],
+    "Recommendatory suggestions": [],
+    "Non-recommendatory suggestions": [],
+    "Permissive clauses": []
+  },
+  "3 MQTT Control Packets -> 3.3 PUBLISH Publish message -> 3.3.2 PUBLISH Variable Header -> 3.3.2.3 PUBLISH Properties -> 3.3.2.3.1 Property Length": {
+    "Mandatory requirements": [],
+    "Prohibitive requirements": [],
+    "Recommendatory suggestions": [],
+    "Non-recommendatory suggestions": [],
+    "Permissive clauses": []
+  },
+  "3 MQTT Control Packets -> 3.7 PUBCOMP Publish complete (QoS 2 delivery part 3) -> 3.7.1 PUBCOMP Fixed Header": {},
+  "3 MQTT Control Packets -> 3.3 PUBLISH Publish message -> 3.3.1 PUBLISH Fixed Header -> 3.3.1.1 DUP": {
+    "Mandatory requirements": [
+      "MUST"
+    ],
+    "Prohibitive requirements": [],
+    "Recommendatory suggestions": [],
+    "Non-recommendatory suggestions": [],
+    "Permissive clauses": []
+  },
+  "3 MQTT Control Packets -> 3.5 PUBREC Publish received (QoS 2 delivery part 1) -> 3.5.2 PUBREC Variable Header -> 3.5.2.1 PUBREC Reason Code": {
+    "Mandatory requirements": [
+      "MUST"
+    ]
+  },
+  "3 MQTT Control Packets -> 3.4 PUBACK Publish acknowledgement -> 3.4.2 PUBACK Variable Header -> 3.4.2.2 PUBACK Properties -> 3.4.2.2.3 User Property": {
+    "Mandatory requirements": [],
+    "Prohibitive requirements": [
+      "MUST NOT"
+    ],
+    "Recommendatory suggestions": [],
+    "Non-recommendatory suggestions": [],
+    "Permissive clauses": [
+      "can be used",
+      "is allowed to appear",
+      "is allowed to appear"
+    ]
+  },
+  "3 MQTT Control Packets -> 3.6 PUBREL Publish release (QoS 2 delivery part 2) -> 3.6.3 PUBREL Payload": {
+    "Mandatory requirements": [],
+    "Prohibitive requirements": [],
+    "Recommendatory suggestions": [],
+    "Non-recommendatory suggestions": [],
+    "Permissive clauses": []
+  },
+  "3 MQTT Control Packets -> 3.7 PUBCOMP Publish complete (QoS 2 delivery part 3)": {},
+  "3 MQTT Control Packets -> 3.6 PUBREL Publish release (QoS 2 delivery part 2) -> 3.6.2 PUBREL Variable Header": {
+    "Mandatory requirements": [],
+    "Prohibitive requirements": [],
+    "Recommendatory suggestions": [],
+    "Non-recommendatory suggestions": [],
+    "Permissive clauses": []
+  },
+  "3 MQTT Control Packets -> 3.6 PUBREL Publish release (QoS 2 delivery part 2) -> 3.6.1 PUBREL Fixed Header": {
+    "Mandatory requirements": [
+      "must be set to"
+    ]
+  },
+  "3 MQTT Control Packets -> 3.7 PUBCOMP Publish complete (QoS 2 delivery part 3) -> 3.7.4 PUBCOMP Actions": {},
+  "3 MQTT Control Packets -> 3.7 PUBCOMP Publish complete (QoS 2 delivery part 3) -> 3.7.3 PUBCOMP Payload": {},
+  "3 MQTT Control Packets -> 3.6 PUBREL Publish release (QoS 2 delivery part 2) -> 3.6.2 PUBREL Variable Header -> 3.6.2.1 PUBREL Reason Code": {
+    "Mandatory requirements": [
+      "MUST"
+    ]
+  },
+  "3 MQTT Control Packets -> 3.6 PUBREL Publish release (QoS 2 delivery part 2) -> 3.6.2 PUBREL Variable Header -> 3.6.2.2 PUBREL Properties -> 3.6.2.2.1 Property Length": {
+    "Mandatory requirements": [],
+    "Prohibitive requirements": [],
+    "Recommendatory suggestions": [],
+    "Non-recommendatory suggestions": [],
+    "Permissive clauses": []
+  },
+  "3 MQTT Control Packets -> 3.8 SUBSCRIBE - Subscribe request -> 3.8.2 SUBSCRIBE Variable Header -> 3.8.2.1 SUBSCRIBE Properties -> 3.8.2.1.1 Property Length": {},
+  "3 MQTT Control Packets -> 3.5 PUBREC Publish received (QoS 2 delivery part 1) -> 3.5.2 PUBREC Variable Header -> 3.5.2.2 PUBREC Properties -> 3.5.2.2.2 Reason String": {
+    "Mandatory requirements": [],
+    "Prohibitive requirements": [
+      "MUST NOT"
+    ],
+    "Recommendatory suggestions": [
+      "SHOULD NOT"
+    ],
+    "Non-recommendatory suggestions": [],
+    "Permissive clauses": []
+  },
+  "3 MQTT Control Packets -> 3.5 PUBREC Publish received (QoS 2 delivery part 1) -> 3.5.2 PUBREC Variable Header -> 3.5.2.2 PUBREC Properties -> 3.5.2.2.3 User Property": {
+    "Mandatory requirements": [],
+    "Prohibitive requirements": [
+      "MUST NOT"
+    ],
+    "Recommendatory suggestions": [],
+    "Non-recommendatory suggestions": [],
+    "Permissive clauses": [
+      "can be used",
+      "is allowed to appear",
+      "is allowed to appear"
+    ]
+  },
+  "3 MQTT Control Packets -> 3.3 PUBLISH Publish message -> 3.3.2 PUBLISH Variable Header -> 3.3.2.3 PUBLISH Properties -> 3.3.2.3.5 Response Topic": {
+    "Mandatory requirements": [
+      "MUST"
+    ],
+    "Prohibitive requirements": [
+      "MUST NOT"
+    ],
+    "Recommendatory suggestions": [
+      "should"
+    ],
+    "Non-recommendatory suggestions": [],
+    "Permissive clauses": []
+  },
+  "3 MQTT Control Packets -> 3.7 PUBCOMP Publish complete (QoS 2 delivery part 3) -> 3.7.2 PUBCOMP Variable Header -> 3.7.2.2 PUBCOMP Properties -> 3.7.2.2.1 Property Length": {
+    "Mandatory requirements": [],
+    "Prohibitive requirements": [],
+    "Recommendatory suggestions": [],
+    "Non-recommendatory suggestions": [],
+    "Permissive clauses": []
+  },
+  "3 MQTT Control Packets -> 3.7 PUBCOMP Publish complete (QoS 2 delivery part 3) -> 3.7.2 PUBCOMP Variable Header": {
+    "Mandatory requirements": [],
+    "Prohibitive requirements": [],
+    "Recommendatory suggestions": [],
+    "Non-recommendatory suggestions": [],
+    "Permissive clauses": []
+  },
+  "3 MQTT Control Packets -> 3.3 PUBLISH Publish message -> 3.3.2 PUBLISH Variable Header -> 3.3.2.3 PUBLISH Properties -> 3.3.2.3.6 Correlation Data": {
+    "Mandatory requirements": [
+      "MUST"
+    ],
+    "Prohibitive requirements": [
+      "is a Protocol Error to"
+    ],
+    "Recommendatory suggestions": [
+      "should"
+    ],
+    "Non-recommendatory suggestions": [],
+    "Permissive clauses": []
+  },
+  "3 MQTT Control Packets -> 3.6 PUBREL Publish release (QoS 2 delivery part 2) -> 3.6.2 PUBREL Variable Header -> 3.6.2.2 PUBREL Properties -> 3.6.2.2.3 User Property": {
+    "Mandatory requirements": [
+      "MUST NOT"
+    ],
+    "Prohibitive requirements": [
+      "MUST NOT"
+    ],
+    "Permissive clauses": [
+      "can be used",
+      "is allowed to",
+      "is allowed to"
+    ]
+  },
+  "3 MQTT Control Packets -> 3.1 CONNECT Connection Request -> 3.1.4 CONNECT Actions": {
+    "Mandatory requirements": [
+      "MUST",
+      "are allowed to",
+      "need not"
+    ],
+    "Prohibitive requirements": [
+      "MUST NOT"
+    ],
+    "Recommendatory suggestions": [
+      "SHOULD",
+      "is recommended that",
+      "is suggested that",
+      "suggested as"
+    ],
+    "Non-recommendatory suggestions": [],
+    "Permissive clauses": [
+      "MAY",
+      "can"
+    ]
+  },
+  "3 MQTT Control Packets -> 3.3 PUBLISH Publish message -> 3.3.2 PUBLISH Variable Header -> 3.3.2.3 PUBLISH Properties -> 3.3.2.3.9 Content Type": {
+    "Mandatory requirements": [
+      "MUST"
+    ],
+    "Prohibitive requirements": [
+      "Protocol Error"
+    ],
+    "Permissive clauses": [
+      "may"
+    ]
+  },
+  "3 MQTT Control Packets -> 3.6 PUBREL Publish release (QoS 2 delivery part 2) -> 3.6.2 PUBREL Variable Header -> 3.6.2.2 PUBREL Properties -> 3.6.2.2.2 Reason String": {
+    "Mandatory requirements": [],
+    "Prohibitive requirements": [
+      "MUST NOT",
+      "is a Protocol Error"
+    ],
+    "Recommendatory suggestions": [],
+    "Non-recommendatory suggestions": [
+      "SHOULD NOT"
+    ],
+    "Permissive clauses": []
+  },
+  "3 MQTT Control Packets -> 3.9 SUBACK Subscribe acknowledgement -> 3.9.1 SUBACK Fixed Header": {},
+  "3 MQTT Control Packets -> 3.6 PUBREL Publish release (QoS 2 delivery part 2)": {
+    "Mandatory requirements": [],
+    "Prohibitive requirements": [],
+    "Recommendatory suggestions": [],
+    "Non-recommendatory suggestions": [],
+    "Permissive clauses": []
+  },
+  "3 MQTT Control Packets -> 3.8 SUBSCRIBE - Subscribe request -> 3.8.2 SUBSCRIBE Variable Header": {},
+  "3 MQTT Control Packets -> 3.9 SUBACK Subscribe acknowledgement -> 3.9.2 SUBACK Variable Header -> 3.9.2.1 SUBACK Properties -> 3.9.2.1.1 Property Length": {},
+  "3 MQTT Control Packets -> 3.8 SUBSCRIBE - Subscribe request -> 3.8.1 SUBSCRIBE Fixed Header": {
+    "Mandatory requirements": [
+      "MUST"
+    ],
+    "Prohibitive requirements": [],
+    "Recommendatory suggestions": [],
+    "Non-recommendatory suggestions": [],
+    "Permissive clauses": []
+  },
+  "3 MQTT Control Packets -> 3.9 SUBACK Subscribe acknowledgement -> 3.9.2 SUBACK Variable Header": {
+    "Mandatory requirements": [],
+    "Prohibitive requirements": [],
+    "Recommendatory suggestions": [],
+    "Non-recommendatory suggestions": [],
+    "Permissive clauses": []
+  },
+  "3 MQTT Control Packets -> 3.8 SUBSCRIBE - Subscribe request": {
+    "Mandatory requirements": [],
+    "Prohibitive requirements": [],
+    "Recommendatory suggestions": [],
+    "Non-recommendatory suggestions": [],
+    "Permissive clauses": []
+  },
+  "3 MQTT Control Packets -> 3.4 PUBACK Publish acknowledgement -> 3.4.2 PUBACK Variable Header -> 3.4.2.2 PUBACK Properties -> 3.4.2.2.2 Reason String": {
+    "Mandatory requirements": [],
+    "Prohibitive requirements": [
+      "MUST NOT"
+    ],
+    "Recommendatory suggestions": [],
+    "Non-recommendatory suggestions": [],
+    "Permissive clauses": []
+  },
+  "3 MQTT Control Packets -> 3.10 UNSUBSCRIBE Unsubscribe request": {},
+  "3 MQTT Control Packets -> 3.11 UNSUBACK Unsubscribe acknowledgement -> 3.11.1 UNSUBACK Fixed Header": {},
+  "3 MQTT Control Packets -> 3.10 UNSUBSCRIBE Unsubscribe request -> 3.10.2 UNSUBSCRIBE Variable Header": {},
+  "3 MQTT Control Packets -> 3.9 SUBACK Subscribe acknowledgement": {
+    "Mandatory requirements": [],
+    "Prohibitive requirements": [],
+    "Recommendatory suggestions": [],
+    "Non-recommendatory suggestions": [],
+    "Permissive clauses": []
+  },
+  "3 MQTT Control Packets -> 3.10 UNSUBSCRIBE Unsubscribe request -> 3.10.2 UNSUBSCRIBE Variable Header -> 3.10.2.1 UNSUBSCRIBE Properties -> 3.10.2.1.1 Property Length": {},
+  "3 MQTT Control Packets -> 3.11 UNSUBACK Unsubscribe acknowledgement": {},
+  "3 MQTT Control Packets -> 3.7 PUBCOMP Publish complete (QoS 2 delivery part 3) -> 3.7.2 PUBCOMP Variable Header -> 3.7.2.2 PUBCOMP Properties -> 3.7.2.2.3 User Property": {
+    "Mandatory requirements": [],
+    "Prohibitive requirements": [
+      "MUST NOT"
+    ],
+    "Recommendatory suggestions": [],
+    "Non-recommendatory suggestions": [],
+    "Permissive clauses": [
+      "can be used",
+      "is allowed to",
+      "is allowed to"
+    ]
+  },
+  "3 MQTT Control Packets -> 3.7 PUBCOMP Publish complete (QoS 2 delivery part 3) -> 3.7.2 PUBCOMP Variable Header -> 3.7.2.2 PUBCOMP Properties -> 3.7.2.2.2 Reason String": {
+    "Mandatory requirements": [],
+    "Prohibitive requirements": [
+      "MUST NOT",
+      "is a protocol error"
+    ],
+    "Recommendatory suggestions": [],
+    "Non-recommendatory suggestions": [
+      "SHOULD NOT"
+    ],
+    "Permissive clauses": []
+  },
+  "3 MQTT Control Packets -> 3.11 UNSUBACK Unsubscribe acknowledgement -> 3.11.2 UNSUBACK Variable Header -> 3.11.2.1 UNSUBACK Properties -> 3.11.2.1.1 Property Length": {},
+  "3 MQTT Control Packets -> 3.8 SUBSCRIBE - Subscribe request -> 3.8.3 SUBSCRIBE Payload": {
+    "Mandatory requirements": [
+      "MUST",
+      "is a Protocol Error"
+    ],
+    "Prohibitive requirements": [],
+    "Recommendatory suggestions": [],
+    "Non-recommendatory suggestions": [],
+    "Permissive clauses": []
+  },
+  "3 MQTT Control Packets -> 3.9 SUBACK Subscribe acknowledgement -> 3.9.3 SUBACK Payload": {
+    "Mandatory requirements": [
+      "MUST"
+    ]
+  },
+  "3 MQTT Control Packets -> 3.12 PINGREQ PING request -> 3.12.1 PINGREQ Fixed Header": {},
+  "3 MQTT Control Packets -> 3.12 PINGREQ PING request -> 3.12.2 PINGREQ Variable Header": {
+    "Mandatory requirements": [
+      "has no"
+    ],
+    "Prohibitive requirements": [
+      "has no"
+    ]
+  },
+  "3 MQTT Control Packets -> 3.8 SUBSCRIBE - Subscribe request -> 3.8.2 SUBSCRIBE Variable Header -> 3.8.2.1 SUBSCRIBE Properties -> 3.8.2.1.3 User Property": {
+    "Mandatory requirements": [],
+    "Prohibitive requirements": [],
+    "Recommendatory suggestions": [],
+    "Non-recommendatory suggestions": [],
+    "Permissive clauses": [
+      "is allowed to appear multiple times",
+      "is allowed to appear more than once"
+    ]
+  },
+  "3 MQTT Control Packets -> 3.12 PINGREQ PING request -> 3.12.3 PINGREQ Payload": {},
+  "3 MQTT Control Packets -> 3.10 UNSUBSCRIBE Unsubscribe request -> 3.10.3 UNSUBSCRIBE Payload": {},
+  "3 MQTT Control Packets -> 3.9 SUBACK Subscribe acknowledgement -> 3.9.2 SUBACK Variable Header -> 3.9.2.1 SUBACK Properties -> 3.9.2.1.2 Reason String": {
+    "Mandatory requirements": [],
+    "Prohibitive requirements": [
+      "MUST NOT",
+      "is a Protocol Error to"
+    ],
+    "Recommendatory suggestions": [
+      "SHOULD NOT"
+    ],
+    "Non-recommendatory suggestions": [],
+    "Permissive clauses": []
+  },
+  "3 MQTT Control Packets -> 3.13 PINGRESP PING response -> 3.13.1 PINGRESP Fixed Header": {},
+  "3 MQTT Control Packets -> 3.12 PINGREQ PING request -> 3.12.4 PINGREQ Actions": {
+    "Mandatory requirements": [
+      "MUST"
+    ]
+  },
+  "3 MQTT Control Packets -> 3.10 UNSUBSCRIBE Unsubscribe request -> 3.10.2 UNSUBSCRIBE Variable Header -> 3.10.2.1 UNSUBSCRIBE Properties -> 3.10.2.1.2 User Property": {
+    "Mandatory requirements": [],
+    "Prohibitive requirements": [],
+    "Recommendatory suggestions": [],
+    "Non-recommendatory suggestions": [],
+    "Permissive clauses": [
+      "is allowed to",
+      "is allowed to appear"
+    ]
+  },
+  "3 MQTT Control Packets -> 3.7 PUBCOMP Publish complete (QoS 2 delivery part 3) -> 3.7.2 PUBCOMP Variable Header -> 3.7.2.1 PUBCOMP Reason Code": {
+    "Mandatory requirements": [
+      "MUST"
+    ]
+  },
+  "3 MQTT Control Packets -> 3.8 SUBSCRIBE - Subscribe request -> 3.8.2 SUBSCRIBE Variable Header -> 3.8.2.1 SUBSCRIBE Properties -> 3.8.2.1.2 Subscription Identifier": {
+    "Mandatory requirements": [
+      "is identified by",
+      "is followed by"
+    ],
+    "Prohibitive requirements": [
+      "is a Protocol Error if",
+      "is a Protocol Error to"
+    ],
+    "Recommendatory suggestions": [],
+    "Non-recommendatory suggestions": [],
+    "Permissive clauses": [
+      "can have"
+    ]
+  },
+  "3 MQTT Control Packets -> 3.13 PINGRESP PING response -> 3.13.3 PINGRESP Payload": {},
+  "3 MQTT Control Packets -> 3.9 SUBACK Subscribe acknowledgement -> 3.9.2 SUBACK Variable Header -> 3.9.2.1 SUBACK Properties -> 3.9.2.1.3 User Property": {
+    "Mandatory requirements": [],
+    "Prohibitive requirements": [
+      "MUST NOT"
+    ],
+    "Recommendatory suggestions": [],
+    "Non-recommendatory suggestions": [],
+    "Permissive clauses": [
+      "can be used",
+      "is allowed to",
+      "is allowed to"
+    ]
+  },
+  "3 MQTT Control Packets -> 3.11 UNSUBACK Unsubscribe acknowledgement -> 3.11.2 UNSUBACK Variable Header": {
+    "Mandatory requirements": [],
+    "Prohibitive requirements": [],
+    "Recommendatory suggestions": [],
+    "Non-recommendatory suggestions": [],
+    "Permissive clauses": []
+  },
+  "3 MQTT Control Packets -> 3.3 PUBLISH Publish message -> 3.3.2 PUBLISH Variable Header -> 3.3.2.3 PUBLISH Properties -> 3.3.2.3.4 Topic Alias": {
+    "Mandatory requirements": [
+      "is required to",
+      "is a Protocol Error to"
+    ],
+    "Prohibitive requirements": [
+      "is not permitted",
+      "MUST NOT",
+      "cannot"
+    ],
+    "Recommendatory suggestions": [
+      "is useful when"
+    ],
+    "Non-recommendatory suggestions": [],
+    "Permissive clauses": [
+      "can",
+      "decides whether to use"
+    ]
+  },
+  "3 MQTT Control Packets -> 3.13 PINGRESP PING response -> 3.13.2 PINGRESP Variable Header": {
+    "Mandatory requirements": [
+      "has no"
+    ],
+    "Prohibitive requirements": [
+      "has no"
+    ]
+  },
+  "3 MQTT Control Packets -> 3.3 PUBLISH Publish message -> 3.3.1 PUBLISH Fixed Header -> 3.3.1.3 RETAIN": {
+    "Mandatory requirements": [
+      "MUST",
+      "MUST replace",
+      "MUST remove",
+      "MUST store",
+      "MUST send",
+      "MUST set"
+    ],
+    "Prohibitive requirements": [
+      "MUST NOT",
+      "MUST NOT be stored",
+      "MUST NOT store",
+      "MUST NOT remove",
+      "MUST NOT replace",
+      "MUST NOT send"
+    ],
+    "Recommendatory suggestions": [
+      "SHOULD"
+    ],
+    "Permissive clauses": [
+      "MAY"
+    ]
+  },
+  "3 MQTT Control Packets -> 3.14 DISCONNECT Disconnect notification -> 3.14.3 DISCONNECT Payload": {},
+  "3 MQTT Control Packets -> 3.13 PINGRESP PING response -> 3.13.4 PINGRESP Actions": {
+    "Mandatory requirements": [],
+    "Prohibitive requirements": [
+      "takes no action"
+    ],
+    "Recommendatory suggestions": [],
+    "Non-recommendatory suggestions": [],
+    "Permissive clauses": []
+  },
+  "3 MQTT Control Packets -> 3.11 UNSUBACK Unsubscribe acknowledgement -> 3.11.3 UNSUBACK Payload": {
+    "Mandatory requirements": [
+      "MUST"
+    ]
+  },
+  "3 MQTT Control Packets -> 3.13 PINGRESP PING response": {
+    "Mandatory requirements": [],
+    "Prohibitive requirements": [],
+    "Recommendatory suggestions": [],
+    "Non-recommendatory suggestions": [],
+    "Permissive clauses": []
+  },
+  "3 MQTT Control Packets -> 3.15 AUTH Authentication exchange -> 3.15.2 AUTH Variable Header": {},
+  "3 MQTT Control Packets -> 3.15 AUTH Authentication exchange": {
+    "Mandatory requirements": [
+      "is a Protocol Error"
+    ],
+    "Prohibitive requirements": []
+  },
+  "3 MQTT Control Packets -> 3.15 AUTH Authentication exchange -> 3.15.2 AUTH Variable Header -> 3.15.2.2 AUTH Properties -> 3.15.2.2.1 Property Length": {},
+  "3 MQTT Control Packets -> 3.14 DISCONNECT Disconnect notification -> 3.14.2 DISCONNECT Variable Header": {
+    "Mandatory requirements": [],
+    "Prohibitive requirements": [],
+    "Recommendatory suggestions": [],
+    "Non-recommendatory suggestions": [],
+    "Permissive clauses": []
+  },
+  "3 MQTT Control Packets -> 3.11 UNSUBACK Unsubscribe acknowledgement -> 3.11.2 UNSUBACK Variable Header -> 3.11.2.1 UNSUBACK Properties -> 3.11.2.1.2 Reason String": {
+    "Mandatory requirements": [
+      "is a Protocol Error"
+    ],
+    "Prohibitive requirements": [
+      "SHOULD NOT",
+      "MUST NOT"
+    ],
+    "Recommendatory suggestions": [],
+    "Non-recommendatory suggestions": [
+      "SHOULD NOT"
+    ],
+    "Permissive clauses": []
+  },
+  "3 MQTT Control Packets -> 3.14 DISCONNECT Disconnect notification -> 3.14.1 DISCONNECT Fixed Header": {
+    "Mandatory requirements": [
+      "MUST"
+    ]
+  },
+  "3 MQTT Control Packets -> 3.14 DISCONNECT Disconnect notification -> 3.14.2 DISCONNECT Variable Header -> 3.14.2.2 DISCONNECT Properties -> 3.14.2.2.1 Property Length": {
+    "Mandatory requirements": [],
+    "Prohibitive requirements": [],
+    "Recommendatory suggestions": [],
+    "Non-recommendatory suggestions": [],
+    "Permissive clauses": []
+  },
+  "3 MQTT Control Packets -> 3.15 AUTH Authentication exchange -> 3.15.4 AUTH Actions": {},
+  "3 MQTT Control Packets -> 3.14 DISCONNECT Disconnect notification": {
+    "Mandatory requirements": [],
+    "Prohibitive requirements": [
+      "MUST NOT"
+    ],
+    "Recommendatory suggestions": [],
+    "Non-recommendatory suggestions": [],
+    "Permissive clauses": [
+      "MAY"
+    ]
+  },
+  "3 MQTT Control Packets -> 3.11 UNSUBACK Unsubscribe acknowledgement -> 3.11.2 UNSUBACK Variable Header -> 3.11.2.1 UNSUBACK Properties -> 3.11.2.1.3 User Property": {
+    "Mandatory requirements": [],
+    "Prohibitive requirements": [
+      "MUST NOT"
+    ],
+    "Recommendatory suggestions": [],
+    "Non-recommendatory suggestions": [],
+    "Permissive clauses": [
+      "can be used",
+      "is allowed to appear",
+      "is allowed to appear"
+    ]
+  },
+  "3 MQTT Control Packets -> 3.10 UNSUBSCRIBE Unsubscribe request -> 3.10.1 UNSUBSCRIBE Fixed Header": {
+    "Mandatory requirements": [
+      "MUST"
+    ],
+    "Prohibitive requirements": [],
+    "Recommendatory suggestions": [],
+    "Non-recommendatory suggestions": [],
+    "Permissive clauses": []
+  },
+  "3 MQTT Control Packets -> 3.15 AUTH Authentication exchange -> 3.15.3 AUTH Payload": {
+    "Prohibitive requirements": [
+      "has no"
+    ]
+  },
+  "3 MQTT Control Packets -> 3.14 DISCONNECT Disconnect notification -> 3.14.2 DISCONNECT Variable Header -> 3.14.2.2 DISCONNECT Properties -> 3.14.2.2.3 Reason String": {
+    "Mandatory requirements": [],
+    "Prohibitive requirements": [
+      "MUST NOT",
+      "is a Protocol Error"
+    ],
+    "Recommendatory suggestions": [
+      "SHOULD NOT"
+    ],
+    "Non-recommendatory suggestions": [],
+    "Permissive clauses": []
+  },
+  "3 MQTT Control Packets -> 3.15 AUTH Authentication exchange -> 3.15.2 AUTH Variable Header -> 3.15.2.1 Authenticate Reason Code": {
+    "Mandatory requirements": [
+      "MUST use one of the Authenticate Reason Codes"
+    ]
+  },
+  "3 MQTT Control Packets -> 3.15 AUTH Authentication exchange -> 3.15.2 AUTH Variable Header -> 3.15.2.2 AUTH Properties -> 3.15.2.2.2 Authentication Method": {
+    "Mandatory requirements": [
+      "is a protocol error to omit",
+      "is a protocol error to include more than once"
+    ],
+    "Prohibitive requirements": [
+      "is a protocol error to omit",
+      "is a protocol error to include more than once"
+    ]
+  },
+  "3 MQTT Control Packets -> 3.15 AUTH Authentication exchange -> 3.15.2 AUTH Variable Header -> 3.15.2.2 AUTH Properties -> 3.15.2.2.3 Authentication Data": {
+    "Mandatory requirements": [],
+    "Prohibitive requirements": [
+      "is a Protocol Error"
+    ],
+    "Recommendatory suggestions": [],
+    "Non-recommendatory suggestions": [],
+    "Permissive clauses": []
+  },
+  "3 MQTT Control Packets -> 3.14 DISCONNECT Disconnect notification -> 3.14.2 DISCONNECT Variable Header -> 3.14.2.2 DISCONNECT Properties -> 3.14.2.2.2 Session Expiry Interval": {
+    "Mandatory requirements": [
+      "is a Protocol Error to include",
+      "is a Protocol Error to set"
+    ],
+    "Prohibitive requirements": [
+      "MUST NOT be sent",
+      "does not treat it as a valid"
+    ],
+    "Recommendatory suggestions": [],
+    "Non-recommendatory suggestions": [],
+    "Permissive clauses": []
+  },
+  "3 MQTT Control Packets -> 3.14 DISCONNECT Disconnect notification -> 3.14.2 DISCONNECT Variable Header -> 3.14.2.2 DISCONNECT Properties -> 3.14.2.2.5 Server Reference": {
+    "Mandatory requirements": [],
+    "Prohibitive requirements": [
+      "is a protocol error"
+    ],
+    "Recommendatory suggestions": [
+      "can be used"
+    ],
+    "Non-recommendatory suggestions": [],
+    "Permissive clauses": [
+      "can use"
+    ]
+  },
+  "3 MQTT Control Packets -> 3.14 DISCONNECT Disconnect notification -> 3.14.4 DISCONNECT Actions": {
+    "Mandatory requirements": [
+      "MUST",
+      "MUST"
+    ],
+    "Prohibitive requirements": [
+      "MUST NOT"
+    ],
+    "Recommendatory suggestions": [
+      "SHOULD"
+    ],
+    "Non-recommendatory suggestions": [],
+    "Permissive clauses": []
+  },
+  "3 MQTT Control Packets -> 3.12 PINGREQ PING request": {},
+  "3 MQTT Control Packets -> 3.14 DISCONNECT Disconnect notification -> 3.14.2 DISCONNECT Variable Header -> 3.14.2.1 Disconnect Reason Code": {
+    "Mandatory requirements": [
+      "MUST"
+    ],
+    "Prohibitive requirements": [],
+    "Recommendatory suggestions": [],
+    "Non-recommendatory suggestions": [],
+    "Permissive clauses": [
+      "can be omitted"
+    ]
+  },
+  "4 Operational behavior -> 4.3 Quality of Service levels and protocol flows": {
+    "Mandatory requirements": [],
+    "Prohibitive requirements": [],
+    "Recommendatory suggestions": [],
+    "Non-recommendatory suggestions": [],
+    "Permissive clauses": []
+  },
+  "3 MQTT Control Packets -> 3.8 SUBSCRIBE - Subscribe request -> 3.8.3 SUBSCRIBE Payload -> 3.8.3.1 Subscription Options": {
+    "Mandatory requirements": [
+      "MUST"
+    ],
+    "Prohibitive requirements": [
+      "MUST NOT"
+    ],
+    "Permissive clauses": []
+  },
+  "3 MQTT Control Packets -> 3.15 AUTH Authentication exchange -> 3.15.2 AUTH Variable Header -> 3.15.2.2 AUTH Properties -> 3.15.2.2.5 User Property": {
+    "Mandatory requirements": [
+      "MUST"
+    ],
+    "Prohibitive requirements": [
+      "MUST NOT"
+    ],
+    "Permissive clauses": [
+      "may",
+      "is allowed to"
+    ]
+  },
+  "3 MQTT Control Packets -> 3.15 AUTH Authentication exchange -> 3.15.2 AUTH Variable Header -> 3.15.2.2 AUTH Properties -> 3.15.2.2.4 Reason String": {
+    "Mandatory requirements": [],
+    "Prohibitive requirements": [
+      "MUST NOT",
+      "is a Protocol Error to"
+    ],
+    "Recommendatory suggestions": [
+      "SHOULD NOT"
+    ],
+    "Non-recommendatory suggestions": [
+      "SHOULD NOT"
+    ],
+    "Permissive clauses": []
+  },
+  "4 Operational behavior -> 4.7 Topic Names and Topic Filters -> 4.7.1 Topic wildcards": {},
+  "4 Operational behavior -> 4.1 Session State -> 4.1.2 Session State non-normative examples": {
+    "Mandatory requirements": [
+      "requires that"
+    ],
+    "Prohibitive requirements": [
+      "never"
+    ],
+    "Recommendatory suggestions": [
+      "should"
+    ],
+    "Non-recommendatory suggestions": [],
+    "Permissive clauses": [
+      "might",
+      "can be"
+    ]
+  },
+  "4 Operational behavior -> 4.7 Topic Names and Topic Filters -> 4.7.1 Topic wildcards -> 4.7.1.1 Topic level separator": {},
+  "4 Operational behavior -> 4.1 Session State -> 4.1.1 Storing Session State": {
+    "Mandatory requirements": [
+      "MUST"
+    ],
+    "Prohibitive requirements": [
+      "MUST NOT"
+    ],
+    "Permissive clauses": [
+      "may"
+    ]
+  },
+  "4 Operational behavior -> 4.7 Topic Names and Topic Filters -> 4.7.2 Topics beginning with": {},
+  "4 Operational behavior -> 4.8 Subscriptions": {},
+  "4 Operational behavior -> 4.2 Network Connections": {
+    "Mandatory requirements": [
+      "requires",
+      "MUST",
+      "support"
+    ],
+    "Prohibitive requirements": [],
+    "Recommendatory suggestions": [],
+    "Non-recommendatory suggestions": [
+      "not suitable"
+    ],
+    "Permissive clauses": [
+      "MAY"
+    ]
+  },
+  "4 Operational behavior -> 4.3 Quality of Service levels and protocol flows -> 4.3.1 QoS 0: At most once delivery": {
+    "Mandatory requirements": [
+      "MUST"
+    ],
+    "Prohibitive requirements": [],
+    "Recommendatory suggestions": [],
+    "Non-recommendatory suggestions": [],
+    "Permissive clauses": []
+  },
+  "3 MQTT Control Packets -> 3.10 UNSUBSCRIBE Unsubscribe request -> 3.10.4 UNSUBSCRIBE Actions": {
+    "Mandatory requirements": [
+      "MUST"
+    ],
+    "Prohibitive requirements": [],
+    "Recommendatory suggestions": [],
+    "Non-recommendatory suggestions": [],
+    "Permissive clauses": [
+      "MAY"
+    ]
+  },
+  "3 MQTT Control Packets -> 3.14 DISCONNECT Disconnect notification -> 3.14.2 DISCONNECT Variable Header -> 3.14.2.2 DISCONNECT Properties -> 3.14.2.2.4 User Property": {
+    "Mandatory requirements": [
+      "MUST"
+    ],
+    "Prohibitive requirements": [
+      "MUST NOT"
+    ],
+    "Permissive clauses": [
+      "may",
+      "is allowed to"
+    ]
+  },
+  "4 Operational behavior -> 4.8 Subscriptions -> 4.8.1 Non-shared Subscriptions": {
+    "Mandatory requirements": [],
+    "Prohibitive requirements": [
+      "cannot"
+    ],
+    "Recommendatory suggestions": [],
+    "Non-recommendatory suggestions": [],
+    "Permissive clauses": []
+  },
+  "3 MQTT Control Packets -> 3.15 AUTH Authentication exchange -> 3.15.1 AUTH Fixed Header": {
+    "Mandatory requirements": [
+      "MUST",
+      "MUST"
+    ],
+    "Prohibitive requirements": [],
+    "Recommendatory suggestions": [],
+    "Non-recommendatory suggestions": [],
+    "Permissive clauses": []
+  },
+  "5 Security (non-normative) -> 5.3 Lightweight crytography and constrained devices": {},
+  "4 Operational behavior -> 4.7 Topic Names and Topic Filters -> 4.7.1 Topic wildcards -> 4.7.1.3 Single-level wildcard": {
+    "Mandatory requirements": [
+      "MUST"
+    ],
+    "Prohibitive requirements": [],
+    "Recommendatory suggestions": [],
+    "Non-recommendatory suggestions": [],
+    "Permissive clauses": []
+  },
+  "4 Operational behavior -> 4.1 Session State": {
+    "Mandatory requirements": [
+      "need to"
+    ],
+    "Permissive clauses": [
+      "OPTIONALLY"
+    ]
+  },
+  "4 Operational behavior -> 4.4 Message delivery retry": {
+    "Mandatory requirements": [
+      "MUST",
+      "REQUIRED"
+    ],
+    "Prohibitive requirements": [
+      "MUST NOT"
+    ],
+    "Recommendatory suggestions": [],
+    "Non-recommendatory suggestions": [],
+    "Permissive clauses": []
+  },
+  "4 Operational behavior -> 4.5 Message receipt": {
+    "Mandatory requirements": [
+      "MUST"
+    ],
+    "Prohibitive requirements": [],
+    "Recommendatory suggestions": [],
+    "Non-recommendatory suggestions": [],
+    "Permissive clauses": []
+  },
+  "4 Operational behavior -> 4.7 Topic Names and Topic Filters -> 4.7.1 Topic wildcards -> 4.7.1.2 Multi-level wildcard": {
+    "Mandatory requirements": [
+      "MUST"
+    ],
+    "Prohibitive requirements": [],
+    "Recommendatory suggestions": [],
+    "Non-recommendatory suggestions": [],
+    "Permissive clauses": []
+  },
+  "4 Operational behavior -> 4.10 Request / Response": {
+    "Mandatory requirements": [],
+    "Prohibitive requirements": [],
+    "Recommendatory suggestions": [
+      "might wish to"
+    ],
+    "Non-recommendatory suggestions": [],
+    "Permissive clauses": [
+      "can be used",
+      "can be used",
+      "can be used"
+    ]
+  },
+  "5 Security (non-normative) -> 5.4 Implementation notes -> 5.4.6 Non-repudiation of message transmission": {},
+  "5 Security (non-normative) -> 5.4 Implementation notes": {},
+  "4 Operational behavior -> 4.6 Message ordering": {},
+  "5 Security (non-normative) -> 5.2 MQTT solutions: security and certification": {
+    "Mandatory requirements": [],
+    "Prohibitive requirements": [],
+    "Recommendatory suggestions": [
+      "might want to"
+    ],
+    "Non-recommendatory suggestions": [],
+    "Permissive clauses": []
+  },
+  "4 Operational behavior -> 4.7 Topic Names and Topic Filters -> 4.7.3 Topic semantic and usage": {
+    "Mandatory requirements": [
+      "MUST"
+    ],
+    "Prohibitive requirements": [
+      "MUST NOT"
+    ],
+    "Permissive clauses": [
+      "MAY"
+    ]
+  },
+  "3 MQTT Control Packets -> 3.3 PUBLISH Publish message -> 3.3.4 PUBLISH Actions": {
+    "Mandatory requirements": [
+      "MUST",
+      "is a Protocol Error",
+      "is a Protocol Error",
+      "is a Protocol Error"
+    ],
+    "Prohibitive requirements": [
+      "MUST NOT",
+      "MUST NOT",
+      "MUST NOT"
+    ],
+    "Permissive clauses": [
+      "MAY"
+    ]
+  },
+  "4 Operational behavior -> 4.9 Flow Control": {
+    "Mandatory requirements": [
+      "MUST"
+    ],
+    "Prohibitive requirements": [
+      "MUST NOT"
+    ],
+    "Permissive clauses": [
+      "MAY"
+    ]
+  },
+  "4 Operational behavior -> 4.10 Request / Response -> 4.10.2 Determining a Response Topic value (non-normative)": {
+    "Mandatory requirements": [],
+    "Prohibitive requirements": [],
+    "Recommendatory suggestions": [
+      "desirable"
+    ],
+    "Non-recommendatory suggestions": [],
+    "Permissive clauses": [
+      "can",
+      "optional"
+    ]
+  },
+  "4 Operational behavior -> 4.12 Enhanced authentication -> 4.12.1 Re-authentication": {
+    "Mandatory requirements": [
+      "MUST"
+    ],
+    "Prohibitive requirements": [],
+    "Recommendatory suggestions": [
+      "SHOULD"
+    ],
+    "Non-recommendatory suggestions": [],
+    "Permissive clauses": [
+      "can"
+    ]
+  },
+  "5 Security (non-normative) -> 5.4 Implementation notes -> 5.4.4 Integrity of Application Messages and MQTT Control Packets": {
+    "Mandatory requirements": [],
+    "Prohibitive requirements": [],
+    "Recommendatory suggestions": [],
+    "Non-recommendatory suggestions": [],
+    "Permissive clauses": [
+      "can"
+    ]
+  },
+  "4 Operational behavior -> 4.13 Handling errors -> 4.13.2 Other errors": {
+    "Mandatory requirements": [
+      "MUST"
+    ],
+    "Prohibitive requirements": [
+      "cannot"
+    ],
+    "Recommendatory suggestions": [],
+    "Non-recommendatory suggestions": [],
+    "Permissive clauses": [
+      "might"
+    ]
+  },
+  "5 Security (non-normative) -> 5.4 Implementation notes -> 5.4.7 Detecting compromise of Clients and Servers": {
+    "Mandatory requirements": [],
+    "Prohibitive requirements": [],
+    "Recommendatory suggestions": [
+      "should"
+    ],
+    "Non-recommendatory suggestions": [],
+    "Permissive clauses": [
+      "can",
+      "might"
+    ]
+  },
+  "4 Operational behavior -> 4.3 Quality of Service levels and protocol flows -> 4.3.3 QoS 2: Exactly once delivery": {
+    "Mandatory requirements": [
+      "MUST"
+    ],
+    "Prohibitive requirements": [
+      "MUST NOT"
+    ],
+    "Recommendatory suggestions": [],
+    "Non-recommendatory suggestions": [],
+    "Permissive clauses": [
+      "is permitted to"
+    ]
+  },
+  "5 Security (non-normative) -> 5.4 Implementation notes -> 5.4.2 Authorization of Clients by the Server": {
+    "Mandatory requirements": [],
+    "Prohibitive requirements": [],
+    "Recommendatory suggestions": [
+      "should"
+    ],
+    "Non-recommendatory suggestions": [],
+    "Permissive clauses": [
+      "may"
+    ]
+  },
+  "5 Security (non-normative) -> 5.4 Implementation notes -> 5.4.12 Security profiles -> 5.4.12.1 Clear communication profile": {},
+  "5 Security (non-normative) -> 5.4 Implementation notes -> 5.4.5 Privacy of Application Messages and MQTT Control Packets": {
+    "Mandatory requirements": [],
+    "Prohibitive requirements": [],
+    "Recommendatory suggestions": [
+      "should avoid"
+    ],
+    "Non-recommendatory suggestions": [],
+    "Permissive clauses": [
+      "can provide",
+      "might independently encrypt",
+      "could provide",
+      "would not provide",
+      "can provide"
+    ]
+  },
+  "5 Security (non-normative) -> 5.4 Implementation notes -> 5.4.8 Detecting abnormal behaviors": {
+    "Mandatory requirements": [],
+    "Prohibitive requirements": [],
+    "Recommendatory suggestions": [],
+    "Non-recommendatory suggestions": [],
+    "Permissive clauses": [
+      "might"
+    ]
+  },
+  "5 Security (non-normative) -> 5.4 Implementation notes -> 5.4.12 Security profiles -> 5.4.12.3 Secured transport profile": {},
+  "5 Security (non-normative) -> 5.4 Implementation notes -> 5.4.1 Authentication of Clients by the Server": {
+    "Mandatory requirements": [],
+    "Prohibitive requirements": [],
+    "Recommendatory suggestions": [
+      "should be aware"
+    ],
+    "Non-recommendatory suggestions": [],
+    "Permissive clauses": [
+      "can choose",
+      "may provide"
+    ]
+  },
+  "5 Security (non-normative) -> 5.1 Introduction": {
+    "Mandatory requirements": [
+      "responsibility is to include",
+      "will often need to provide"
+    ],
+    "Prohibitive requirements": [],
+    "Recommendatory suggestions": [
+      "strongly recommended that",
+      "should consider"
+    ],
+    "Non-recommendatory suggestions": [
+      "should not detract"
+    ],
+    "Permissive clauses": [
+      "allowing implementers a choice of",
+      "so as not to restrict choices available"
+    ]
+  },
+  "3 MQTT Control Packets -> 3.8 SUBSCRIBE - Subscribe request -> 3.8.4 SUBSCRIBE Actions": {
+    "Mandatory requirements": [
+      "MUST",
+      "is required to"
+    ],
+    "Prohibitive requirements": [
+      "MUST NOT",
+      "is not allowed to"
+    ],
+    "Recommendatory suggestions": [
+      "should"
+    ],
+    "Permissive clauses": [
+      "is permitted to",
+      "is allowed to",
+      "can",
+      "might"
+    ]
+  },
+  "7 Conformance": {},
+  "5 Security (non-normative) -> 5.4 Implementation notes -> 5.4.9 Handling of Disallowed Unicode code points": {
+    "Mandatory requirements": [],
+    "Prohibitive requirements": [
+      "should not be included"
+    ],
+    "Recommendatory suggestions": [
+      "recommends",
+      "should"
+    ],
+    "Non-recommendatory suggestions": [],
+    "Permissive clauses": [
+      "can choose whether to"
+    ]
+  },
+  "5 Security (non-normative) -> 5.4 Implementation notes -> 5.4.9 Handling of Disallowed Unicode code points -> 5.4.9.1 Considerations for the use of Disallowed Unicode code points": {
+    "Mandatory requirements": [],
+    "Prohibitive requirements": [],
+    "Recommendatory suggestions": [],
+    "Non-recommendatory suggestions": [],
+    "Permissive clauses": []
+  },
+  "4 Operational behavior -> 4.11 Server redirection": {
+    "Mandatory requirements": [],
+    "Prohibitive requirements": [],
+    "Recommendatory suggestions": [
+      "SHOULD",
+      "It is recommended that"
+    ],
+    "Non-recommendatory suggestions": [],
+    "Permissive clauses": [
+      "MAY",
+      "can",
+      "is allowed to",
+      "is not needed"
+    ]
+  },
+  "5 Security (non-normative) -> 5.4 Implementation notes -> 5.4.12 Security profiles": {
+    "Mandatory requirements": [],
+    "Prohibitive requirements": [],
+    "Recommendatory suggestions": [],
+    "Non-recommendatory suggestions": [],
+    "Permissive clauses": []
+  },
+  "4 Operational behavior -> 4.3 Quality of Service levels and protocol flows -> 4.3.2 QoS 1: At least once delivery": {
+    "Mandatory requirements": [
+      "MUST"
+    ],
+    "Prohibitive requirements": [],
+    "Recommendatory suggestions": [],
+    "Non-recommendatory suggestions": [],
+    "Permissive clauses": [
+      "is permitted to"
+    ]
+  },
+  "6 Using WebSocket as a network transport -> 6.1 IANA considerations": {
+    "Mandatory requirements": [],
+    "Prohibitive requirements": [],
+    "Recommendatory suggestions": [],
+    "Non-recommendatory suggestions": [],
+    "Permissive clauses": []
+  },
+  "5 Security (non-normative) -> 5.4 Implementation notes -> 5.4.3 Authentication of the Server by the Client": {
+    "Mandatory requirements": [],
+    "Prohibitive requirements": [
+      "is not trust symmetrical",
+      "there is no mechanism"
+    ],
+    "Recommendatory suggestions": [
+      "should be aware of"
+    ],
+    "Non-recommendatory suggestions": [],
+    "Permissive clauses": [
+      "do allow for",
+      "can be used",
+      "might allow for",
+      "can provide"
+    ]
+  },
+  "5 Security (non-normative) -> 5.4 Implementation notes -> 5.4.12 Security profiles -> 5.4.12.4 Industry specific security profiles": {
+    "Mandatory requirements": [],
+    "Prohibitive requirements": [],
+    "Recommendatory suggestions": [
+      "Recommendations"
+    ],
+    "Non-recommendatory suggestions": [],
+    "Permissive clauses": []
+  },
+  "5 Security (non-normative) -> 5.4 Implementation notes -> 5.4.10 Other security considerations": {
+    "Mandatory requirements": [],
+    "Prohibitive requirements": [],
+    "Recommendatory suggestions": [
+      "should"
+    ],
+    "Non-recommendatory suggestions": [],
+    "Permissive clauses": [
+      "may",
+      "can"
+    ]
+  },
+  "6 Using WebSocket as a network transport": {
+    "Mandatory requirements": [],
+    "Prohibitive requirements": [],
+    "Recommendatory suggestions": [],
+    "Non-recommendatory suggestions": [],
+    "Permissive clauses": []
+  },
+  "5 Security (non-normative) -> 5.4 Implementation notes -> 5.4.11 Use of SOCKS": {
+    "Mandatory requirements": [],
+    "Prohibitive requirements": [],
+    "Recommendatory suggestions": [
+      "should be aware",
+      "should support",
+      "should avoid"
+    ],
+    "Non-recommendatory suggestions": [],
+    "Permissive clauses": [
+      "could make use of"
+    ]
+  },
+  "4 Operational behavior -> 4.10 Request / Response -> 4.10.1 Basic Request Response (non-normative)": {
+    "Mandatory requirements": [
+      "is the responsibility of"
+    ],
+    "Recommendatory suggestions": [
+      "recommended"
+    ]
+  },
+  "4 Operational behavior -> 4.13 Handling errors -> 4.13.1 Malformed Packet and Protocol Errors": {
+    "Mandatory requirements": [
+      "MUST"
+    ],
+    "Prohibitive requirements": [
+      "will not",
+      "not send"
+    ],
+    "Recommendatory suggestions": [
+      "SHOULD"
+    ],
+    "Non-recommendatory suggestions": [],
+    "Permissive clauses": [
+      "MAY"
+    ]
+  },
+  "5 Security (non-normative) -> 5.4 Implementation notes -> 5.4.9 Handling of Disallowed Unicode code points -> 5.4.9.2 Interactions between Publishers and Subscribers": {
+    "Mandatory requirements": [],
+    "Prohibitive requirements": [],
+    "Recommendatory suggestions": [],
+    "Non-recommendatory suggestions": [],
+    "Permissive clauses": [
+      "can",
+      "might"
+    ]
+  },
+  "4 Operational behavior -> 4.12 Enhanced authentication": {
+    "Mandatory requirements": [
+      "MUST"
+    ],
+    "Prohibitive requirements": [
+      "MUST NOT"
+    ],
+    "Recommendatory suggestions": [
+      "SHOULD"
+    ],
+    "Permissive clauses": [
+      "MAY",
+      "OPTIONAL"
+    ]
+  },
+  "7 Conformance -> 7.1 Conformance clauses -> 7.1.2 MQTT Client conformance clause": {
+    "Mandatory requirements": [
+      "conforms to this specification only if",
+      "satisfies all the statements",
+      "matches the format described",
+      "satisfies the MUST level requirements",
+      "does not require the use of any extensions defined outside of the specification"
+    ],
+    "Prohibitive requirements": [],
+    "Recommendatory suggestions": [],
+    "Non-recommendatory suggestions": [],
+    "Permissive clauses": []
+  },
+  "5 Security (non-normative) -> 5.4 Implementation notes -> 5.4.12 Security profiles -> 5.4.12.2 Secured network communication profile": {},
+  "7 Conformance -> 7.1 Conformance clauses -> 7.1.1 MQTT Server conformance clause": {
+    "Mandatory requirements": [
+      "conforms to this specification only if it satisfies all the statements below",
+      "satisfies all the statements below",
+      "matches the format described",
+      "follows the Topic matching rules",
+      "satisfies the MUST level requirements",
+      "does not require the use of any extensions defined outside of the specification"
+    ],
+    "Prohibitive requirements": [
+      "does not require the use of any extensions defined outside of the specification"
+    ]
+  },
+  "5 Security (non-normative) -> 5.4 Implementation notes -> 5.4.9 Handling of Disallowed Unicode code points -> 5.4.9.3 Remedies": {
+    "Mandatory requirements": [],
+    "Prohibitive requirements": [],
+    "Recommendatory suggestions": [
+      "can adopt",
+      "can either process or discard"
+    ],
+    "Non-recommendatory suggestions": [],
+    "Permissive clauses": [
+      "can",
+      "can either process or discard"
+    ]
+  },
+  "4 Operational behavior -> 4.8 Subscriptions -> 4.8.2 Shared Subscriptions": {
+    "Mandatory requirements": [
+      "MUST"
+    ],
+    "Prohibitive requirements": [
+      "MUST NOT"
+    ],
+    "Recommendatory suggestions": [
+      "SHOULD"
+    ],
+    "Permissive clauses": [
+      "MAY"
+    ]
+  }
+}

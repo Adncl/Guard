@@ -1,0 +1,1635 @@
+{
+    "2.1.3 Flags": [
+        "Flag Bits: DUP indicates duplicate delivery of a PUBLISH packet, QoS indicates PUBLISH Quality of Service, and RETAIN indicates PUBLISH retained message flag.",
+        "Refer to section 3.3.1 for a description of the DUP, QoS, and RETAIN flags in the PUBLISH packet."
+    ],
+    "2.2 Variable Header": [
+        "The Variable Header resides between the Fixed Header and the Payload.",
+        "The Packet Identifier field of Variable Header is common in several packet types."
+    ],
+    "2.1.4 Remaining Length": [
+        "The Remaining Length is a Variable Byte Integer that represents the number of bytes remaining within the current Control Packet, including data in the Variable Header and the Payload."
+    ],
+    "2.2.1 Packet Identifier": [
+        "The Variable Header component of many of the MQTT Control Packet types includes a Two Byte Integer Packet Identifier field.",
+        "These MQTT Control Packets are PUBLISH (where QoS > 0), PUBACK, PUBREC, PUBREL, PUBCOMP, SUBSCRIBE, SUBACK, UNSUBSCRIBE, UNSUBACK.",
+        "MQTT Control Packets that require a Packet Identifier are shown below.",
+        "A PUBLISH packet MUST NOT contain a Packet Identifier if its QoS value is set to 0 [MQTT-2.2.1-2].",
+        "Each time a Client sends a new SUBSCRIBE, UNSUBSCRIBE, or PUBLISH (where QoS > 0) MQTT Control Packet, the Client MUST assign a non-zero Packet Identifier that is currently unused [MQTT-2.2.1-3].",
+        "Each time a Server sends a new PUBLISH (with QoS > 0) MQTT Control Packet, the Server MUST assign a non-zero Packet Identifier that is currently unused [MQTT-2.2.1-4].",
+        "The Packet Identifier becomes available for reuse after the sender has processed the corresponding acknowledgement packet, defined as follows.",
+        "In the case of a QoS 1 PUBLISH, the corresponding acknowledgement packet is the PUBACK; in the case of QoS 2 PUBLISH, the corresponding acknowledgement packet is PUBCOMP or a PUBREC with a Reason Code of 128 or greater.",
+        "For SUBSCRIBE or UNSUBSCRIBE, the corresponding acknowledgement packet is the SUBACK or UNSUBACK.",
+        "Packet Identifiers used with PUBLISH, SUBSCRIBE and UNSUBSCRIBE packets form a single, unified set of identifiers separately for the Client and the Server in a Session.",
+        "A Packet Identifier cannot be used by more than one command at any time.",
+        "A PUBACK, PUBREC , PUBREL, or PUBCOMP packet MUST contain the same Packet Identifier as the PUBLISH packet that was originally sent [MQTT-2.2.1-5].",
+        "A SUBACK and UNSUBACK MUST contain the Packet Identifier that was used in the corresponding SUBSCRIBE and UNSUBSCRIBE packet respectively [MQTT-2.2.1-6].",
+        "The Client and Server assign Packet Identifiers independently of each other.",
+        "As a result, Client-Server pairs can participate in concurrent message exchanges using the same Packet Identifiers.",
+        "**Non-normative comment** It is possible for a Client to send a PUBLISH packet with Packet Identifier 0x1234 and then receive a different PUBLISH packet with Packet Identifier 0x1234 from its Server before the Client receives a PUBACK for the PUBLISH packet that the Client sent.",
+        "The Client sends a PUBLISH packet with Packet Identifier 0x1234 to the Server.",
+        "The Server then sends a PUBLISH packet with Packet Identifier 0x1234 to the Client.",
+        "The Client responds with a PUBACK packet with Packet Identifier 0x1234 to the Server.",
+        "The Server then responds with a PUBACK packet with Packet Identifier 0x1234 to the Client."
+    ],
+    "2.2.2 Properties": [
+        "The last field in the Variable Header of the CONNECT, CONNACK, PUBLISH, PUBACK, PUBREC, PUBREL, PUBCOMP, SUBSCRIBE, SUBACK, UNSUBSCRIBE, UNSUBACK, DISCONNECT, and AUTH packet is a set of Properties.",
+        "In the CONNECT packet there is also an optional set of Properties in the Will Properties field with the Payload.",
+        "The set of Properties is composed of a Property Length followed by the Properties."
+    ],
+    "2.2.2.1 Property Length": [
+        "The Property Length is encoded as a Variable Byte Integer.",
+        "The Property Length does not include the bytes used to encode itself, but includes the length of the Properties.",
+        "If there are no properties, the absence of properties MUST be indicated by including a Property Length of zero [MQTT-2.2.2-1]."
+    ],
+    "2.2.2.2 Property": [
+        "A Property consists of an Identifier which defines its usage and data type, followed by a value.",
+        "The Identifier is encoded as a Variable Byte Integer.",
+        "A Control Packet which contains an Identifier which is not valid for its packet type, or contains a value not of the specified data type, is a Malformed Packet.",
+        "If a Malformed Packet is received, use a CONNACK or DISCONNECT packet with Reason Code 0x81 (Malformed Packet) as described in section 4.13 Handling errors.",
+        "There is no significance in the order of Properties with different Identifiers.",
+        "Although the Property Identifier is defined as a Variable Byte Integer, in this version of the specification all of the Property Identifiers are one byte long."
+    ],
+    "2.3 Payload": [
+        "In the PUBLISH packet the Payload is the Application Message.",
+        "MQTT Control Packets that contain a Payload are listed in Table 2-5."
+    ],
+    "2.4 Reason Code": [
+        "A Reason Code is a one byte unsigned value that indicates the result of an operation.",
+        "Reason Codes less than 0x80 indicate successful completion of an operation.",
+        "The normal Reason Code for success is 0.",
+        "Reason Code values of 0x80 or greater indicate failure.",
+        "The CONNACK, PUBACK, PUBREC, PUBREL, PUBCOMP, DISCONNECT and AUTH Control Packets have a single Reason Code as part of the Variable Header.",
+        "The SUBACK and UNSUBACK packets contain a list of one or more Reason Codes in the Payload.",
+        "The Reason Codes share a common set of values.",
+        "For Reason Code 0x91 (Packet identifier in use), the response to this situation is either to try to fix the state, or to reset the Session state by connecting using Clean Start set to 1, or to decide if the Client or Server implementations are defective."
+    ],
+    "3.1 CONNECT Connection Request": [
+        "After a Network Connection is established by a Client to a Server, the first packet sent from the Client to the Server MUST be a CONNECT packet [MQTT-3.1.0-1].",
+        "A Client can only send the CONNECT packet once over a Network Connection.",
+        "The Server MUST process a second CONNECT packet sent from a Client as a Protocol Error and close the Network Connection [MQTT-3.1.0-2].",
+        "The encoded fields specify a unique Client identifier for the Client, a Will Topic, Will Payload, User Name and Password.",
+        "All but the Client identifier can be omitted and the presence of the other fields is determined based on flags in the Variable Header."
+    ],
+    "3.1.1 CONNECT Fixed Header": [
+        "The Remaining Length field in the CONNECT packet Fixed Header is the length of the Variable Header plus the length of the Payload."
+    ],
+    "3.1.2.1 Protocol Name": [
+        "The Protocol Name is a UTF-8 Encoded String that represents the protocol name 'MQTT', capitalized as shown.",
+        "A Server which supports multiple protocols uses the Protocol Name to determine whether the data is MQTT.",
+        "The Protocol Name MUST be the UTF-8 String \"MQTT\".",
+        "If the Server does not want to accept the CONNECT, and wishes to reveal that the Server is an MQTT Server, the Server MAY send a CONNACK packet with Reason Code of 0x84 (Unsupported Protocol Version), and then the Server MUST close the Network Connection [MQTT-3.1.2-1].",
+        "Packet inspectors, such as firewalls, could use the Protocol Name to identify MQTT traffic."
+    ],
+    "3.1.2.2 Protocol Version": [
+        "The Protocol Version byte is a one byte unsigned value that represents the revision level of the protocol used by the Client.",
+        "The value of the Protocol Version field for version 5.0 of the protocol is 5 (0x05).",
+        "A Server which supports multiple versions of the MQTT protocol uses the Protocol Version to determine which version of MQTT the Client is using.",
+        "If the Protocol Version is not 5 and the Server does not want to accept the CONNECT packet, the Server MAY send a CONNACK packet with Reason Code 0x84 (Unsupported Protocol Version) and then MUST close the Network Connection [MQTT-3.1.2-2]."
+    ],
+    "3.1.2.3 Connect Flags": [
+        "The Connect Flags byte contains several parameters specifying the behavior of the MQTT connection.",
+        "The Connect Flags byte also indicates the presence or absence of fields in the Payload.",
+        "The Server MUST validate that the reserved flag in the CONNECT packet is set to 0 [MQTT-3.1.2-3]."
+    ],
+    "3.1.2.4 Clean Start": [
+        "Position: bit 1 of the Connect Flags byte.",
+        "This bit specifies whether the Connection starts a new Session or is a continuation of an existing Session.",
+        "Refer to section 4.1 for a definition of the Session State.",
+        "If a CONNECT packet is received with Clean Start set to 1, the Client and Server MUST discard any existing Session and start a new Session [MQTT-3.1.2-4].",
+        "Consequently, the Session Present flag in CONNACK is always set to 0 if Clean Start is set to 1.",
+        "If a CONNECT packet is received with Clean Start set to 0 and there is a Session associated with the Client Identifier, the Server MUST resume communications with the Client based on state from the existing Session [MQTT-3.1.2-5].",
+        "If a CONNECT packet is received with Clean Start set to 0 and there is no Session associated with the Client Identifier, the Server MUST create a new Session [MQTT-3.1.2-6]."
+    ],
+    "3.1.2 CONNECT Variable Header": [
+        "The Variable Header for the CONNECT Packet contains the following fields in this order: Protocol Name, Protocol Level, Connect Flags, Keep Alive, and Properties."
+    ],
+    "3.1.2.5 Will Flag": [
+        "**Position:** bit 2 of the Connect Flags.",
+        "If the Will Flag is set to 1 this indicates that a Will Message MUST be stored on the Server and associated with the Session [MQTT-3.1.2-7].",
+        "The Will Message consists of the Will Properties, Will Topic, and Will Payload fields in the CONNECT Payload.",
+        "The Will Message MUST be published after the Network Connection is subsequently closed and either the Will Delay Interval has elapsed or the Session ends, unless the Will Message has been deleted by the Server on receipt of a DISCONNECT packet with Reason Code 0x00 (Normal disconnection) or a new Network Connection for the ClientID is opened before the Will Delay Interval has elapsed [MQTT-3.1.2-8].",
+        "Situations in which the Will Message is published include, but are not limited to: * An I/O error or network failure detected by the Server.",
+        "* The Client fails to communicate within the Keep Alive time.",
+        "* The Client closes the Network Connection without first sending a DISCONNECT packet with a Reason Code 0x00 (Normal disconnection).",
+        "* The Server closes the Network Connection without first receiving a DISCONNECT packet with a Reason Code 0x00 (Normal disconnection).",
+        "If the Will Flag is set to 1, the Will Properties, Will Topic, and Will Payload fields MUST be present in the Payload [MQTT-3.1.2-9].",
+        "The Will Message MUST be removed from the stored Session State in the Server once it has been published or the Server has received a DISCONNECT packet with a Reason Code of 0x00 (Normal disconnection) from the Client [MQTT-3.1.2-10].",
+        "The Server SHOULD publish Will Messages promptly after the Network Connection is closed and the Will Delay Interval has passed, or when the Session ends, whichever occurs first.",
+        "In the case of a Server shutdown or failure, the Server MAY defer publication of Will Messages until a subsequent restart.",
+        "If this happens, there might be a delay between the time the Server experienced failure and when the Will Message is published.",
+        "Refer to section 3.1.3.2 for information about the Will Delay Interval.",
+        "**Non-normative comment** The Client can arrange for the Will Message to notify that Session Expiry has occurred by setting the Will Delay Interval to be longer than the Session Expiry Interval and sending DISCONNECT with Reason Code 0x04 (Disconnect with Will Message)."
+    ],
+    "3.1.2.6 Will QoS": [
+        "The position of the Will QoS is specified by bits 4 and 3 of the Connect Flags.",
+        "These two bits specify the QoS level to be used when publishing the Will Message.",
+        "If the Will Flag is set to 0, then the Will QoS MUST be set to 0 (0x00) [MQTT-3.1.2-11].",
+        "If the Will Flag is set to 1, the value of Will QoS can be 0 (0x00), 1 (0x01), or 2 (0x02) [MQTT-3.1.2-12]."
+    ],
+    "3.1.2.7 Will Retain": [
+        "Position: bit 5 of the Connect Flags.",
+        "This bit specifies if the Will Message is to be retained when the Will Message is published.",
+        "If the Will Flag is set to 0, then Will Retain MUST be set to 0 [MQTT-3.1.2-13].",
+        "If the Will Flag is set to 1 and Will Retain is set to 0, the Server MUST publish the Will Message as a non-retained message [MQTT-3.1.2-14].",
+        "If the Will Flag is set to 1 and Will Retain is set to 1, the Server MUST publish the Will Message as a retained message [MQTT-3.1.2-15]."
+    ],
+    "3.1.2.8 User Name Flag": [
+        "The User Name Flag is positioned at bit 7 of the Connect Flags.",
+        "If the User Name Flag is set to 0, a User Name MUST NOT be present in the Payload [MQTT-3.1.2-16].",
+        "If the User Name Flag is set to 1, a User Name MUST be present in the Payload [MQTT-3.1.2-17]."
+    ],
+    "3.1.2.9 Password Flag": [
+        "The Password Flag is located at bit 6 of the Connect Flags.",
+        "If the Password Flag is set to 0, a Password MUST NOT be present in the Payload [MQTT-3.1.2-18].",
+        "If the Password Flag is set to 1, a Password MUST be present in the Payload [MQTT-3.1.2-19].",
+        "This version of the protocol allows the sending of a Password with no User Name, whereas MQTT v3.1.1 did not allow this.",
+        "The allowance of sending a Password with no User Name reflects the common use of Password for credentials other than a password."
+    ],
+    "3.1.2.10 Keep Alive": [
+        "The Keep Alive is a Two Byte Integer which is a time interval measured in seconds.",
+        "The Keep Alive is the maximum time interval that is permitted to elapse between the point at which the Client finishes transmitting one MQTT Control Packet and the point the Client starts sending the next.",
+        "The Client is responsible for ensuring that the interval between MQTT Control Packets being sent does not exceed the Keep Alive value.",
+        "If Keep Alive is non-zero and in the absence of sending any other MQTT Control Packets, the Client MUST send a PINGREQ packet [MQTT-3.1.2-20].",
+        "If the Server returns a Server Keep Alive on the CONNACK packet, the Client MUST use that value instead of the value it sent as the Keep Alive [MQTT-3.1.2-21].",
+        "The Client can send PINGREQ at any time, irrespective of the Keep Alive value, and check for a corresponding PINGRESP to determine that the network and the Server are available.",
+        "If the Keep Alive value is non-zero and the Server does not receive an MQTT Control Packet from the Client within one and a half times the Keep Alive time period, the Server MUST close the Network Connection to the Client as if the network had failed [MQTT-3.1.2-22].",
+        "If a Client does not receive a PINGRESP packet within a reasonable amount of time after the Client has sent a PINGREQ, the Client SHOULD close the Network Connection to the Server.",
+        "A Keep Alive value of 0 has the effect of turning off the Keep Alive mechanism.",
+        "If Keep Alive is 0 the Client is not obliged to send MQTT Control Packets on any particular schedule.",
+        "**Non-normative comment** The Server may have other reasons to disconnect the Client, for instance because the Server is shutting down.",
+        "Setting Keep Alive does not guarantee that the Client will remain connected.",
+        "**Non-normative comment** The actual value of the Keep Alive is application specific; typically, the Keep Alive is a few minutes."
+    ],
+    "3.1.2.11.1 Property Length": [
+        "The length of the Properties in the CONNECT packet Variable Header is encoded as a Variable Byte Integer."
+    ],
+    "3.1.2.11.3 Receive Maximum": [
+        "The identifier of the Receive Maximum is 33 (0x21) Byte.",
+        "The Receive Maximum value is represented by a Two Byte Integer that follows.",
+        "Including the Receive Maximum value more than once or setting the Receive Maximum value to 0 is a Protocol Error.",
+        "The Client uses the Receive Maximum value to limit the number of QoS 1 and QoS 2 publications that the Client is willing to process concurrently.",
+        "No mechanism exists to limit the QoS 0 publications that the Server might try to send.",
+        "The Receive Maximum value applies only to the current Network Connection.",
+        "If the Receive Maximum value is absent, the Receive Maximum value defaults to 65,535.",
+        "For details on how the Receive Maximum is used, refer to section 4.9 Flow Control."
+    ],
+    "3.1.2.11.4 Maximum Packet Size": [
+        "39 (0x27) Byte is the identifier of the Maximum Packet Size.",
+        "The identifier is followed by a Four Byte Integer representing the Maximum Packet Size the Client is willing to accept.",
+        "If the Maximum Packet Size is not present, no limit on the packet size is imposed beyond the limitations in the protocol as a result of the remaining length encoding and the protocol header sizes.",
+        "Including the Maximum Packet Size more than once or setting the value to zero is a Protocol Error.",
+        "Non-normative comment: The application is responsible for selecting a suitable Maximum Packet Size value if the application chooses to restrict the Maximum Packet Size.",
+        "The Client uses the Maximum Packet Size to inform the Server that the Client will not process packets exceeding the Maximum Packet Size limit.",
+        "The Server MUST NOT send packets exceeding Maximum Packet Size to the Client [MQTT-3.1.2-24].",
+        "If a Client receives a packet whose size exceeds the Maximum Packet Size limit, this is a Protocol Error, and the Client uses DISCONNECT with Reason Code 0x95 (Packet too large), as described in section 4.13.",
+        "Where a Packet is too large to send, the Server MUST discard the Packet without sending the Packet and then behave as if the Server had completed sending that Application Message [MQTT-3.1.2-25].",
+        "In the case of a Shared Subscription where the message is too large to send to one or more of the Clients but other Clients can receive the message, the Server can choose either to discard the message without sending the message to any of the Clients, or to send the message to one of the Clients that can receive the message.",
+        "Such actions are outside the scope of this specification."
+    ],
+    "3.1.2.11.5 Topic Alias Maximum": [
+        "34 (0x22) Byte is the identifier of the Topic Alias Maximum.",
+        "The Two Byte Integer representing the Topic Alias Maximum value follows.",
+        "Including the Topic Alias Maximum value more than once is a Protocol Error.",
+        "If the Topic Alias Maximum property is absent, the default value is 0.",
+        "The Topic Alias Maximum value indicates the highest value that the Client will accept as a Topic Alias sent by the Server.",
+        "The Client uses the Topic Alias Maximum value to limit the number of Topic Aliases that the Client is willing to hold on this Connection.",
+        "The Server MUST NOT send a Topic Alias in a PUBLISH packet to the Client greater than the Topic Alias Maximum value [MQTT-3.1.2-26].",
+        "A Topic Alias Maximum value of 0 indicates that the Client does not accept any Topic Aliases on this connection.",
+        "If the Topic Alias Maximum value is absent or zero, the Server MUST NOT send any Topic Aliases to the Client [MQTT-3.1.2-27]."
+    ],
+    "3.1.2.11.6 Request Response Information": [
+        "25 (0x19) Byte is the identifier of the Request Response Information.",
+        "It is a Protocol Error to include the Request Response Information more than once, or to have a value other than 0 or 1.",
+        "If the Request Response Information is absent, the value of 0 is used.",
+        "The Client uses the Request Response Information value to request the Server to return Response Information in the CONNACK.",
+        "A value of 0 indicates that the Server MUST NOT return Response Information [MQTT-3.1.2-28].",
+        "If the value is 1 the Server MAY return Response Information in the CONNACK packet.",
+        "Non-normative comment: The Server can choose not to include Response Information in the CONNACK, even if the Client requested Response Information."
+    ],
+    "3.1.2.11.7 Request Problem Information": [
+        "The identifier of the Request Problem Information is a 23 (0x17) Byte.",
+        "The Request Problem Information is followed by a Byte with a value of either 0 or 1.",
+        "Including Request Problem Information more than once, or having a value other than 0 or 1, is a Protocol Error.",
+        "If the Request Problem Information is absent, the value of 1 is used.",
+        "The Client uses the Request Problem Information value to indicate whether the Reason String or User Properties are sent in the case of failures.",
+        "If the value of Request Problem Information is 0, the Server MAY return a Reason String or User Properties on a CONNACK or DISCONNECT packet, but MUST NOT send a Reason String or User Properties on any packet other than PUBLISH, CONNACK, or DISCONNECT [MQTT-3.1.2-29].",
+        "If the Request Problem Information value is 0 and the Client receives a Reason String or User Properties in a packet other than PUBLISH, CONNACK, or DISCONNECT, the Client uses a DISCONNECT packet with Reason Code 0x82 (Protocol Error) as described in section 4.13 Handling errors.",
+        "If the Request Problem Information value is 1, the Server MAY return a Reason String or User Properties on any packet where it is allowed."
+    ],
+    "3.1.2.11.9 Authentication Method": [
+        "21 (0x15) Byte is the identifier of the Authentication Method.",
+        "Followed by a UTF-8 Encoded String containing the name of the authentication method used for extended authentication.",
+        "It is a Protocol Error to include Authentication Method more than once.",
+        "If Authentication Method is absent, extended authentication is not performed.",
+        "If a Client sets an Authentication Method in the CONNECT, the Client MUST NOT send any packets other than AUTH or DISCONNECT packets until the Client has received a CONNACK packet [MQTT-3.1.2-30]."
+    ],
+    "3.1.2.11.10 Authentication Data": [
+        "22 (0x16) Byte is the identifier of the Authentication Data.",
+        "The identifier is followed by Binary Data containing authentication data.",
+        "Including Authentication Data without an Authentication Method is a Protocol Error.",
+        "Including Authentication Data more than once is a Protocol Error.",
+        "The contents of the Authentication Data are defined by the authentication method."
+    ],
+    "3.1.2.12 Variable Header non-normative example": [
+        "Variable Header example is shown in Figure 3-6"
+    ],
+    "3.1.3 CONNECT Payload": [
+        "The Payload of the CONNECT packet contains one or more length-prefixed fields, whose presence is determined by the flags in the Variable Header.",
+        "The length-prefixed fields, if present, MUST appear in the order Client Identifier, Will Properties, Will Topic, Will Payload, User Name, Password [MQTT-3.1.3-1]."
+    ],
+    "3.1.3.1 Client Identifier (ClientID)": [
+        "The Client Identifier (ClientID) identifies the Client to the Server.",
+        "Each Client connecting to the Server has a unique ClientID.",
+        "The ClientID MUST be used by Clients and by Servers to identify state that they hold relating to this MQTT Session between the Client and the Server [MQTT-3.1.3-2].",
+        "Refer to section 4.1 for more information about Session State.",
+        "The ClientID MUST be present and is the first field in the CONNECT packet Payload [MQTT-3.1.3-3].",
+        "The ClientID MUST be a UTF-8 Encoded String as defined in section 1.5.4 [MQTT-3.1.3-4].",
+        "The Server MUST allow ClientID's which are between 1 and 23 UTF-8 encoded bytes in length, and that contain only the characters \"0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ\" [MQTT-3.1.3-5].",
+        "The Server MAY allow ClientID's that contain more than 23 encoded bytes.",
+        "The Server MAY allow ClientID's that contain characters not included in the list given above.",
+        "A Server MAY allow a Client to supply a ClientID that has a length of zero bytes, however if it does so the Server MUST treat this as a special case and assign a unique ClientID to that Client [MQTT-3.1.3-6].",
+        "It MUST then process the CONNECT packet as if the Client had provided that unique ClientID, and MUST return the Assigned Client Identifier in the CONNACK packet [MQTT-3.1.3-7].",
+        "If the Server rejects the ClientID it MAY respond to the CONNECT packet with a CONNACK using Reason Code 0x85 (Client Identifier not valid) as described in section 4.13 Handling errors, and then it MUST close the Network Connection [MQTT-3.1.3-8].",
+        "A Client implementation could provide a convenience method to generate a random ClientID."
+    ],
+    "3.1.3.2.1 Property Length": [
+        "The length of the Properties in the Will Properties is encoded as a Variable Byte Integer."
+    ],
+    "3.1.3.2.3 Payload Format Indicator": [
+        "1 (0x01) Byte is the identifier of the Payload Format Indicator.",
+        "Followed by the value of the Payload Format Indicator, either of: 0 (0x00) Byte indicates that the Will Message is unspecified bytes, which is equivalent to not sending a Payload Format Indicator.",
+        "1 (0x01) Byte indicates that the Will Message is UTF-8 Encoded Character Data.",
+        "The UTF-8 data in the Payload MUST be well-formed UTF-8 as defined by the Unicode specification [Unicode] and restated in RFC 3629 [RFC3629].",
+        "It is a Protocol Error to include the Payload Format Indicator more than once.",
+        "The Server MAY validate that the Will Message is of the format indicated, and if the Will Message is not of the indicated format, the Server MAY send a CONNACK with the Reason Code of 0x99 (Payload format invalid) as described in section 4.13."
+    ],
+    "3.1.2.11.8 User Property": [
+        "38 (0x26) Byte is the identifier of the User Property.",
+        "The User Property is followed by a UTF-8 String Pair.",
+        "The User Property is allowed to appear multiple times to represent multiple name, value pairs.",
+        "User Properties on the CONNECT packet can be used to send connection related properties from the Client to the Server.",
+        "The meaning of these properties is not defined by this specification."
+    ],
+    "3.1.3.2.2 Will Delay Interval": [
+        "The identifier of the Will Delay Interval is 24 (0x18) Byte.",
+        "The Four Byte Integer representing the Will Delay Interval in seconds follows.",
+        "Including the Will Delay Interval more than once is a Protocol Error.",
+        "If the Will Delay Interval is absent, the default value is 0 and there is no delay before the Will Message is published.",
+        "The Server delays publishing the Client's Will Message until the Will Delay Interval has passed or the Session ends, whichever happens first.",
+        "If a new Network Connection to this Session is made before the Will Delay Interval has passed, the Server MUST NOT send the Will Message [MQTT-3.1.3-9].",
+        "**Non-normative comment** One use of the Will Delay Interval is to avoid publishing Will Messages if there is a temporary network disconnection and the Client succeeds in reconnecting and continuing its Session before the Will Message is published.",
+        "**Non-normative comment** If a Network Connection uses a Client Identifier of an existing Network Connection to the Server, the Will Message for the exiting connection is sent unless the new connection specifies Clean Start of 0 and the Will Delay Interval is greater than zero.",
+        "If the Will Delay Interval is 0, the Will Message is sent at the close of the existing Network Connection, and if Clean Start is 1, the Will Message is sent because the Session ends."
+    ],
+    "3.1.2.11.2 Session Expiry Interval": [
+        "The 17 (0x11) Byte is the identifier of the Session Expiry Interval.",
+        "The Four Byte Integer represents the Session Expiry Interval in seconds.",
+        "Including the Session Expiry Interval more than once is a Protocol Error.",
+        "If the Session Expiry Interval is absent, the value 0 is used.",
+        "If the Session Expiry Interval is set to 0 or is absent, the Session ends when the Network Connection is closed.",
+        "If the Session Expiry Interval is 0xFFFFFFFF (UINT_MAX), the Session does not expire.",
+        "The Client and Server MUST store the Session State after the Network Connection is closed if the Session Expiry Interval is greater than 0 [MQTT-3.1.2-23].",
+        "Setting Clean Start to 1 and a Session Expiry Interval of 0 is equivalent to setting CleanSession to 1 in the MQTT Specification Version 3.1.1.",
+        "Setting Clean Start to 0 and no Session Expiry Interval is equivalent to setting CleanSession to 0 in the MQTT Specification Version 3.1.1.",
+        "A Client that only wants to process messages while connected will set the Clean Start to 1 and set the Session Expiry Interval to 0.",
+        "The Client will not receive Application Messages published before it connected and has to subscribe afresh to any topics that it is interested in each time it connects.",
+        "A Client might be connecting to a Server using a network that provides intermittent connectivity.",
+        "The Client can use a short Session Expiry Interval so that it can reconnect when the network is available again and continue reliable message delivery.",
+        "If the Client does not reconnect, allowing the Session to expire, then Application Messages will be lost.",
+        "When a Client connects with a long Session Expiry Interval, it is requesting that the Server maintain its MQTT session state after it disconnects for an extended period.",
+        "Clients should only connect with a long Session Expiry Interval if they intend to reconnect to the Server at some later point in time.",
+        "When a Client has determined that it has no further use for the Session, it should disconnect with a Session Expiry Interval set to 0.",
+        "The Client should always use the Session Present flag in the CONNACK to determine whether the Server has a Session State for this Client.",
+        "The Client can avoid implementing its own Session expiry and instead rely on the Session Present flag returned from the Server to determine if the Session had expired.",
+        "If the Client does implement its own Session expiry, it needs to store the time at which the Session State will be deleted as part of its Session State."
+    ],
+    "3.1.3.2.4 Message Expiry Interval": [
+        "If present, the Four Byte value represents the lifetime of the Will Message in seconds and is sent as the Publication Expiry Interval when the Server publishes the Will Message.",
+        "If absent, no Message Expiry Interval is sent when the Server publishes the Will Message."
+    ],
+    "3.1.3.2.5 Content Type": [
+        "3 (0x03) is the identifier of the Content Type.",
+        "Including the Content Type more than once is a Protocol Error.",
+        "The value of the Content Type is defined by the sending and receiving application."
+    ],
+    "3.1.3.2.6 Response Topic": [
+        "The 8 (0x08) Byte is the identifier of the Response Topic.",
+        "The identifier is followed by a UTF-8 Encoded String which is used as the Topic Name for a response message.",
+        "Including the Response Topic more than once is a Protocol Error.",
+        "The presence of a Response Topic identifies the Will Message as a Request."
+    ],
+    "3.1.3.2.7 Correlation Data": [
+        "The identifier of the Correlation Data is 9 (0x09) Byte.",
+        "The Correlation Data is followed by Binary Data.",
+        "The sender of the Request Message uses the Correlation Data to identify which request the Response Message is for when the Response Message is received.",
+        "Including Correlation Data more than once is a Protocol Error.",
+        "If the Correlation Data is not present, the Requester does not require any correlation data."
+    ],
+    "3.1.3.2.8 User Property": [
+        "The identifier of the User Property is 38 (0x26) Byte.",
+        "The User Property is followed by a UTF-8 String Pair.",
+        "The User Property is allowed to appear multiple times to represent multiple name, value pairs.",
+        "The Server MUST maintain the order of User Properties when publishing the Will Message [MQTT-3.1.3-10]."
+    ],
+    "3.1.3.2 Will Properties": [
+        "If the Will Flag is set to 1, the Will Properties is the next field in the Payload.",
+        "The Will Properties field defines the Application Message properties to be sent with the Will Message when the Will Message is published, and properties which define when to publish the Will Message.",
+        "The Will Properties consists of a Property Length and the Properties."
+    ],
+    "3.1.3.3 Will Topic": [
+        "If the Will Flag is set to 1, the Will Topic is the next field in the Payload.",
+        "The Will Topic MUST be a UTF-8 Encoded String as defined in section 1.5.4 [MQTT-3.1.3-11]."
+    ],
+    "3.1.3.4 Will Payload": [
+        "If the Will Flag is set to 1, the Will Payload is the next field in the Payload.",
+        "The Will Payload defines the Application Message Payload that is to be published to the Will Topic as described in section 3.1.2.5.",
+        "The Will Payload field consists of Binary Data."
+    ],
+    "3.1.3.5 User Name": [
+        "If the User Name Flag is set to 1, the User Name is the next field in the Payload.",
+        "The User Name MUST be a UTF-8 Encoded String as defined in section 1.5.4 [MQTT-3.1.3-12].",
+        "The User Name can be used by the Server for authentication and authorization."
+    ],
+    "3.1.3.6 Password": [
+        "If the Password Flag is set to 1, the Password is the next field in the Payload.",
+        "The Password field is Binary Data.",
+        "Although the Password field is called Password, the Password field can be used to carry any credential information."
+    ],
+    "3.2 CONNACK Connect acknowledgement": [
+        "The CONNACK packet is the packet sent by the Server in response to a CONNECT packet received from a Client.",
+        "The Server MUST send a CONNACK with a 0x00 (Success) Reason Code before sending any Packet other than AUTH [MQTT-3.2.0-1].",
+        "The Server MUST NOT send more than one CONNACK in a Network Connection [MQTT-3.2.0-2].",
+        "If the Client does not receive a CONNACK packet from the Server within a reasonable amount of time, the Client SHOULD close the Network Connection."
+    ],
+    "3.2.1 CONNACK Fixed Header": [
+        "Figure 3-7 shows the CONNACK packet Fixed Header.",
+        "The Remaining Length field is the length of the Variable Header encoded as a Variable Byte Integer."
+    ],
+    "3.1.4 CONNECT Actions": [
+        "If the Server determines that the protocol is MQTT v5.0 then the Server validates the connection attempt as follows.",
+        "If the Server does not receive a CONNECT packet within a reasonable amount of time after the Network Connection is established, the Server SHOULD close the Network Connection.",
+        "The Server MUST validate that the CONNECT packet matches the format described in section 3.1 and close the Network Connection if the CONNECT packet does not match [MQTT-3.1.4-1].",
+        "The Server MAY send a CONNACK with a Reason Code of 0x80 or greater as described in section 4.13 before closing the Network Connection.",
+        "The Server MAY check that the contents of the CONNECT packet meet any further restrictions and SHOULD perform authentication and authorization checks.",
+        "If any of these checks fail, the Server MUST close the Network Connection [MQTT-3.1.4-2].",
+        "Before closing the Network Connection, the Server MAY send an appropriate CONNACK response with a Reason Code of 0x80 or greater as described in section 3.2 and section 4.13.",
+        "If the ClientID represents a Client already connected to the Server, the Server sends a DISCONNECT packet to the existing Client with Reason Code of 0x8E (Session taken over) as described in section 4.13 and MUST close the Network Connection of the existing Client [MQTT-3.1.4-3].",
+        "If the existing Client has a Will Message, that Will Message is published as described in section 3.1.2.5.",
+        "**Non-normative comment** If the Will Delay Interval of the existing Network Connection is 0 and there is a Will Message, the Will Message will be sent because the Network Connection is closed.",
+        "If the Session Expiry Interval of the existing Network Connection is 0, or the new Network Connection has Clean Start set to 1 then if the existing Network Connection has a Will Message the Will Message will be sent because the original Session is ended on the takeover.",
+        "The Server MUST perform the processing of Clean Start that is described in section 3.1.2.4 [MQTT-3.1.4-4].",
+        "The Server MUST acknowledge the CONNECT packet with a CONNACK packet containing a 0x00 (Success) Reason Code [MQTT-3.1.4-5].",
+        "If these checks succeed, the Server responds by sending CONNACK with a 0x00 (Success) Reason Code.",
+        "If the checks fail, it is suggested that the Server does not send a CONNACK at all, as this could alert a potential attacker to the presence of the MQTT Server and encourage such an attacker to launch a denial of service or password-guessing attack.",
+        "Clients are allowed to send further MQTT Control Packets immediately after sending a CONNECT packet; Clients need not wait for a CONNACK packet to arrive from the Server.",
+        "If the Server rejects the CONNECT, the Server MUST NOT process any data sent by the Client after the CONNECT packet except AUTH packets [MQTT-3.1.4-6].",
+        "**Non-normative comment** Clients typically wait for a CONNACK packet, However, if the Client exploits its freedom to send MQTT Control Packets before the Client receives a CONNACK, it might simplify the Client implementation as the Client does not have to police the connected state.",
+        "The Client accepts that any data that it sends before it receives a CONNACK packet from the Server will not be processed if the Server rejects the connection.",
+        "**Non-normative comment** Clients that send MQTT Control Packets before the Clients receive CONNACK will be unaware of the Server constraints and whether any existing Session is being used.",
+        "**Non-normative comment** The Server can limit reading from the Network Connection or close the Network Connection if the Client sends too much data before authentication is complete."
+    ],
+    "3.2.2 CONNACK Variable Header": [
+        "The Variable Header of the CONNACK Packet contains the following fields in the order: Connect Acknowledge Flags, Connect Reason Code, and Properties."
+    ],
+    "3.2.2.1 Connect Acknowledge Flags": [
+        "Byte 1 is the \"Connect Acknowledge Flags\".",
+        "Bit 0 is the Session Present Flag."
+    ],
+    "3.2.2.1.1 Session Present": [
+        "Position: bit 0 of the Connect Acknowledge Flags.",
+        "The Session Present flag informs the Client whether the Server is using Session State from a previous connection for this ClientID.",
+        "This allows the Client and Server to have a consistent view of the Session State.",
+        "If the Server accepts a connection with Clean Start set to 1, the Server MUST set Session Present to 0 in the CONNACK packet in addition to setting a 0x00 (Success) Reason Code in the CONNACK packet [MQTT-3.2.2-2].",
+        "If the Server accepts a connection with Clean Start set to 0 and the Server has Session State for the ClientID, the Server MUST set Session Present to 1 in the CONNACK packet, otherwise the Server MUST set Session Present to 0 in the CONNACK packet.",
+        "In both cases the Server MUST set a 0x00 (Success) Reason Code in the CONNACK packet [MQTT-3.2.2-3].",
+        "If the value of Session Present received by the Client from the Server is not as expected, the Client proceeds as follows: If the Client does not have Session State and receives Session Present set to 1, the Client MUST close the Network Connection [MQTT-3.2.2-4].",
+        "If the Client wishes to restart with a new Session, the Client can reconnect using Clean Start set to 1.",
+        "If the Client does have Session State and receives Session Present set to 0, the Client MUST discard its Session State if the Client continues with the Network Connection [MQTT-3.2.2-5].",
+        "If a Server sends a CONNACK packet containing a non-zero Reason Code, the Server MUST set Session Present to 0 [MQTT-3.2.2-6]."
+    ],
+    "3.2.2.2 Connect Reason Code": [
+        "Byte 2 in the Variable Header is the Connect Reason Code.",
+        "The values of the Connect Reason Code are shown below.",
+        "If a well formed CONNECT packet is received by the Server, but the Server is unable to complete the Connection the Server MAY send a CONNACK packet containing the appropriate Connect Reason code from this table.",
+        "If a Server sends a CONNACK packet containing a Reason code of 128 or greater it MUST then close the Network Connection [MQTT-3.2.2-7].",
+        "The Server sending the CONNACK packet MUST use one of the Connect Reason Code values from Table 3-1 [MQTT-3.2.2-8].",
+        "**Non-normative comment** Reason Code 0x80 (Unspecified error) may be used where the Server knows the reason for the failure but does not wish to reveal it to the Client, or when none of the other Reason Code values applies.",
+        "The Server may choose to close the Network Connection without sending a CONNACK to enhance security in the case where an error is found on the CONNECT.",
+        "For instance, when on a public network and the connection has not been authorized it might be unwise to indicate that this is an MQTT Server."
+    ],
+    "3.2.2.3.1 Property Length": [
+        "The length of the Properties in the CONNACK packet Variable Header is encoded as a Variable Byte Integer."
+    ],
+    "3.2.2.3.2 Session Expiry Interval": [
+        "The identifier of the Session Expiry Interval is 17 (0x11) Byte.",
+        "The Session Expiry Interval is represented by a Four Byte Integer in seconds.",
+        "Including the Session Expiry Interval more than once is a Protocol Error.",
+        "If the Session Expiry Interval is absent, the value in the CONNECT Packet is used.",
+        "The server uses the Session Expiry Interval property to inform the Client that the server is using a value other than that sent by the Client in the CONNACK.",
+        "Refer to section 3.1.2.11.2 for a description of the use of Session Expiry Interval."
+    ],
+    "3.2.2.3.3 Receive Maximum": [
+        "33 (0x21) Byte is the identifier of the Receive Maximum.",
+        "Followed by the Two Byte Integer representing the Receive Maximum value.",
+        "Including the Receive Maximum value more than once or setting it to 0 is a Protocol Error.",
+        "The Server uses the Receive Maximum value to limit the number of QoS 1 and QoS 2 publications that the Server is willing to process concurrently for the Client.",
+        "The Receive Maximum value does not provide a mechanism to limit the QoS 0 publications that the Client might try to send.",
+        "If the Receive Maximum value is absent, then the Receive Maximum value defaults to 65,535.",
+        "Refer to section 4.9 Flow Control for details of how the Receive Maximum is used."
+    ],
+    "3.2.2.3.5 Retain Available": [
+        "37 (0x25) Byte is the identifier of Retain Available.",
+        "If present, the Retain Available byte declares whether the Server supports retained messages.",
+        "A value of 0 means that retained messages are not supported.",
+        "A value of 1 means retained messages are supported.",
+        "If not present, then retained messages are supported.",
+        "Including Retain Available more than once or using a value other than 0 or 1 is a Protocol Error.",
+        "If a Server receives a CONNECT packet containing a Will Message with the Will Retain set to 1, and the Server does not support retained messages, the Server MUST reject the connection request.",
+        "The Server SHOULD send CONNACK with Reason Code 0x9A (Retain not supported) and then the Server MUST close the Network Connection [MQTT-3.2.2-13].",
+        "A Client receiving Retain Available set to 0 from the Server MUST NOT send a PUBLISH packet with the RETAIN flag set to 1 [MQTT-3.2.2-14].",
+        "If the Server receives a PUBLISH packet with the RETAIN flag set to 1 when Retain Available is set to 0, this is a Protocol Error.",
+        "The Server SHOULD send a DISCONNECT with Reason Code of 0x9A (Retain not supported) as described in section 4.13."
+    ],
+    "3.2.2.3.4 Maximum QoS": [
+        "36 (0x24) Byte is the identifier of the Maximum QoS.",
+        "Including Maximum QoS more than once, or having a value other than 0 or 1, is a Protocol Error.",
+        "If the Maximum QoS is absent, the Client uses a Maximum QoS of 2.",
+        "If a Server does not support QoS 1 or QoS 2 PUBLISH packets, the Server MUST send a Maximum QoS in the CONNACK packet specifying the highest QoS it supports [MQTT-3.2.2-9].",
+        "A Server that does not support QoS 1 or QoS 2 PUBLISH packets MUST still accept SUBSCRIBE packets containing a Requested QoS of 0, 1 or 2 [MQTT-3.2.2-10].",
+        "If a Client receives a Maximum QoS from a Server, the Client MUST NOT send PUBLISH packets at a QoS level exceeding the Maximum QoS level specified [MQTT-3.2.2-11].",
+        "Receiving a PUBLISH packet with a QoS greater than the Maximum QoS specified is a Protocol Error for the Server.",
+        "In this case, the Server should use DISCONNECT with Reason Code 0x9B (QoS not supported) as described in section 4.13 Handling errors.",
+        "If a Server receives a CONNECT packet containing a Will QoS that exceeds the Server's capabilities, the Server MUST reject the connection.",
+        "The Server SHOULD use a CONNACK packet with Reason Code 0x9B (QoS not supported) as described in section 4.13 Handling errors, and MUST close the Network Connection [MQTT-3.2.2-12].",
+        "A Client does not need to support QoS 1 or QoS 2 PUBLISH packets.",
+        "If the Client does not support QoS 1 or QoS 2 PUBLISH packets, the Client simply restricts the maximum QoS field in any SUBSCRIBE commands it sends to a value the Client can support."
+    ],
+    "3.2.2.3.6 Maximum Packet Size": [
+        "39 (0x27) Byte is the identifier of the Maximum Packet Size.",
+        "The Maximum Packet Size is followed by a Four Byte Integer representing the Maximum Packet Size the Server is willing to accept.",
+        "If the Maximum Packet Size is not present, there is no limit on the packet size imposed beyond the limitations in the protocol as a result of the remaining length encoding and the protocol header sizes.",
+        "Including the Maximum Packet Size more than once or setting the value to zero is a Protocol Error.",
+        "The Server uses the Maximum Packet Size to inform the Client that the Server will not process packets whose size exceeds the Maximum Packet Size limit.",
+        "The Client MUST NOT send packets exceeding Maximum Packet Size to the Server [MQTT-3.2.2-15].",
+        "If a Server receives a packet whose size exceeds the Maximum Packet Size limit, this is a Protocol Error, and the Server uses DISCONNECT with Reason Code 0x95 (Packet too large), as described in section 4.13."
+    ],
+    "3.2.2.3.7 Assigned Client Identifier": [
+        "The identifier of the Assigned Client Identifier is 18 (0x12) Byte.",
+        "The Assigned Client Identifier is followed by the UTF-8 string.",
+        "Including the Assigned Client Identifier more than once is a Protocol Error.",
+        "The Server assigns the Client Identifier because a zero length Client Identifier was found in the CONNECT packet.",
+        "If the Client connects using a zero length Client Identifier, the Server MUST respond with a CONNACK containing an Assigned Client Identifier.",
+        "The Assigned Client Identifier MUST be a new Client Identifier not used by any other Session currently in the Server [MQTT-3.2.2-16]."
+    ],
+    "3.2.2.3.9 Reason String": [
+        "The 31 (0x1F) Byte is the identifier of the Reason String.",
+        "The Reason String is a human readable string designed for diagnostics and SHOULD NOT be parsed by the Client.",
+        "The Server uses the Reason String to give additional information to the Client.",
+        "The Server MUST NOT send the Reason String if the Reason String would increase the size of the CONNACK packet beyond the Maximum Packet Size specified by the Client [MQTT-3.2.2-19].",
+        "Including the Reason String more than once is a Protocol Error.",
+        "**Non-normative comment** Proper uses for the Reason String in the Client would include using the Reason String information in an exception thrown by the Client code, or writing the Reason String to a log."
+    ],
+    "3.2.2.3.10 User Property": [
+        "38 (0x26) Byte is the identifier of User Property.",
+        "The User Property can be used to provide additional information to the Client including diagnostic information.",
+        "The Server MUST NOT send the User Property if the User Property would increase the size of the CONNACK packet beyond the Maximum Packet Size specified by the Client [MQTT-3.2.2-20].",
+        "The User Property is allowed to appear multiple times to represent multiple name, value pairs.",
+        "The content and meaning of the User Property is not defined by this specification.",
+        "The receiver of a CONNACK containing the User Property MAY ignore the User Property."
+    ],
+    "3.2.2.3.11 Wildcard Subscription Available": [
+        "40 (0x28) Byte is the identifier of Wildcard Subscription Available.",
+        "It is a Protocol Error to include the Wildcard Subscription Available Byte field more than once or to send a value other than 0 or 1.",
+        "If the Server receives a SUBSCRIBE packet containing a Wildcard Subscription and the Server does not support Wildcard Subscriptions, receiving such a packet is a Protocol Error.",
+        "The Server uses DISCONNECT with Reason Code 0xA2 (Wildcard Subscriptions not supported) as described in section 4.13.",
+        "In the case of rejecting a subscribe request containing a Wildcard Subscription, the Server MAY send a SUBACK Control Packet with a Reason Code 0xA2 (Wildcard Subscriptions not supported)."
+    ],
+    "3.2.2.3.12 Subscription Identifiers Available": [
+        "The 41 (0x29) Byte is the identifier of Subscription Identifier Available.",
+        "If present, the Byte field declares whether the Server supports Subscription Identifiers.",
+        "A value of 0 means that Subscription Identifiers are not supported.",
+        "A value of 1 means Subscription Identifiers are supported.",
+        "If the Byte field is not present, then Subscription Identifiers are supported.",
+        "Including the Subscription Identifier Available more than once, or sending a value other than 0 or 1, is a Protocol Error.",
+        "If the Server receives a SUBSCRIBE packet containing a Subscription Identifier and the Server does not support Subscription Identifiers, this situation is a Protocol Error.",
+        "The Server uses a DISCONNECT packet with a Reason Code of 0xA1 (Subscription Identifiers not supported) as described in section 4.13."
+    ],
+    "3.2.2.3.14 Server Keep Alive": [
+        "19 (0x13) Byte is the identifier of the Server Keep Alive.",
+        "The identifier is followed by a Two Byte Integer with the Keep Alive time assigned by the Server.",
+        "If the Server sends a Server Keep Alive on the CONNACK packet, the Client MUST use the Server Keep Alive value instead of the Keep Alive value the Client sent on CONNECT [MQTT-3.2.2-21].",
+        "If the Server does not send the Server Keep Alive, the Server MUST use the Keep Alive value set by the Client on CONNECT [MQTT-3.2.2-22].",
+        "Including the Server Keep Alive more than once is a Protocol Error.",
+        "The primary use of the Server Keep Alive is for the Server to inform the Client that the Server will disconnect the Client for inactivity sooner than the Keep Alive specified by the Client."
+    ],
+    "3.2.2.3.13 Shared Subscription Available": [
+        "The 42 (0x2A) Byte is the identifier of Shared Subscription Available.",
+        "If present, the Byte field declares whether the Server supports Shared Subscriptions.",
+        "A value of 0 means that Shared Subscriptions are not supported.",
+        "If the Byte field is not present, then Shared Subscriptions are supported.",
+        "Including the Shared Subscription Available more than once or sending a value other than 0 or 1 is a Protocol Error.",
+        "If the Server receives a SUBSCRIBE packet containing Shared Subscriptions and the Server does not support Shared Subscriptions, this situation is a Protocol Error.",
+        "The Server uses DISCONNECT with Reason Code 0x9E (Shared Subscriptions not supported) as described in section 4.13."
+    ],
+    "3.2.2.3.8 Topic Alias Maximum": [
+        "34 (0x22) Byte is the identifier of the Topic Alias Maximum.",
+        "The Two Byte Integer representing the Topic Alias Maximum value follows.",
+        "Including the Topic Alias Maximum value more than once is a Protocol Error.",
+        "If the Topic Alias Maximum property is absent, the default value is 0.",
+        "The Topic Alias Maximum value indicates the highest value that the Server will accept as a Topic Alias sent by the Client.",
+        "The Server uses the Topic Alias Maximum value to limit the number of Topic Aliases that the Server is willing to hold on this Connection.",
+        "The Client MUST NOT send a Topic Alias in a PUBLISH packet to the Server greater than the Topic Alias Maximum value [MQTT-3.2.2-17].",
+        "A Topic Alias Maximum value of 0 indicates that the Server does not accept any Topic Aliases on this connection.",
+        "If the Topic Alias Maximum is absent or 0, the Client MUST NOT send any Topic Aliases to the Server [MQTT-3.2.2-18]."
+    ],
+    "3.2.2.3.15 Response Information": [
+        "26 (0x1A) Byte is the identifier of the Response Information.",
+        "The Response Information is followed by a UTF-8 Encoded String which is used as the basis for creating a Response Topic.",
+        "The way in which the Client creates a Response Topic from the Response Information is not defined by this specification.",
+        "Including the Response Information more than once is a Protocol Error.",
+        "If the Client sends a Request Response Information with a value 1, sending the Response Information in the CONNACK is OPTIONAL for the Server.",
+        "A common use of the Response Information is to pass a globally unique portion of the topic tree which is reserved for this Client for at least the lifetime of its Session.",
+        "For the Server to return the Response Information, the Server normally needs to be correctly configured.",
+        "Using the Response Information mechanism allows the configuration to be done once in the Server rather than in each Client."
+    ],
+    "3.2.2.3.16 Server Reference": [
+        "28 (0x1C) Byte is the identifier of the Server Reference.",
+        "Including the Server Reference more than once is a Protocol Error.",
+        "The Server uses a Server Reference in either a CONNACK or DISCONNECT packet with Reason code of 0x9C (Use another server) or Reason Code 0x9D (Server moved) as described in section 4.13.",
+        "Refer to section 4.11 Server redirection for information about how Server Reference is used."
+    ],
+    "3.2.2.3.17 Authentication Method": [
+        "21 (0x15) Byte is the identifier of the Authentication Method.",
+        "Followed by a UTF-8 Encoded String containing the name of the authentication method.",
+        "Including the Authentication Method more than once is a Protocol Error."
+    ],
+    "3.2.2.3.18 Authentication Data": [
+        "The identifier of the Authentication Data is 22 (0x16) bytes.",
+        "The Authentication Data is followed by binary data containing authentication data.",
+        "The contents of the authentication data are defined by the authentication method and the state of already exchanged authentication data.",
+        "Including the Authentication Data more than once is a protocol error."
+    ],
+    "3.2.3 CONNACK Payload": [
+        "The CONNACK packet has no Payload."
+    ],
+    "3.3 PUBLISH Publish message": [
+        "A PUBLISH packet is sent from a Client to a Server or from a Server to a Client to transport an Application Message."
+    ],
+    "3.3.1 PUBLISH Fixed Header": [
+        "The figure shows the PUBLISH packet Fixed Header"
+    ],
+    "3.3.1.1 DUP": [
+        "The position of the DUP flag is at byte 1, bit 3.",
+        "If the DUP flag is set to 0, it indicates that this is the first occasion that the Client or Server has attempted to send this PUBLISH packet.",
+        "If the DUP flag is set to 1, it indicates that this might be re-delivery of an earlier attempt to send the packet.",
+        "The DUP flag MUST be set to 1 by the Client or Server when the Client or Server attempts to re-deliver a PUBLISH packet [MQTT-3.3.1-1].",
+        "The DUP flag MUST be set to 0 for all QoS 0 messages [MQTT-3.3.1-2].",
+        "The value of the DUP flag from an incoming PUBLISH packet is not propagated when the PUBLISH packet is sent to subscribers by the Server.",
+        "The DUP flag in the outgoing PUBLISH packet is set independently to the incoming PUBLISH packet, the value of the DUP flag MUST be determined solely by whether the outgoing PUBLISH packet is a retransmission [MQTT-3.3.1-3].",
+        "The receiver of an MQTT Control Packet that contains the DUP flag set to 1 cannot assume that the receiver has seen an earlier copy of this packet.",
+        "It is important to note that the DUP flag refers to the MQTT Control Packet itself and not to the Application Message that the MQTT Control Packet contains.",
+        "When using QoS 1, it is possible for a Client to receive a PUBLISH packet with DUP flag set to 0 that contains a repetition of an Application Message that the Client received earlier, but with a different Packet Identifier.",
+        "Section 2.2.1 provides more information about Packet Identifiers."
+    ],
+    "3.3.1.2 QoS": [
+        "This field indicates the level of assurance for delivery of an Application Message.",
+        "The QoS levels are shown below.",
+        "If the Server included a Maximum QoS in its CONNACK response to a Client and the Server receives a PUBLISH packet with a QoS greater than the Maximum QoS, then the Server uses DISCONNECT with Reason Code 0x9B (QoS not supported) as described in section 4.13 Handling errors.",
+        "A PUBLISH Packet MUST NOT have both QoS bits set to 1 [MQTT-3.3.1-4].",
+        "If a Server or Client receives a PUBLISH packet which has both QoS bits set to 1, the packet is a Malformed Packet.",
+        "The Server or Client should use DISCONNECT with Reason Code 0x81 (Malformed Packet) as described in section 4.13."
+    ],
+    "3.3.1.4 Remaining Length": [
+        "The remaining length is the length of the Variable Header plus the length of the Payload, encoded as a Variable Byte Integer."
+    ],
+    "3.3.2 PUBLISH Variable Header": [
+        "The Variable Header of the PUBLISH Packet contains the following fields in the order: Topic Name, Packet Identifier, and Properties."
+    ],
+    "3.3.1.3 RETAIN": [
+        "The RETAIN flag is located at byte 1, bit 0.",
+        "If the RETAIN flag is set to 1 in a PUBLISH packet sent by a Client to a Server, the Server MUST replace any existing retained message for this topic and store the Application Message [MQTT-3.3.1-5], so that the Application Message can be delivered to future subscribers whose subscriptions match the topic's Topic Name.",
+        "If the Payload contains zero bytes, the Payload is processed normally by the Server but any retained message with the same topic name MUST be removed and any future subscribers for the topic will not receive a retained message [MQTT-3.3.1-6].",
+        "A retained message with a Payload containing zero bytes MUST NOT be stored as a retained message on the Server [MQTT-3.3.1-7].",
+        "If the RETAIN flag is 0 in a PUBLISH packet sent by a Client to a Server, the Server MUST NOT store the message as a retained message and MUST NOT remove or replace any existing retained message [MQTT-3.3.1-8].",
+        "If the Server included Retain Available in its CONNACK response to a Client with the Retain Available value set to 0 and the Server receives a PUBLISH packet with the RETAIN flag set to 1, then the Server uses the DISCONNECT Reason Code of 0x9A (Retain not supported) as described in section 4.13.",
+        "When a new Non-shared Subscription is made, the last retained message, if any, on each matching topic name is sent to the Client as directed by the Retain Handling Subscription Option.",
+        "These messages are sent with the RETAIN flag set to 1.",
+        "Which retained messages are sent is controlled by the Retain Handling Subscription Option.",
+        "At the time of the Subscription: If Retain Handling is set to 0, the Server MUST send the retained messages matching the Topic Filter of the subscription to the Client [MQTT-3.3.1-9].",
+        "If Retain Handling is set to 1, then if the subscription did not already exist, the Server MUST send all retained messages matching the Topic Filter of the subscription to the Client, and if the subscription did exist, the Server MUST NOT send the retained messages.",
+        "If Retain Handling is set to 2, the Server MUST NOT send the retained messages [MQTT-3.3.1-11].",
+        "Refer to section 3.8.3.1 for a definition of the Subscription Options.",
+        "If the Server receives a PUBLISH packet with the RETAIN flag set to 1, and QoS 0, the Server SHOULD store the new QoS 0 message as the new retained message for that topic, but MAY choose to discard the message at any time.",
+        "If the Server discards the message, there will be no retained message for that topic.",
+        "If the current retained message for a Topic expires, the retained message is discarded and there will be no retained message for that topic.",
+        "The setting of the RETAIN flag in an Application Message forwarded by the Server from an established connection is controlled by the Retain As Published subscription option.",
+        "Refer to section 3.8.3.1 for a definition of the Subscription Options.",
+        "If the value of Retain As Published subscription option is set to 0, the Server MUST set the RETAIN flag to 0 when forwarding an Application Message regardless of how the RETAIN flag was set in the received PUBLISH packet [MQTT-3.3.1-12].",
+        "If the value of Retain As Published subscription option is set to 1, the Server MUST set the RETAIN flag equal to the RETAIN flag in the received PUBLISH packet [MQTT-3.3.1-13]."
+    ],
+    "3.3.2.1 Topic Name": [
+        "The Topic Name identifies the information channel to which Payload data is published.",
+        "The Topic Name MUST be present as the first field in the PUBLISH packet Variable Header.",
+        "The Topic Name MUST be a UTF-8 Encoded String as defined in section 1.5.4 [MQTT-3.3.2-1].",
+        "The Topic Name in the PUBLISH packet MUST NOT contain wildcard characters [MQTT-3.3.2-2].",
+        "The Topic Name in a PUBLISH packet sent by a Server to a subscribing Client MUST match the Subscription's Topic Filter according to the matching process defined in section 4.7 [MQTT-3.3.2-3].",
+        "However, as the Server is permitted to map the Topic Name to another name, the mapped name might not be the same as the Topic Name in the original PUBLISH packet.",
+        "To reduce the size of the PUBLISH packet the sender can use a Topic Alias.",
+        "The Topic Alias is described in section 3.3.2.3.4.",
+        "A Protocol Error occurs if the Topic Name is zero length and there is no Topic Alias."
+    ],
+    "3.3.2.2 Packet Identifier": [
+        "The Packet Identifier field is only present in PUBLISH packets where the QoS level is 1 or 2.",
+        "Section 2.2.1 provides more information about Packet Identifiers."
+    ],
+    "3.3.2.3.1 Property Length": [
+        "The length of the Properties in the PUBLISH packet Variable Header is encoded as a Variable Byte Integer."
+    ],
+    "3.3.2.3.8 Subscription Identifier": [
+        "The identifier 11 (0x0B) represents the Subscription Identifier.",
+        "The Subscription Identifier is followed by a Variable Byte Integer representing the identifier of the subscription.",
+        "The Subscription Identifier can have the value of 1 to 268,435,455.",
+        "A Protocol Error occurs if the Subscription Identifier has a value of 0.",
+        "Multiple Subscription Identifiers are included if the publication matches more than one subscription, and their order is not significant in this case."
+    ],
+    "3.3.2.3.7 User Property": [
+        "The identifier of the User Property is 38 (0x26) Byte.",
+        "The User Property is followed by a UTF-8 String Pair.",
+        "The User Property is allowed to appear multiple times to represent multiple name, value pairs.",
+        "The Server MUST send all User Properties unaltered in a PUBLISH packet when forwarding the Application Message to a Client [MQTT-3.3.2-17].",
+        "The Server MUST maintain the order of User Properties when forwarding the Application Message [MQTT-3.3.2-18]."
+    ],
+    "3.3.2.3.5 Response Topic": [
+        "The 8 (0x08) Byte is the identifier of the Response Topic.",
+        "Followed by a UTF-8 Encoded String which is used as the Topic Name for a response message.",
+        "The Response Topic MUST be a UTF-8 Encoded String as defined in section 1.5.4 [MQTT-3.3.2-13].",
+        "The Response Topic MUST NOT contain wildcard characters [MQTT-3.3.2-14].",
+        "Including the Response Topic more than once is a Protocol Error.",
+        "The Server MUST send the Response Topic unaltered to all subscribers receiving the Application Message [MQTT-3.3.2-15].",
+        "The receiver of an Application Message with a Response Topic sends a response by using the Response Topic as the Topic Name of a PUBLISH.",
+        "If the Request Message contains Correlation Data, the receiver of the Request Message should also include the Correlation Data as a property in the PUBLISH packet of the Response Message."
+    ],
+    "3.3.2.3.2 Payload Format Indicator": [
+        "1 (0x01) Byte is the identifier of the Payload Format Indicator.",
+        "Followed by the value of the Payload Format Indicator, either of: 0 (0x00) Byte indicates that the Payload is unspecified bytes, which is equivalent to not sending a Payload Format Indicator.",
+        "1 (0x01) Byte indicates that the Payload is UTF-8 Encoded Character Data.",
+        "The UTF-8 data in the Payload MUST be well-formed UTF-8 as defined by the Unicode specification [Unicode] and restated in RFC 3629 [RFC3629].",
+        "A Server MUST send the Payload Format Indicator unaltered to all subscribers receiving the Application Message [MQTT-3.3.2-4].",
+        "The receiver MAY validate that the Payload is of the format indicated, and if the Payload is not of the indicated format, send a PUBACK, PUBREC, or DISCONNECT with Reason Code of 0x99 (Payload format invalid) as described in section 4.13.",
+        "Refer to section 5.4.9 for information about security issues in validating the payload format."
+    ],
+    "3.3.2.3.6 Correlation Data": [
+        "The identifier of the Correlation Data is a 9 (0x09) Byte.",
+        "The Correlation Data is followed by Binary Data.",
+        "The Correlation Data is used by the sender of the Request Message to identify which request the Response Message is for when it is received.",
+        "Including Correlation Data more than once is a Protocol Error.",
+        "If the Correlation Data is not present, the Requester does not require any correlation data.",
+        "The Server MUST send the Correlation Data unaltered to all subscribers receiving the Application Message [MQTT-3.3.2-16].",
+        "The receiver of an Application Message that contains both a Response Topic and Correlation Data sends a response by using the Response Topic as the Topic Name of a PUBLISH.",
+        "The Client should also send the Correlation Data unaltered as part of the PUBLISH of the responses.",
+        "If the Correlation Data contains information that can cause application failures when modified by the Client responding to the request, such data should be encrypted and/or hashed to detect any alterations."
+    ],
+    "3.3.2.3.4 Topic Alias": [
+        "35 (0x23) Byte is the identifier of the Topic Alias.",
+        "The Two Byte integer represents the Topic Alias value.",
+        "Including the Topic Alias value more than once is a Protocol Error.",
+        "A Topic Alias is an integer value that is used to identify the Topic instead of using the Topic Name.",
+        "Using a Topic Alias reduces the size of the PUBLISH packet and is useful when the Topic Names are long and the same Topic Names are used repetitively within a Network Connection.",
+        "The sender decides whether to use a Topic Alias and chooses the value.",
+        "The sender sets a Topic Alias mapping by including a non-zero length Topic Name and a Topic Alias in the PUBLISH packet.",
+        "The receiver processes the PUBLISH as normal but also sets the specified Topic Alias mapping to this Topic Name.",
+        "If a Topic Alias mapping has been set at the receiver, a sender can send a PUBLISH packet that contains that Topic Alias and a zero length Topic Name.",
+        "The receiver then treats the incoming PUBLISH as if it had contained the Topic Name of the Topic Alias.",
+        "A sender can modify the Topic Alias mapping by sending another PUBLISH in the same Network Connection with the same Topic Alias value and a different non-zero length Topic Name.",
+        "Topic Alias mappings exist only within a Network Connection and last only for the lifetime of that Network Connection.",
+        "A receiver MUST NOT carry forward any Topic Alias mappings from one Network Connection to another [MQTT-3.3.2-7].",
+        "A Topic Alias of 0 is not permitted.",
+        "A sender MUST NOT send a PUBLISH packet containing a Topic Alias which has the value 0 [MQTT-3.3.2-8].",
+        "A Client MUST NOT send a PUBLISH packet with a Topic Alias greater than the Topic Alias Maximum value returned by the Server in the CONNACK packet [MQTT-3.3.2-9].",
+        "A Client MUST accept all Topic Alias values greater than 0 and less than or equal to the Topic Alias Maximum value that it sent in the CONNECT packet [MQTT-3.3.2-10].",
+        "A Server MUST NOT send a PUBLISH packet with a Topic Alias greater than the Topic Alias Maximum value sent by the Client in the CONNECT packet [MQTT-3.3.2-11].",
+        "A Server MUST accept all Topic Alias values greater than 0 and less than or equal to the Topic Alias Maximum value that it returned in the CONNACK packet [MQTT-3.3.2-12].",
+        "The Topic Alias mappings used by the Client and Server are independent from each other.",
+        "Thus, when a Client sends a PUBLISH containing a Topic Alias value of 1 to a Server and the Server sends a PUBLISH with a Topic Alias value of 1 to that Client they will in general be referring to different Topics."
+    ],
+    "3.3.2.3.9 Content Type": [
+        "The identifier of the Content Type is 3 (0x03).",
+        "The Content Type is followed by a UTF-8 Encoded String describing the content of the Application Message.",
+        "The Content Type MUST be a UTF-8 Encoded String as defined in section 1.5.4 [MQTT-3.3.2-19].",
+        "Including the Content Type more than once is a Protocol Error.",
+        "The value of the Content Type is defined by the sending and receiving application.",
+        "A Server MUST send the Content Type unaltered to all subscribers receiving the Application Message [MQTT-3.3.2-20].",
+        "An example of a PUBLISH packet with the Topic Name set to 'a/b', the Packet Identifier set to 10, and having no properties is shown.",
+        "The PUBLISH packet Variable Header non-normative example is provided."
+    ],
+    "3.4 PUBACK Publish acknowledgement": [
+        "A PUBACK packet is the response to a PUBLISH packet with QoS 1."
+    ],
+    "3.3.3 PUBLISH Payload": [
+        "The Payload contains the Application Message that is being published.",
+        "The length of the Payload can be calculated by subtracting the length of the Variable Header from the Remaining Length field that is in the Fixed Header.",
+        "It is valid for a PUBLISH packet to contain a zero length Payload."
+    ],
+    "3.4.1 PUBACK Fixed Header": [
+        "The PUBACK packet Fixed Header includes a Remaining Length field, which is the length of the Variable Header, encoded as a Variable Byte Integer."
+    ],
+    "3.4.2 PUBACK Variable Header": [
+        "The Variable Header of the PUBACK Packet contains the following fields in the order: Packet Identifier from the PUBLISH packet that is being acknowledged, PUBACK Reason Code, Property Length, and the Properties.",
+        "The structure of the PUBACK packet Variable Header is illustrated in Figure 3-11."
+    ],
+    "3.4.2.1 PUBACK Reason Code": [
+        "Byte 3 in the Variable Header is the PUBACK Reason Code.",
+        "If the Remaining Length is 2, then there is no Reason Code and the value of 0x00 (Success) is used.",
+        "The Client or Server sending the PUBACK packet MUST use one of the PUBACK Reason Codes [MQTT-3.4.2-1].",
+        "The Reason Code and Property Length can be omitted if the Reason Code is 0x00 (Success) and there are no Properties.",
+        "If the Reason Code is 0x00 (Success) and there are no Properties, the PUBACK has a Remaining Length of 2."
+    ],
+    "3.4.2.2.1 Property Length": [
+        "The length of the Properties in the PUBACK packet Variable Header is encoded as a Variable Byte Integer.",
+        "If the Remaining Length is less than 4, there is no Property Length, and the value of 0 is used."
+    ],
+    "3.4.2.2.2 Reason String": [
+        "31 (0x1F) Byte is the identifier of the Reason String.",
+        "The Reason String is followed by the UTF-8 Encoded String representing the reason associated with this response.",
+        "This Reason String is a human readable string designed for diagnostics and is not intended to be parsed by the receiver.",
+        "The sender uses the Reason String to give additional information to the receiver.",
+        "The sender MUST NOT send the Reason String if the Reason String would increase the size of the PUBACK packet beyond the Maximum Packet Size specified by the receiver [MQTT-3.4.2-2].",
+        "Including the Reason String more than once is a Protocol Error."
+    ],
+    "3.4.2.2.3 User Property": [
+        "38 (0x26) Byte is the identifier of the User Property.",
+        "The User Property can be used to provide additional diagnostic or other information.",
+        "The sender MUST NOT send the User Property if the User Property would increase the size of the PUBACK packet beyond the Maximum Packet Size specified by the receiver [MQTT-3.4.2-3].",
+        "The User Property is allowed to appear multiple times to represent multiple name, value pairs."
+    ],
+    "3.4.3 PUBACK Payload": [
+        "The PUBACK packet has no Payload."
+    ],
+    "3.4.4 PUBACK Actions": [
+        "The PUBACK action is described in section 4.3.2."
+    ],
+    "3.5.3 PUBREC Payload": [
+        "The PUBREC packet has no Payload."
+    ],
+    "3.5 PUBREC Publish received (QoS 2 delivery part 1)": [
+        "A PUBREC packet is the response to a PUBLISH packet with QoS 2.",
+        "The PUBREC packet is the second packet of the QoS 2 protocol exchange."
+    ],
+    "3.5.1 PUBREC Fixed Header": [
+        "The Remaining Length field in the PUBREC packet Fixed Header is the length of the Variable Header, encoded as a Variable Byte Integer."
+    ],
+    "3.5.2 PUBREC Variable Header": [
+        "The Variable Header of the PUBREC Packet consists of the following fields in the order: the Packet Identifier from the PUBLISH packet that is being acknowledged, PUBREC Reason Code, and Properties.",
+        "The structure of the PUBREC packet Variable Header is illustrated in Figure 3-13."
+    ],
+    "3.5.2.2.1 Property Length": [
+        "The length of the Properties in the PUBREC packet Variable Header is encoded as a Variable Byte Integer.",
+        "If the Remaining Length is less than 4, there is no Property Length and the value of 0 is used."
+    ],
+    "3.6 PUBREL Publish release (QoS 2 delivery part 2)": [
+        "A PUBREL packet is the response to a PUBREC packet.",
+        "The PUBREL packet is the third packet of the QoS 2 protocol exchange."
+    ],
+    "3.5.2.1 PUBREC Reason Code": [
+        "Byte 3 in the Variable Header is the PUBREC Reason Code.",
+        "If the Remaining Length is 2, then the Publish Reason Code has the value 0x00 (Success).",
+        "The Client or Server sending the PUBREC packet MUST use one of the PUBREC Reason Code values.",
+        "The Reason Code and Property Length can be omitted if the Reason Code is 0x00 (Success) and there are no Properties.",
+        "If the Reason Code is 0x00 (Success) and there are no Properties, the PUBREC has a Remaining Length of 2."
+    ],
+    "3.5.2.2.3 User Property": [
+        "38 (0x26) Byte is the identifier of the User Property.",
+        "The User Property is followed by a UTF-8 String Pair.",
+        "The User Property can be used to provide additional diagnostic or other information.",
+        "The sender MUST NOT send the User Property if the User Property would increase the size of the PUBREC packet beyond the Maximum Packet Size specified by the receiver [MQTT-3.5.2-3].",
+        "The User Property is allowed to appear multiple times to represent multiple name, value pairs."
+    ],
+    "3.5.2.2.2 Reason String": [
+        "31 (0x1F) Byte is the identifier of the Reason String.",
+        "This Reason String is human readable, designed for diagnostics and SHOULD NOT be parsed by the receiver.",
+        "The sender MUST NOT send the Reason String property if the Reason String would increase the size of the PUBREC packet beyond the Maximum Packet Size specified by the receiver [MQTT-3.5.2-2].",
+        "Including the Reason String more than once is a Protocol Error."
+    ],
+    "3.6.2 PUBREL Variable Header": [
+        "The Variable Header of the PUBREL Packet contains the following fields in the order: the Packet Identifier from the PUBREC packet that is being acknowledged, PUBREL Reason Code, and Properties.",
+        "The structure of the PUBREL packet Variable Header is illustrated in Figure 3-15."
+    ],
+    "3.6.1 PUBREL Fixed Header": [
+        "Bits 3,2,1 and 0 of the Fixed Header in the PUBREL packet are reserved and MUST be set to 0,0,1 and 0 respectively.",
+        "The Server MUST treat any other value as malformed and close the Network Connection [MQTT-3.6.1-1].",
+        "The Remaining Length field is the length of the Variable Header, encoded as a Variable Byte Integer."
+    ],
+    "3.6.2.1 PUBREL Reason Code": [
+        "Byte 3 in the Variable Header is the PUBREL Reason Code.",
+        "The Client or Server sending the PUBREL packet MUST use one of the PUBREL Reason Code values [MQTT-3.6.2-1].",
+        "The Reason Code and Property Length can be omitted if the Reason Code is 0x00 (Success) and there are no Properties.",
+        "If the Reason Code is 0x00 (Success) and there are no Properties, the PUBREL has a Remaining Length of 2."
+    ],
+    "3.6.3 PUBREL Payload": [
+        "The PUBREL packet has no Payload."
+    ],
+    "3.7.1 PUBCOMP Fixed Header": [
+        "The **Remaining Length field** in the PUBCOMP packet Fixed Header is the length of the Variable Header, encoded as a Variable Byte Integer."
+    ],
+    "3.7 PUBCOMP Publish complete (QoS 2 delivery part 3)": [
+        "The PUBCOMP packet is the response to a PUBREL packet.",
+        "The PUBCOMP packet is the fourth and final packet of the QoS 2 protocol exchange."
+    ],
+    "3.6.2.2.1 Property Length": [
+        "The length of the Properties in the PUBREL packet Variable Header is encoded as a Variable Byte Integer.",
+        "If the Remaining Length is less than 4, there is no Property Length and the value of 0 is used."
+    ],
+    "3.7.2 PUBCOMP Variable Header": [
+        "The Variable Header of the PUBCOMP Packet contains the following fields in the order: Packet Identifier from the PUBREL packet that is being acknowledged, PUBCOMP Reason Code, and Properties.",
+        "The structure of the PUBCOMP packet Variable Header is illustrated in Figure 3-17."
+    ],
+    "3.6.2.2.2 Reason String": [
+        "31 (0x1F) Byte is the identifier of the Reason String.",
+        "The Reason String is human readable, designed for diagnostics and SHOULD NOT be parsed by the receiver.",
+        "The sender uses the Reason String to give additional information to the receiver.",
+        "The sender MUST NOT send the Reason String if the Reason String would increase the size of the PUBREL packet beyond the Maximum Packet Size specified by the receiver [MQTT-3.6.2-2].",
+        "Including the Reason String more than once is a Protocol Error."
+    ],
+    "3.6.2.2.3 User Property": [
+        "38 (0x26) Byte is the identifier of the User Property.",
+        "The User Property is followed by a UTF-8 String Pair.",
+        "The User Property can be used to provide additional diagnostic or other information for the PUBREL.",
+        "The sender MUST NOT send the User Property if the User Property would increase the size of the PUBREL packet beyond the Maximum Packet Size specified by the receiver [MQTT-3.6.2-3].",
+        "The User Property is allowed to appear multiple times to represent multiple name, value pairs."
+    ],
+    "3.7.3 PUBCOMP Payload": [
+        "The PUBCOMP packet has no Payload."
+    ],
+    "3.7.2.2.1 Property Length": [
+        "The length of the Properties in the PUBCOMP packet Variable Header is encoded as a Variable Byte Integer.",
+        "If the Remaining Length is less than 4, there is no Property Length and the value of 0 is used."
+    ],
+    "3.7.2.1 PUBCOMP Reason Code": [
+        "Byte 3 in the Variable Header is the PUBCOMP Reason Code.",
+        "The Client or Server sending the PUBCOMP packet MUST use one of the PUBCOMP Reason Code values [MQTT-3.7.2-1].",
+        "The Reason Code and Property Length can be omitted if the Reason Code is 0x00 (Success) and there are no Properties.",
+        "If the Reason Code is 0x00 (Success) and there are no Properties, the PUBCOMP has a Remaining Length of 2."
+    ],
+    "3.7.2.2.2 Reason String": [
+        "31 (0x1F) Byte is the identifier of the Reason String.",
+        "The Reason String is a human readable string designed for diagnostics and SHOULD NOT be parsed by the receiver.",
+        "The sender uses the Reason String to give additional information to the receiver.",
+        "The sender MUST NOT send the Reason String if the Reason String would increase the size of the PUBCOMP packet beyond the Maximum Packet Size specified by the receiver [MQTT-3.7.2-2].",
+        "Including the Reason String more than once is a Protocol Error."
+    ],
+    "3.7.2.2.3 User Property": [
+        "38 (0x26) Byte is the identifier of the User Property.",
+        "The User Property is followed by a UTF-8 String Pair.",
+        "The User Property can be used to provide additional diagnostic or other information.",
+        "The sender MUST NOT send the User Property if the User Property would increase the size of the PUBCOMP packet beyond the Maximum Packet Size specified by the receiver [MQTT-3.7.2-3].",
+        "The User Property is allowed to appear multiple times to represent multiple name, value pairs."
+    ],
+    "3.3.4 PUBLISH Actions": [
+        "The receiver of a PUBLISH Packet MUST respond with the packet as determined by the QoS in the PUBLISH Packet [MQTT-3.3.4-1].",
+        "The Client uses a PUBLISH packet to send an Application Message to the Server, for distribution to Clients with matching subscriptions.",
+        "The Server uses a PUBLISH packet to send an Application Message to each Client which has a matching subscription.",
+        "The PUBLISH packet includes the Subscription Identifier carried in the SUBSCRIBE packet, if there was one.",
+        "When Clients make subscriptions with Topic Filters that include wildcards, the Client's subscriptions may overlap so that a published message might match multiple filters.",
+        "In the case of overlapping subscriptions, the Server MUST deliver the message to the Client respecting the maximum QoS of all the matching subscriptions [MQTT-3.3.4-2].",
+        "In addition, the Server MAY deliver further copies of the message, one for each additional matching subscription and respecting the subscription's QoS in each case.",
+        "If a Client receives an unsolicited Application Message (not resulting from a subscription) which has a QoS greater than Maximum QoS, the Client uses a DISCONNECT packet with Reason Code 0x9B (QoS not supported) as described in section 4.13 Handling errors.",
+        "If the Client specified a Subscription Identifier for any of the overlapping subscriptions the Server MUST send those Subscription Identifiers in the message which is published as the result of the subscriptions [MQTT-3.3.4-3].",
+        "If the Server sends a single copy of the message, the Server MUST include in the PUBLISH packet the Subscription Identifiers for all matching subscriptions which have a Subscription Identifier, their order is not significant [MQTT-3.3.4-4].",
+        "If the Server sends multiple PUBLISH packets it MUST send, in each of them, the Subscription Identifier of the matching subscription if it has a Subscription Identifier [MQTT-3.3.4-5].",
+        "It is possible that the Client made several subscriptions which match a publication and that the Client used the same identifier for more than one of them.",
+        "In this case, the PUBLISH packet will carry multiple identical Subscription Identifiers.",
+        "It is a Protocol Error for a PUBLISH packet to contain any Subscription Identifier other than those received in the SUBSCRIBE packet which caused the PUBLISH packet to flow.",
+        "A PUBLISH packet sent from a Client to a Server MUST NOT contain a Subscription Identifier [MQTT-3.3.4-6].",
+        "If the subscription was shared, then only the Subscription Identifiers that were present in the SUBSCRIBE packet from the Client which is receiving the message are returned in the PUBLISH packet.",
+        "The action of the recipient when the recipient receives a PUBLISH packet depends on the QoS level as described in section 4.3.",
+        "If the PUBLISH packet contains a Topic Alias, the receiver processes it as follows: 1) A Topic Alias value of 0 or greater than the Maximum Topic Alias is a Protocol Error, the receiver uses DISCONNECT with Reason Code of 0x94 (Topic Alias invalid) as described in section 4.13.",
+        "2) If the receiver has already established a mapping for the Topic Alias, then a) If the packet has a zero length Topic Name, the receiver processes it using the Topic Name that corresponds to the Topic Alias b) If the packet contains a non-zero length Topic Name, the receiver processes the packet using that Topic Name and updates its mapping for the Topic Alias to the Topic Name from the incoming packet 3) If the receiver does not already have a mapping for this Topic Alias a) If the packet has a zero length Topic Name field it is a Protocol Error and the receiver uses DISCONNECT with Reason Code of 0x82 (Protocol Error) as described in section 4.13.",
+        "b) If the packet contains a Topic Name with a non-zero length, the receiver processes the packet using that Topic Name and sets its mappings for the Topic Alias to Topic Name from the incoming packet.",
+        "**Non-normative Comment** If the Server distributes Application Messages to Clients at different protocol levels (such as MQTT V3.1.1) which do not support properties or other features provided by this specification, some information in the Application Message can be lost, and applications which depend on this information might not work correctly.",
+        "The Client MUST NOT send more than Receive Maximum QoS 1 and QoS 2 PUBLISH packets for which the Client has not received PUBACK, PUBCOMP, or PUBREC with a Reason Code of 128 or greater from the Server [MQTT-3.3.4-7].",
+        "If the Server receives more than Receive Maximum QoS 1 and QoS 2 PUBLISH packets where the Server has not sent a PUBACK or PUBCOMP in response, the Server uses a DISCONNECT packet with Reason Code 0x93 (Receive Maximum exceeded) as described in section 4.13 Handling errors.",
+        "The Client MUST NOT delay the sending of any packets other than PUBLISH packets due to having sent Receive Maximum PUBLISH packets without receiving acknowledgements for them [MQTT-3.3.4-8].",
+        "The value of Receive Maximum applies only to the current Network Connection.",
+        "**Non-normative comment** The Client might choose to send fewer than Receive Maximum messages to the Server without receiving acknowledgement, even if the Client has more than this number of messages available to send.",
+        "**Non-normative comment** The Client might choose to suspend the sending of QoS 0 PUBLISH packets when the Client suspends the sending of QoS 1 and QoS 2 PUBLISH packets.",
+        "**Non-normative comment** If the Client sends QoS 1 or QoS 2 PUBLISH packets before the Client has received a CONNACK packet, the Client risks being disconnected because the Client has sent more than Receive Maximum publications.",
+        "The Server MUST NOT send more than Receive Maximum QoS 1 and QoS 2 PUBLISH packets for which the Server has not received PUBACK, PUBCOMP, or PUBREC with a Reason Code of 128 or greater from the Client [MQTT-3.3.4-9].",
+        "If the Client receives more than Receive Maximum QoS 1 and QoS 2 PUBLISH packets where the Client has not sent a PUBACK or PUBCOMP in response, the Client uses DISCONNECT with Reason Code 0x93 (Receive Maximum exceeded) as described in section 4.13 Handling errors.",
+        "The Server MUST NOT delay the sending of any packets other than PUBLISH packets due to having sent Receive Maximum PUBLISH packets without receiving acknowledgements for them [MQTT-3.3.4-10].",
+        "**Non-normative comment** The Server might choose to send fewer than Receive Maximum messages to the Client without receiving acknowledgement, even if the Server has more than this number of messages available to send.",
+        "**Non-normative comment** The Server might choose to suspend the sending of QoS 0 PUBLISH packets when the Server suspends the sending of QoS 1 and QoS 2 PUBLISH packets."
+    ],
+    "3.8 SUBSCRIBE - Subscribe request": [
+        "The SUBSCRIBE packet is sent from the Client to the Server to create one or more Subscriptions.",
+        "The Server sends PUBLISH packets to the Client to forward Application Messages that were published to Topics that match these Subscriptions.",
+        "The SUBSCRIBE packet also specifies (for each Subscription) the maximum QoS with which the Server can send Application Messages to the Client."
+    ],
+    "3.8.2.1.1 Property Length": [
+        "The length of Properties in the SUBSCRIBE packet Variable Header is encoded as a Variable Byte Integer."
+    ],
+    "3.8.2 SUBSCRIBE Variable Header": [
+        "The Variable Header of the SUBSCRIBE Packet contains the following fields in the order: Packet Identifier, and Properties.",
+        "Section 2.2.1 provides more information about Packet Identifiers.",
+        "Figure 3-19 shows an example of a SUBSCRIBE variable header with a Packet Identifier of 10 and no properties.",
+        "Figure 3-19 shows the SUBSCRIBE Variable Header example."
+    ],
+    "3.8.1 SUBSCRIBE Fixed Header": [
+        "Bits 3,2,1 and 0 of the Fixed Header of the SUBSCRIBE packet are reserved and MUST be set to 0,0,1 and 0 respectively.",
+        "The Server MUST treat any other value as malformed and close the Network Connection [MQTT-3.8.1-1].",
+        "The Remaining Length field is the length of Variable Header plus the length of the Payload, encoded as a Variable Byte Integer."
+    ],
+    "3.8.2.1.3 User Property": [
+        "The identifier of the User Property is 38 (0x26) Byte.",
+        "The User Property is followed by a UTF-8 String Pair.",
+        "The User Property is allowed to appear multiple times to represent multiple name, value pairs.",
+        "As a non-normative comment, User Properties on the SUBSCRIBE packet can be used by the Client to send subscription related properties to the Server.",
+        "The meaning of these properties is not defined by this specification."
+    ],
+    "3.9.1 SUBACK Fixed Header": [
+        "The Remaining Length field in the SUBACK Packet Fixed Header is the length of the Variable Header plus the length of the Payload, encoded as a Variable Byte Integer."
+    ],
+    "3.9.2 SUBACK Variable Header": [
+        "The Variable Header of the SUBACK Packet contains the following fields in the order: the Packet Identifier from the SUBSCRIBE Packet that is being acknowledged, and Properties."
+    ],
+    "3.9 SUBACK Subscribe acknowledgement": [
+        "A SUBACK packet is sent by the Server to the Client to confirm receipt and processing of a SUBSCRIBE packet.",
+        "A SUBACK packet contains a list of Reason Codes, that specify the maximum QoS level that was granted or the error which was found for each Subscription that was requested by the SUBSCRIBE."
+    ],
+    "3.8.2.1.2 Subscription Identifier": [
+        "The identifier of the Subscription Identifier is 11 (0x0B) Byte.",
+        "The identifier of the subscription is represented by a Variable Byte Integer that follows.",
+        "The Subscription Identifier can have the value of 1 to 268,435,455.",
+        "A Protocol Error occurs if the Subscription Identifier has a value of 0.",
+        "Including the Subscription Identifier more than once results in a Protocol Error.",
+        "The Subscription Identifier is associated with any subscription created or modified as the result of this SUBSCRIBE packet.",
+        "If a Subscription Identifier exists, the Subscription Identifier is stored with the subscription.",
+        "If the Subscription Identifier property is not specified, the absence of a Subscription Identifier is stored with the subscription.",
+        "Refer to section 3.8.3.1 for more information about the handling of Subscription Identifiers."
+    ],
+    "3.10 UNSUBSCRIBE Unsubscribe request": [
+        "An UNSUBSCRIBE packet is sent by the Client to the Server, to unsubscribe from topics."
+    ],
+    "3.8.3 SUBSCRIBE Payload": [
+        "The Payload of a SUBSCRIBE packet contains a list of Topic Filters indicating the Topics to which the Client wants to subscribe.",
+        "The Topic Filters MUST be a UTF-8 Encoded String [MQTT-3.8.3-1].",
+        "Each Topic Filter is followed by a Subscription Options byte.",
+        "The Payload MUST contain at least one Topic Filter and Subscription Options pair [MQTT-3.8.3-2].",
+        "A SUBSCRIBE packet with no Payload is a Protocol Error."
+    ],
+    "3.9.2.1.1 Property Length": [
+        "The length of Properties in the SUBACK packet Variable Header is encoded as a Variable Byte Integer"
+    ],
+    "3.9.3 SUBACK Payload": [
+        "The Payload contains a list of Reason Codes.",
+        "Each Reason Code corresponds to a Topic Filter in the SUBSCRIBE packet being acknowledged.",
+        "The order of Reason Codes in the SUBACK packet MUST match the order of Topic Filters in the SUBSCRIBE packet [MQTT-3.9.3-1].",
+        "The Server sending a SUBACK packet MUST use one of the Subscribe Reason Codes for each Topic Filter received [MQTT-3.9.3-2].",
+        "There is always one Reason Code for each Topic Filter in the corresponding SUBSCRIBE packet.",
+        "If the Reason Code is not specific to a Topic Filter (such as 0x91 (Packet Identifier in use)) it is set for each Topic Filter."
+    ],
+    "3.9.2.1.3 User Property": [
+        "38 (0x26) Byte is the identifier of the User Property.",
+        "The User Property is followed by a UTF-8 String Pair.",
+        "The User Property can be used to provide additional diagnostic or other information.",
+        "The Server MUST NOT send the User Property if the User Property would increase the size of the SUBACK packet beyond the Maximum Packet Size specified by Client [MQTT-3.9.2-2].",
+        "The User Property is allowed to appear multiple times to represent multiple name, value pairs.",
+        "The SUBACK packet Variable Header is illustrated in Figure 3-23."
+    ],
+    "3.9.2.1.2 Reason String": [
+        "31 (0x1F) Byte is the identifier of the Reason String.",
+        "The Reason String is a human readable string designed for diagnostics and SHOULD NOT be parsed by the Client.",
+        "The Server uses the Reason String to give additional information to the Client.",
+        "The Server MUST NOT send the Reason String if the Reason String would increase the size of the SUBACK packet beyond the Maximum Packet Size specified by the Client [MQTT-3.9.2-1].",
+        "Including the Reason String more than once is a Protocol Error."
+    ],
+    "3.10.1 UNSUBSCRIBE Fixed Header": [
+        "Bits 3,2,1 and 0 of the Fixed Header of the UNSUBSCRIBE packet are reserved and MUST be set to 0,0,1 and 0 respectively.",
+        "The Server MUST treat any other value as malformed and close the Network Connection [MQTT-3.10.1-1].",
+        "The Remaining Length field is the length of Variable Header (2 bytes) plus the length of the Payload, encoded as a Variable Byte Integer."
+    ],
+    "3.11 UNSUBACK Unsubscribe acknowledgement": [
+        "The UNSUBACK packet is sent by the Server to the Client to confirm receipt of an UNSUBSCRIBE packet."
+    ],
+    "3.10.2.1.1 Property Length": [
+        "The length of Properties in the UNSUBSCRIBE packet Variable Header is encoded as a Variable Byte Integer."
+    ],
+    "3.11.1 UNSUBACK Fixed Header": [
+        "The Remaining Length field in the UNSUBACK packet Fixed Header is the length of the Variable Header plus the length of the Payload, encoded as a Variable Byte Integer."
+    ],
+    "3.10.2 UNSUBSCRIBE Variable Header": [
+        "The Variable Header of the UNSUBSCRIBE Packet contains the following fields in the order: Packet Identifier, and Properties.",
+        "Section 2.2.1 provides more information about Packet Identifiers."
+    ],
+    "3.11.2.1.1 Property Length": [
+        "The length of the Properties in the UNSUBACK packet Variable Header is encoded as a Variable Byte Integer."
+    ],
+    "3.11.2 UNSUBACK Variable Header": [
+        "The Variable Header of the UNSUBACK Packet contains the following fields in the order: the Packet Identifier from the UNSUBSCRIBE Packet that is being acknowledged, and Properties.",
+        "The structure of the UNSUBACK packet Variable Header is illustrated in Figure 3.32."
+    ],
+    "3.10.2.1.2 User Property": [
+        "The identifier of the User Property is 38 (0x26) Byte.",
+        "The User Property is followed by a UTF-8 String Pair.",
+        "The User Property is allowed to appear multiple times to represent multiple name, value pairs.",
+        "User Properties on the UNSUBSCRIBE packet can be used to send subscription related properties from the Client to the Server, as a non-normative comment.",
+        "The meaning of these properties is not defined by this specification."
+    ],
+    "3.8.3.1 Subscription Options": [
+        "Bits 0 and 1 of the Subscription Options represent Maximum QoS field.",
+        "The Maximum QoS field gives the maximum QoS level at which the Server can send Application Messages to the Client.",
+        "It is a Protocol Error if the Maximum QoS field has the value 3.",
+        "Bit 2 of the Subscription Options represents the No Local option.",
+        "If the value is 1, Application Messages MUST NOT be forwarded to a connection with a ClientID equal to the ClientID of the publishing connection [MQTT-3.8.3-3].",
+        "It is a Protocol Error to set the No Local bit to 1 on a Shared Subscription [MQTT-3.8.3-4].",
+        "Bit 3 of the Subscription Options represents the Retain As Published option.",
+        "If the Retain As Published option is set to 1, Application Messages forwarded using this subscription keep the RETAIN flag they were published with.",
+        "If the Retain As Published option is set to 0, Application Messages forwarded using this subscription have the RETAIN flag set to 0.",
+        "Retained messages sent when the subscription is established have the RETAIN flag set to 1.",
+        "Bits 4 and 5 of the Subscription Options represent the Retain Handling option.",
+        "The Retain Handling option specifies whether retained messages are sent when the subscription is established.",
+        "The Retain Handling option does not affect the sending of retained messages at any point after the subscribe.",
+        "If there are no retained messages matching the Topic Filter, all of these values act the same.",
+        "The Retain Handling option values are: 0 = Send retained messages at the time of the subscribe, 1 = Send retained messages at subscribe only if the subscription does not currently exist, 2 = Do not send retained messages at the time of the subscribe.",
+        "It is a Protocol Error to send a Retain Handling value of 3.",
+        "The Server MUST treat a SUBSCRIBE packet as malformed if any of Reserved bits in the Payload are non-zero [MQTT-3.8.3-5].",
+        "**Non-normative comment** The No Local and Retain As Published subscription options can be used to implement bridging where the Client is sending the message on to another Server.",
+        "**Non-normative comment** Not sending retained messages for an existing subscription is useful when a reconnect is done and the Client is not certain whether the subscriptions were completed in the previous connection to the Session.",
+        "**Non-normative comment** Not sending stored retained messages because of a new subscription is useful where a Client wishes to receive change notifications and does not need to know the initial state.",
+        "**Non-normative comment** For a Server that indicates it does not support retained messages, all valid values of Retain As Published and Retain Handling give the same result which is to not send any retained messages at subscribe and to set the RETAIN flag to 0 for all messages.",
+        "Figure 3-20 SUBSCRIBE packet Payload format RAP means Retain as Published.",
+        "**Non-normative example** Figure 3.21 show the SUBSCRIBE Payload example with two Topic Filters.",
+        "The first Topic Filter is 'a/b' with QoS 1, and the second Topic Filter is 'c/d' with QoS 2."
+    ],
+    "3.10.3 UNSUBSCRIBE Payload": [
+        "The Payload for the UNSUBSCRIBE packet contains the list of Topic Filters that the Client wishes to unsubscribe from.",
+        "The Topic Filters in an UNSUBSCRIBE packet MUST be UTF-8 Encoded Strings [MQTT-3.10.3-1] as defined in section 1.5.4, packed contiguously.",
+        "The Payload of an UNSUBSCRIBE packet MUST contain at least one Topic Filter [MQTT-3.10.3-2].",
+        "An UNSUBSCRIBE packet with no Payload is a Protocol Error.",
+        "**Non-normative example** Figure 3.30 shows the Payload for an UNSUBSCRIBE packet with two Topic Filters 'a/b' and 'c/d'."
+    ],
+    "3.11.2.1.3 User Property": [
+        "38 (0x26) Byte is the identifier of the User Property.",
+        "The User Property is followed by a UTF-8 String Pair.",
+        "The User Property can be used to provide additional diagnostic or other information.",
+        "The Server MUST NOT send the User Property if the User Property would increase the size of the UNSUBACK packet beyond the Maximum Packet Size specified by the Client [MQTT-3.11.2-2].",
+        "The User Property is allowed to appear multiple times to represent multiple name, value pairs."
+    ],
+    "3.11.2.1.2 Reason String": [
+        "31 (0x1F) Byte is the identifier of the Reason String.",
+        "This Reason String is a human readable string designed for diagnostics and SHOULD NOT be parsed by the Client.",
+        "The Server uses the Reason String to give additional information to the Client.",
+        "The Server MUST NOT send the Reason String if the Reason String would increase the size of the UNSUBACK packet beyond the Maximum Packet Size specified by the Client [MQTT-3.11.2-1].",
+        "Including the Reason String more than once is a Protocol Error."
+    ],
+    "3.11.3 UNSUBACK Payload": [
+        "The Payload contains a list of Reason Codes.",
+        "Each Reason Code corresponds to a Topic Filter in the UNSUBSCRIBE packet being acknowledged.",
+        "The order of Reason Codes in the UNSUBACK packet MUST match the order of Topic Filters in the UNSUBSCRIBE packet [MQTT-3.11.3-1].",
+        "The values for the one byte unsigned Unsubscribe Reason Codes are shown below.",
+        "The Server sending an UNSUBACK packet MUST use one of the Unsubscribe Reason Code values for each Topic Filter received [MQTT-3.11.3-2].",
+        "The Unsubscribe Reason Codes are always one for each Topic Filter in the corresponding UNSUBSCRIBE packet.",
+        "If the Reason Code is not specific to a Topic Filter, such as 0x91 (Packet Identifier in use), the Reason Code is set for each Topic Filter."
+    ],
+    "3.12.3 PINGREQ Payload": [
+        "The PINGREQ packet has no Payload."
+    ],
+    "3.12.2 PINGREQ Variable Header": [
+        "The PINGREQ packet has no Variable Header."
+    ],
+    "3.13.1 PINGRESP Fixed Header": [
+        "The PINGRESP packet Fixed Header is shown in Figure 3.34"
+    ],
+    "3.12.1 PINGREQ Fixed Header": [
+        "The PINGREQ packet Fixed Header is shown in Figure 3.33"
+    ],
+    "3.13.2 PINGRESP Variable Header": [
+        "The PINGRESP packet has no Variable Header."
+    ],
+    "3.13.3 PINGRESP Payload": [
+        "The PINGRESP packet has no Payload."
+    ],
+    "3.12.4 PINGREQ Actions": [
+        "The Server MUST send a PINGRESP packet in response to a PINGREQ packet [MQTT-3.12.4-1]."
+    ],
+    "3.13.4 PINGRESP Actions": [
+        "The Client takes no action on receiving the PINGRESP packet"
+    ],
+    "3.13 PINGRESP PING response": [
+        "A PINGRESP Packet is sent by the Server to the Client in response to a PINGREQ packet.",
+        "The PINGRESP packet indicates that the Server is alive.",
+        "The PINGRESP packet is used in Keep Alive processing."
+    ],
+    "3.14.1 DISCONNECT Fixed Header": [
+        "The Client or Server MUST validate that reserved bits are set to 0 in the DISCONNECT packet Fixed Header.",
+        "If the reserved bits are not zero, the Client or Server sends a DISCONNECT packet with a Reason code of 0x81 (Malformed Packet) as described in section 4.13 [MQTT-3.14.1-1].",
+        "The Remaining Length field is the length of the Variable Header encoded as a Variable Byte Integer."
+    ],
+    "3.14 DISCONNECT Disconnect notification": [
+        "The DISCONNECT packet is the final MQTT Control Packet sent from the Client or the Server.",
+        "The DISCONNECT packet indicates the reason why the Network Connection is being closed.",
+        "The Client or Server MAY send a DISCONNECT packet before closing the Network Connection.",
+        "If the Network Connection is closed without the Client first sending a DISCONNECT packet with Reason Code 0x00 (Normal disconnection) and the Connection has a Will Message, the Will Message is published.",
+        "A Server MUST NOT send a DISCONNECT until after the Server has sent a CONNACK with Reason Code of less than 0x80 [MQTT-3.14.0-1]."
+    ],
+    "3.12 PINGREQ PING request": [
+        "The PINGREQ packet is sent from a Client to the Server.",
+        "The PINGREQ packet can be used to indicate to the Server that the Client is alive in the absence of any other MQTT Control Packets being sent from the Client to the Server.",
+        "The PINGREQ packet can be used to request that the Server responds to confirm that the Server is alive.",
+        "The PINGREQ packet can be used to exercise the network to indicate that the Network Connection is active.",
+        "This packet is used in Keep Alive processing."
+    ],
+    "3.10.4 UNSUBSCRIBE Actions": [
+        "The Topic Filters (whether they contain wildcards or not) supplied in an UNSUBSCRIBE packet MUST be compared character-by-character with the current set of Topic Filters held by the Server for the Client.",
+        "If any Topic Filter matches exactly then the owning Subscription of the Topic Filter MUST be deleted [MQTT-3.10.4-1], otherwise no additional processing occurs.",
+        "When a Server receives an UNSUBSCRIBE packet, the Server MUST stop adding any new messages which match the Topic Filters, for delivery to the Client [MQTT-3.10.4-2].",
+        "The Server MUST complete the delivery of any QoS 1 or QoS 2 messages which match the Topic Filters and the Server has started to send to the Client [MQTT-3.10.4-3].",
+        "The Server MUST respond to an UNSUBSCRIBE request by sending an UNSUBACK packet [MQTT-3.10.4-4].",
+        "The UNSUBACK packet MUST have the same Packet Identifier as the UNSUBSCRIBE packet.",
+        "Even where no Topic Subscriptions are deleted, the Server MUST respond with an UNSUBACK [MQTT-3.10.4-5].",
+        "If a Server receives an UNSUBSCRIBE packet that contains multiple Topic Filters, the Server MUST process the packet as if the Server had received a sequence of multiple UNSUBSCRIBE packets, except that the Server sends just one UNSUBACK response [MQTT-3.10.4-6].",
+        "If a Topic Filter represents a Shared Subscription, the Session associated with the UNSUBSCRIBE packet is detached from the Shared Subscription.",
+        "If the Session associated with the UNSUBSCRIBE packet was the only Session that the Shared Subscription was associated with, the Shared Subscription is deleted.",
+        "Refer to section 4.8.2 for a description of Shared Subscription handling."
+    ],
+    "3.14.2 DISCONNECT Variable Header": [
+        "The Variable Header of the DISCONNECT Packet contains the following fields in the order: Disconnect Reason Code, and Properties."
+    ],
+    "3.14.2.1 Disconnect Reason Code": [
+        "Byte 1 in the Variable Header is the Disconnect Reason Code.",
+        "If the Remaining Length is less than 1 the value of 0x00 (Normal disconnection) is used.",
+        "The values for the one byte unsigned Disconnect Reason Code field are shown below.",
+        "The Client or Server sending the DISCONNECT packet MUST use one of the DISCONNECT Reason Code values [MQTT-3.14.2-1].",
+        "The Reason Code and Property Length can be omitted if the Reason Code is 0x00 (Normal disconnecton) and there are no Properties.",
+        "In this case the DISCONNECT has a Remaining Length of 0.",
+        "**Non-normative comment** The DISCONNECT packet is used to indicate the reason for a disconnect for cases where there is no acknowledge packet (such as a QoS 0 publish) or when the Client or Server is unable to continue processing the Connection.",
+        "**Non-normative comment** The information can be used by the Client to decide whether to retry the connection, and how long it should wait before retrying the connection."
+    ],
+    "3.8.4 SUBSCRIBE Actions": [
+        "When the Server receives a SUBSCRIBE packet from a Client, the Server MUST respond with a SUBACK packet [MQTT-3.8.4-1].",
+        "The SUBACK packet MUST have the same Packet Identifier as the SUBSCRIBE packet that it is acknowledging [MQTT-3.8.4-2].",
+        "The Server is permitted to start sending PUBLISH packets matching the Subscription before the Server sends the SUBACK packet.",
+        "If a Server receives a SUBSCRIBE packet containing a Topic Filter that is identical to a Non-shared Subscription's Topic Filter for the current Session, then the Server MUST replace that existing Subscription with a new Subscription [MQTT-3.8.4-3].",
+        "The Topic Filter in the new Subscription will be identical to that in the previous Subscription, although its Subscription Options could be different.",
+        "If the Retain Handling option is 0, any existing retained messages matching the Topic Filter MUST be re-sent, but Applicaton Messages MUST NOT be lost due to replacing the Subscription [MQTT-3.8.4-4].",
+        "If a Server receives a Non-shared Topic Filter that is not identical to any Topic Filter for the current Session, a new Non-shared Subscription is created.",
+        "If the Retain Handling option is not 2, all matching retained messages are sent to the Client.",
+        "If a Server receives a Topic Filter that is identical to the Topic Filter for a Shared Subscription that already exists on the Server, the Session is added as a subscriber to that Shared Subscription.",
+        "No retained messages are sent.",
+        "If a Server receives a Shared Subscription Topic Filter that is not identical to any existing Shared Subscription's Topic Filter, a new Shared Subscription is created.",
+        "The Session is added as a subscriber to that Shared Subscription.",
+        "No retained messages are sent.",
+        "Refer to section 4.8 for more details on Shared Subscriptions.",
+        "If a Server receives a SUBSCRIBE packet that contains multiple Topic Filters the Server MUST handle that packet as if it had received a sequence of multiple SUBSCRIBE packets, except that the Server combines their responses into a single SUBACK response [MQTT-3.8.4-5].",
+        "The SUBACK packet sent by the Server to the Client MUST contain a Reason Code for each Topic Filter/Subscription Option pair [MQTT-3.8.4-6].",
+        "The Reason Code MUST either show the maximum QoS that was granted for that Subscription or indicate that the subscription failed [MQTT-3.8.4-7].",
+        "The Server might grant a lower Maximum QoS than the subscriber requested.",
+        "The QoS of Application Messages sent in response to a Subscription MUST be the minimum of the QoS of the originally published message and the Maximum QoS granted by the Server [MQTT-3.8.4-8].",
+        "The server is permitted to send duplicate copies of a message to a subscriber in the case where the original message was published with QoS 1 and the maximum QoS granted was QoS 0.",
+        "**Non-normative comment** If a subscribing Client has been granted maximum QoS 1 for a particular Topic Filter, then a QoS 0 Application Message matching the filter is delivered to the Client at QoS 0.",
+        "On the other hand, a QoS 2 Message published to the same topic is downgraded by the Server to QoS 1 for delivery to the Client, so that the Client might receive duplicate copies of the Message.",
+        "**Non-normative comment** If the subscribing Client has been granted maximum QoS 0, then an Application Message originally published as QoS 2 might get lost on the hop to the Client, but the Server should never send a duplicate of that Message.",
+        "A QoS 1 Message published to the same topic might either get lost or duplicated on its transmission to that Client.",
+        "**Non-normative comment** Subscribing to a Topic Filter at QoS 2 is equivalent to saying \"I would like to receive Messages matching this filter at the QoS with which they were published\".",
+        "This means the publisher is responsible for determining the maximum QoS a Message can be delivered at, but the subscriber is able to require that the Server downgrades the QoS to one more suitable for the subscriber's usage.",
+        "The Subscription Identifiers are part of the Session State in the Server and are returned to the Client receiving a matching PUBLISH packet.",
+        "The Subscription Identifiers are removed from the Server's Session State when the Server receives an UNSUBSCRIBE packet, when the Server receives a SUBSCRIBE packet from the Client for the same Topic Filter but with a different Subscription Identifier or with no Subscription Identifier, or when the Server sends Session Present 0 in a CONNACK packet.",
+        "The Subscription Identifiers do not form part of the Client's Session State in the Client.",
+        "In a useful implementation, a Client will associate the Subscription Identifiers with other Client side state, and this state is typically removed when the Client unsubscribes, when the Client subscribes for the same Topic Filter with a different identifier or no identifier, or when the Client receives Session Present 0 in a CONNACK packet.",
+        "The Server need not use the same set of Subscription Identifiers in the retransmitted PUBLISH packet.",
+        "The Client can remake a Subscription by sending a SUBSCRIBE packet containing a Topic Filter that is identical to the Topic Filter of an existing Subscription in the current Session.",
+        "If the Client remade a subscription after the initial transmission of a PUBLISH packet and used a different Subscription Identifier, then the Server is allowed to use the identifiers from the first transmission in any retransmission.",
+        "The Server is not allowed to revert to the old identifier after it has sent a PUBLISH packet containing the new one.",
+        "**Non-normative comment** Usage scenarios, for illustration of Subscription Identifiers.",
+        "The Client implementation indicates via its programming interface that a publication matched more than one subscription.",
+        "The Client implementation generates a new identifier each time a subscription is made.",
+        "If the returned publication carries more than one Subscription Identifier, then the publication matched more than one subscription.",
+        "When a publication is received, the Client implementation uses the Subscription Identifier to determine which callback is driven.",
+        "The Client implementation returns the topic string used to make the subscription to the application when the Client implementation delivers the published message.",
+        "To achieve this the Client generates an identifier which uniquely identifies the Topic Filter.",
+        "When a publication is received, the Client implementation uses the identifiers to look up the original Topic Filters and return them to the Client application.",
+        "The gateway implementation maintains a map of each unique Topic Filter it receives to the set of ClientID, Subscription Identifier pairs that it also received.",
+        "When a publication is received, the gateway uses the Subscription Identifiers it received from the Server to look up the Client Identifier, Subscription Identifier pairs associated with them.",
+        "The gateway adds these to the PUBLISH packets the gateway sends to the Clients.",
+        "If the upstream Server sent multiple PUBLISH packets because the message matched multiple subscriptions, then the gateway mirrors this behavior to the Clients."
+    ],
+    "3.14.2.2.1 Property Length": [
+        "The length of Properties in the DISCONNECT packet Variable Header encoded as a Variable Byte Integer."
+    ],
+    "3.14.3 DISCONNECT Payload": [
+        "The DISCONNECT packet has no Payload."
+    ],
+    "3.15.2 AUTH Variable Header": [
+        "The Variable Header of the AUTH Packet contains the following fields in the order: Authenticate Reason Code, and Properties."
+    ],
+    "3.15 AUTH Authentication exchange": [
+        "An AUTH packet is sent from Client to Server or Server to Client as part of an extended authentication exchange, such as challenge / response authentication.",
+        "Sending an AUTH packet by the Client or Server is a Protocol Error if the CONNECT packet did not contain the same Authentication Method."
+    ],
+    "3.14.2.2.4 User Property": [
+        "38 (0x26) Byte is the identifier of the User Property, followed by UTF-8 String Pair.",
+        "The sender MUST NOT send the User Property if the User Property would increase the size of the DISCONNECT packet beyond the Maximum Packet Size specified by the receiver [MQTT-3.14.2-4].",
+        "The User Property is allowed to appear multiple times to represent multiple name, value pairs."
+    ],
+    "3.15.1 AUTH Fixed Header": [
+        "Bits 3,2,1 and 0 of the Fixed Header of the AUTH packet are reserved and MUST all be set to 0.",
+        "The Client or Server MUST treat any other value as malformed and close the Network Connection [MQTT-3.15.1-1].",
+        "The Remaining Length field is the length of the Variable Header encoded as a Variable Byte Integer."
+    ],
+    "3.14.2.2.3 Reason String": [
+        "31 (0x1F) Byte is the identifier of the Reason String.",
+        "Followed by the UTF-8 Encoded String representing the reason for the disconnect.",
+        "This Reason String is human readable, designed for diagnostics and SHOULD NOT be parsed by the receiver.",
+        "The sender MUST NOT send the Reason String Property if sending it would increase the size of the DISCONNECT packet beyond the Maximum Packet Size specified by the receiver [MQTT-3.14.2-3].",
+        "Including the Reason String more than once is a Protocol Error."
+    ],
+    "3.14.2.2.5 Server Reference": [
+        "28 (0x1C) Byte is the identifier of the Server Reference.",
+        "Including the Server Reference more than once is a Protocol Error.",
+        "The Server sends DISCONNECT including a Server Reference and Reason Code 0x9C (Use another server) or 0x9D (Server moved) as described in section 4.13.",
+        "Refer to section 4.11 Server Redirection for information about how Server Reference is used.",
+        "DISCONNECT packet Variable Header non-normative example is shown in Figure 3-24."
+    ],
+    "3.14.4 DISCONNECT Actions": [
+        "After sending a DISCONNECT packet the sender MUST NOT send any more MQTT Control Packets on that Network Connection [MQTT-3.14.4-1].",
+        "The sender MUST close the Network Connection [MQTT-3.14.4-2].",
+        "On receipt of DISCONNECT with a Reason Code of 0x00 (Success) the Server MUST discard any Will Message associated with the current Connection without publishing the Will Message [MQTT-3.14.4-3], as described in section 3.1.2.5.",
+        "On receipt of DISCONNECT, the receiver SHOULD close the Network Connection."
+    ],
+    "3.15.2.2.1 Property Length": [
+        "The length of Properties in the AUTH packet Variable Header is encoded as a Variable Byte Integer."
+    ],
+    "3.15.2.1 Authenticate Reason Code": [
+        "Byte 0 in the Variable Header is the Authenticate Reason Code.",
+        "The values for the one byte unsigned Authenticate Reason Code field are shown below.",
+        "The sender of the AUTH Packet MUST use one of the Authenticate Reason Codes [MQTT-3.15.2-1].",
+        "The Reason Code and Property Length can be omitted if the Reason Code is 0x00 (Success) and there are no Properties.",
+        "In this case the AUTH Packet has a Remaining Length of 0."
+    ],
+    "3.14.2.2.2 Session Expiry Interval": [
+        "17 (0x11) Byte is the identifier of the Session Expiry Interval.",
+        "The Four Byte Integer represents the Session Expiry Interval in seconds.",
+        "Including the Session Expiry Interval more than once is a Protocol Error.",
+        "If the Session Expiry Interval is absent, the Session Expiry Interval in the CONNECT packet is used.",
+        "The Session Expiry Interval MUST NOT be sent on a DISCONNECT by the Server [MQTT-3.14.2-2].",
+        "If the Session Expiry Interval in the CONNECT packet was zero, then setting a non-zero Session Expiry Interval in the DISCONNECT packet sent by the Client is a Protocol Error.",
+        "If such a non-zero Session Expiry Interval is received by the Server, the Server does not treat the packet as a valid DISCONNECT packet.",
+        "The Server uses DISCONNECT with Reason Code 0x82 (Protocol Error) as described in section 4.13."
+    ],
+    "3.15.2.2.2 Authentication Method": [
+        "21 (0x15) Byte is the identifier of the Authentication Method.",
+        "Followed by a UTF-8 Encoded String containing the name of the authentication method.",
+        "It is a Protocol Error to omit the Authentication Method or to include the Authentication Method more than once."
+    ],
+    "3.15.2.2.3 Authentication Data": [
+        "22 (0x16) Byte is the identifier of the Authentication Data.",
+        "The identifier is followed by Binary Data containing authentication data.",
+        "Including Authentication Data more than once is a Protocol Error.",
+        "The contents of the Authentication Data are defined by the authentication method."
+    ],
+    "3.15.3 AUTH Payload": [
+        "The AUTH packet has no Payload."
+    ],
+    "3.15.2.2.4 Reason String": [
+        "31 (0x1F) Byte is the identifier of the Reason String.",
+        "Followed by the UTF-8 Encoded String representing the reason for the disconnect.",
+        "This Reason String is human readable, designed for diagnostics and SHOULD NOT be parsed by the receiver.",
+        "The sender MUST NOT send the Reason String property if the Reason String would increase the size of the AUTH packet beyond the Maximum Packet Size specified by the receiver [MQTT-3.15.2-2].",
+        "Including the Reason String more than once is a Protocol Error."
+    ],
+    "4.3 Quality of Service levels and protocol flows": [
+        "MQTT delivers Application Messages according to the Quality of Service (QoS) levels defined in the following sections.",
+        "When the Server is delivering an Application Message to more than one Client, each Client is treated independently.",
+        "The QoS level used to deliver an Application Message outbound to the Client could differ from that of the inbound Application Message."
+    ],
+    "4.1.2 Session State non-normative examples": [
+        "For example, an electricity meter reading solution might use QoS 1 messages to protect the readings against loss over the network."
+    ],
+    "4.3.1 QoS 0: At most once delivery": [
+        "In the QoS 0 delivery protocol, the sender MUST send a PUBLISH packet with QoS 0 and DUP flag set to 0 [MQTT-4.3.1-1].",
+        "In the QoS 0 delivery protocol, the receiver accepts ownership of the message when the receiver receives the PUBLISH packet."
+    ],
+    "3.15.2.2.5 User Property": [
+        "38 (0x26) Byte is the identifier of the User Property.",
+        "The User Property is followed by a UTF-8 String Pair.",
+        "The User Property may be used to provide additional diagnostic or other information.",
+        "The sender MUST NOT send the User Property if the User Property would increase the size of the AUTH packet beyond the Maximum Packet Size specified by the receiver [MQTT-3.15.2-3].",
+        "The User Property is allowed to appear multiple times to represent multiple name, value pairs."
+    ],
+    "4.1.1 Storing Session State": [
+        "The Client and Server MUST NOT discard the Session State while the Network Connection is open [MQTT-4.1.0-1].",
+        "The Server MUST discard the Session State when the Network Connection is closed and the Session Expiry Interval has passed [MQTT-4.1.0-2].",
+        "Stored Session State can be discarded as a result of an administrator action, including an automated response to defined conditions.",
+        "Discarding the Session State has the effect of terminating the Session.",
+        "Hardware or software failures may result in loss or corruption of Session State stored by the Client or Server."
+    ],
+    "4.7.1 Topic wildcards": [
+        "The topic level separator is used to introduce structure into the Topic Name.",
+        "If present, the topic level separator divides the Topic Name into multiple topic levels.",
+        "A subscription's Topic Filter can contain special wildcard characters, which allow a Client to subscribe to multiple topics at once.",
+        "The wildcard characters can be used in Topic Filters, but MUST NOT be used within a Topic Name [MQTT-4.7.0-1]."
+    ],
+    "4.7.1.1 Topic level separator": [
+        "The forward slash (聭/' U+002F) is used to separate each level within a topic tree and provide a hierarchical structure to the Topic Names.",
+        "The use of the topic level separator is significant when either of the two wildcard characters is encountered in Topic Filters specified by subscribing Clients.",
+        "Topic level separators can appear anywhere in a Topic Filter or Topic Name."
+    ],
+    "4.1 Session State": [
+        "In order to implement QoS 1 and QoS 2 protocol flows, the Client and Server need to associate state with the Client Identifier.",
+        "This association is referred to as the Session State.",
+        "The Server also stores the subscriptions as part of the Session State.",
+        "The session can continue across a sequence of Network Connections.",
+        "The session lasts as long as the latest Network Connection plus the Session Expiry Interval.",
+        "The Session State in the Client consists of: QoS 1 and QoS 2 messages which have been sent to the Server, but have not been completely acknowledged.",
+        "QoS 2 messages which have been received from the Server, but have not been completely acknowledged.",
+        "The Session State in the Server consists of: the existence of a Session, even if the rest of the Session State is empty.",
+        "The Client's subscriptions, including any Subscription Identifiers.",
+        "QoS 1 and QoS 2 messages which have been sent to the Client, but have not been completely acknowledged.",
+        "QoS 1 and QoS 2 messages pending transmission to the Client and optionally QoS 0 messages pending transmission to the Client.",
+        "QoS 2 messages which have been received from the Client, but have not been completely acknowledged.",
+        "The Will Message and the Will Delay Interval.",
+        "If the Session is currently not connected, the time at which the Session will end and Session State will be discarded."
+    ],
+    "4.3.2 QoS 1: At least once delivery": [
+        "A QoS 1 PUBLISH packet has a Packet Identifier in its Variable Header and is acknowledged by a PUBACK packet.",
+        "Section 2.2.1 provides more information about Packet Identifiers.",
+        "In the QoS 1 delivery protocol, the sender MUST assign an unused Packet Identifier each time the sender has a new Application Message to publish [MQTT-4.3.2-1].",
+        "The sender MUST send a PUBLISH packet containing this Packet Identifier with QoS 1 and DUP flag set to 0 [MQTT-4.3.2-2].",
+        "The sender MUST treat the PUBLISH packet as unacknowledged until the sender has received the corresponding PUBACK packet from the receiver.",
+        "The Packet Identifier becomes available for reuse once the sender has received the PUBACK packet.",
+        "Note that a sender is permitted to send further PUBLISH packets with different Packet Identifiers while it is waiting to receive acknowledgements.",
+        "In the QoS 1 delivery protocol, the receiver MUST respond with a PUBACK packet containing the Packet Identifier from the incoming PUBLISH packet, having accepted ownership of the Application Message [MQTT-4.3.2-4].",
+        "After the receiver has sent a PUBACK packet, the receiver MUST treat any incoming PUBLISH packet that contains the same Packet Identifier as being a new Application Message, irrespective of the setting of the PUBLISH packet's DUP flag [MQTT-4.3.2-5].",
+        "The receiver does not need to complete delivery of the Application Message before sending the PUBACK.",
+        "When the original sender receives the PUBACK packet, ownership of the Application Message is transferred to the receiver."
+    ],
+    "4.5 Message receipt": [
+        "When a Server takes ownership of an incoming Application Message, the Server MUST add the Application Message to the Session State for those Clients that have matching Subscriptions [MQTT-4.5.0-1].",
+        "A Client could receive messages that do not match any of its explicit Subscriptions if the Server automatically assigned a subscription to the Client.",
+        "A Client could also receive messages while an UNSUBSCRIBE operation is in progress.",
+        "The Client MUST acknowledge any Publish packet the Client receives according to the applicable QoS rules regardless of whether the Client elects to process the Application Message that the Publish packet contains [MQTT-4.5.0-2]."
+    ],
+    "4.4 Message delivery retry": [
+        "When a Client reconnects with Clean Start set to 0 and a session is present, both the Client and Server MUST resend any unacknowledged PUBLISH packets (where QoS > 0) and PUBREL packets using their original Packet Identifiers.",
+        "The reconnection with Clean Start set to 0 and a session present is the only circumstance where a Client or Server is REQUIRED to resend messages.",
+        "If PUBACK or PUBREC is received containing a Reason Code of 0x80 or greater the corresponding PUBLISH packet is treated as acknowledged, and MUST NOT be retransmitted [MQTT-4.4.0-2].",
+        "The receiver does not need to complete delivery of the Application Message before sending the PUBREC or PUBCOMP.",
+        "When the original sender of the Application Message receives the PUBREC packet, ownership of the Application Message is transferred to the receiver.",
+        "The receiver indicates success or failure using the appropriate Reason Code in the PUBREC."
+    ],
+    "4.7.1.2 Multi-level wildcard": [
+        "In either case the multi-level wildcard character MUST be the last character specified in the Topic Filter [MQTT-4.7.1-1].",
+        "**Non-normative comment** For example, if a Client subscribes to 'sport/tennis/player1/#', the Client would receive messages published using these Topic Names: 'sport/tennis/player1', 'sport/tennis/player1/ranking', 'sport/tennis/player1/score/wimbledon'.",
+        "'#' is valid and will receive every Application Message."
+    ],
+    "4.8.1 Non-shared Subscriptions": [
+        "A Non-shared Subscription is associated only with the MQTT Session that created the Non-shared Subscription.",
+        "Each Subscription includes a Topic Filter, indicating the topic(s) for which messages are to be delivered on that Session, and Subscription Options.",
+        "The Server is responsible for collecting messages that match the filter and transmitting them on the Session's MQTT connection if and when that connection is active.",
+        "A Session cannot have more than one Non-shared Subscription with the same Topic Filter, so the Topic Filter can be used as a key to identify the subscription within that Session.",
+        "If there are multiple Clients, each with its own Non-shared Subscription to the same Topic, each Client gets its own copy of the Application Messages that are published on that Topic.",
+        "This means that the Non-shared Subscriptions cannot be used to load-balance Application Messages across multiple consuming Clients as in such cases every message is delivered to every subscribing Client."
+    ],
+    "4.7.1.3 Single-level wildcard": [
+        "The single-level wildcard can be used at any level in the Topic Filter, including first and last levels.",
+        "The single-level wildcard can be used at more than one level in the Topic Filter and can be used in conjunction with the multi-level wildcard."
+    ],
+    "4.10 Request / Response": [
+        "This version of MQTT includes three properties that can be used for the purpose of running a Request/Response interaction over MQTT: Response Topic, described in section 3.3.2.3.5; Correlation Data, described in section 3.3.2.3.6; Request Response Information, described in section 3.1.2.11.7; and Response Information, described in section 3.2.2.3.14.",
+        "The following non-normative sections describe how these properties can be used.",
+        "A Client sends a Request Message by publishing an Application Message which has a Response Topic set as described in section 3.3.2.3.5.",
+        "The Request can include a Correlation Data property as described in section 3.3.2.3.6."
+    ],
+    "4.7.2 Topics beginning with": [
+        "The Server MUST NOT match Topic Filters starting with a wildcard character (# or +) with Topic Names beginning with a character [MQTT-4.7.2-1].",
+        "The Server SHOULD prevent Clients from using such Topic Names to exchange messages with other Clients.",
+        "Server implementations MAY use Topic Names that start with a leading character for other purposes.",
+        "A subscription to \"#\" will not receive any messages published to a topic beginning with a leading character.",
+        "A subscription to \"+/monitor/Clients\" will not receive any messages published to \"SYS/monitor/Clients\".",
+        "A subscription to \"SYS/#\" will receive messages published to topics beginning with \"SYS/\".",
+        "A subscription to \"SYS/monitor/+\" will receive messages published to \"SYS/monitor/Clients\"."
+    ],
+    "4.3.3 QoS 2: Exactly once delivery": [
+        "There is an increased overhead associated with QoS 2.",
+        "A QoS 2 message has a Packet Identifier in its Variable Header.",
+        "Section 2.2.1 provides more information about Packet Identifiers.",
+        "The receiver of a QoS 2 PUBLISH packet acknowledges receipt with a two-step acknowledgement process.",
+        "In the QoS 2 delivery protocol, the sender: * MUST assign an unused Packet Identifier when the sender has a new Application Message to publish [MQTT-4.3.3-1].",
+        "* MUST send a PUBLISH packet containing this Packet Identifier with QoS 2 and DUP flag set to 0 [MQTT-4.3.3-2].",
+        "* MUST treat the PUBLISH packet as unacknowledged until the sender has received the corresponding PUBREC packet from the receiver [MQTT-4.3.3-3].",
+        "* MUST send a PUBREL packet when the sender receives a PUBREC packet from the receiver with a Reason Code value less than 0x80.",
+        "This PUBREL packet MUST contain the same Packet Identifier as the original PUBLISH packet [MQTT-4.3.3-4].",
+        "* MUST treat the PUBREL packet as unacknowledged until the sender has received the corresponding PUBCOMP packet from the receiver [MQTT-4.3.3-5].",
+        "* MUST NOT re-send the PUBLISH once the sender has sent the corresponding PUBREL packet [MQTT-4.3.3-6].",
+        "* MUST NOT apply Message expiry if a PUBLISH packet has been sent [MQTT-4.3.3-7].",
+        "The Packet Identifier becomes available for reuse once the sender has received the PUBCOMP packet or a PUBREC with a Reason Code of 0x80 or greater.",
+        "Note that a sender is permitted to send further PUBLISH packets with different Packet Identifiers while the sender is waiting to receive acknowledgements, subject to flow control as described in section 4.9.",
+        "In the QoS 2 delivery protocol, the receiver: * MUST respond with a PUBREC containing the Packet Identifier from the incoming PUBLISH packet, having accepted ownership of the Application Message [MQTT-4.3.3-8].",
+        "* If the receiver has sent a PUBREC with a Reason Code of 0x80 or greater, the receiver MUST treat any subsequent PUBLISH packet that contains that Packet Identifier as being a new Application Message [MQTT-4.3.3-9].",
+        "* Until the receiver has received the corresponding PUBREL packet, the receiver MUST acknowledge any subsequent PUBLISH packet with the same Packet Identifier by sending a PUBREC.",
+        "The receiver MUST NOT cause duplicate messages to be delivered to any onward recipients in this case [MQTT-4.3.3-10].",
+        "* MUST respond to a PUBREL packet by sending a PUBCOMP packet containing the same Packet Identifier as the PUBREL [MQTT-4.3.3-11].",
+        "* After the receiver has sent a PUBCOMP, the receiver MUST treat any subsequent PUBLISH packet that contains that Packet Identifier as being a new Application Message [MQTT-4.3.3-12].",
+        "* MUST continue the QoS 2 acknowledgement sequence even if the receiver has applied message expiry [MQTT-4.3.3-13]."
+    ],
+    "4.9 Flow Control": [
+        "Clients and Servers control the number of unacknowledged PUBLISH packets they receive by using a Receive Maximum value as described in section 3.1.2.11.4 and section 3.2.2.3.2.",
+        "The Receive Maximum establishes a send quota which is used to limit the number of PUBLISH QOS > 0 packets which can be sent without receiving an PUBACK (for QoS 1) or PUBCOMP (for QoS 2).",
+        "The PUBACK and PUBCOMP replenish the quota in the manner described below.",
+        "The Client or Server MUST set its initial send quota to a non-zero value not exceeding the Receive Maximum [MQTT-4.9.0-1].",
+        "Each time the Client or Server sends a PUBLISH packet at QoS > 0, the Client or Server decrements the send quota.",
+        "If the send quota reaches zero, the Client or Server MUST NOT send any more PUBLISH packets with QoS > 0 [MQTT-4.9.0-2].",
+        "The Client or Server MAY continue to send PUBLISH packets with QoS 0, or the Client or Server MAY choose to suspend sending these as well.",
+        "The send quota is incremented by 1 each time a PUBACK or PUBCOMP packet is received, regardless of whether the PUBACK or PUBCOMP carried an error code.",
+        "The send quota is incremented by 1 each time a PUBREC packet is received with a Return Code of 0x80 or greater.",
+        "The attempt to increment above the initial send quota might be caused by the re-transmission of a PUBREL packet after a new Network Connection is established.",
+        "Refer to section 3.3.4 for a description of how Clients and Servers react if they are sent more PUBLISH packets than the Receive Maximum allows.",
+        "The send quota and Receive Maximum value are not preserved across Network Connections, and are re-initialized with each new Network Connection as described above."
+    ],
+    "4.10.2 Determining a Response Topic value (non-normative)": [
+        "Requesters can determine a Topic Name to use as their Response Topic in any manner they choose including via local configuration.",
+        "To avoid clashes between different Requesters, it is desirable that the Response Topic used by a Requester Client be unique to that Client.",
+        "As the Requester and Responder commonly need to be authorized to these topics, it can be an authorization challenge to use a random Topic Name.",
+        "To help with this problem, this specification defines a property in the CONNACK packet called Response Information.",
+        "The Server can use this property to guide the Client in its choice for the Response Topic to use.",
+        "At connect time, the Client requests that the Server send a Response Information by setting the Request Response Information property in the CONNECT packet.",
+        "This causes the Server to insert a Response Information property (a UTF-8 Encoded String) sent in the CONNACK packet.",
+        "This specification does not define the contents of the Response Information but it could be used to pass a globally unique portion of the topic tree which is reserved for that Client for at least the lifetime of its Session.",
+        "Refer to section 3.1.2.11.7 for the definition of the Response Information."
+    ],
+    "4.13.2 Other errors": [
+        "Acknowledgment packets PUBACK, PUBREC, PUBREL, PUBCOMP, SUBACK, UNSUBACK with a Reason Code of 0x80 or greater indicate that the received packet, identified by a Packet Identifier, was in error.",
+        "The CONNACK and DISCONNECT packets allow a Reason Code of 0x80 or greater to indicate that the Network Connection will be closed.",
+        "If a Reason Code of 0x80 or greater is specified, then the Network Connection MUST be closed whether or not the CONNACK or DISCONNECT is sent [MQTT-4.13.2-1].",
+        "Sending of one of these Reason Codes does not have consequence for any other Session."
+    ],
+    "4.6 Message ordering": [
+        "When the Client re-sends any PUBLISH packets, the Client MUST re-send them in the order in which the original PUBLISH packets were sent (this applies to QoS 1 and QoS 2 messages) [MQTT-4.6.0-1].",
+        "The Client MUST send PUBACK packets in the order in which the corresponding PUBLISH packets were received (QoS 1 messages) [MQTT-4.6.0-2].",
+        "The Client MUST send PUBREC packets in the order in which the corresponding PUBLISH packets were received (QoS 2 messages) [MQTT-4.6.0-3].",
+        "The Client MUST send PUBREL packets in the order in which the corresponding PUBREC packets were received (QoS 2 messages) [MQTT-4.6.0-4].",
+        "An Ordered Topic is a Topic where the Client can be certain that the Application Messages in that Topic from the same Client and at the same QoS are received in the order they were published.",
+        "When a Server processes a message that has been published to an Ordered Topic, the Server MUST send PUBLISH packets to consumers (for the same Topic and QoS) in the order that they were received from any given Client [MQTT-4.6.0-5].",
+        "By default, a Server MUST treat every Topic as an Ordered Topic when the Server is forwarding messages on Non-shared Subscriptions.",
+        "The rules listed above ensure that when a stream of messages is published and subscribed to an Ordered Topic with QoS 1, the final copy of each message received by the subscribers will be in the order that the messages were published.",
+        "If the message is re-sent, the duplicate message can be received after one of the earlier messages is received.",
+        "For example, a publisher might send messages in the order 1,2,3,4 but the subscriber might receive them in the order 1,2,3,2,3,4 if there is a network disconnection after message 3 has been sent.",
+        "If both Client and Server set Receive Maximum to 1, they make sure that no more than one message is in-flight at any one time.",
+        "In this case, no QoS 1 message will be received after any later one even on re-connection.",
+        "Refer to section 4.9 Flow Control for details of how the Receive Maximum is used."
+    ],
+    "4.7.3 Topic semantic and usage": [
+        "The following rules apply to Topic Names and Topic Filters: All Topic Names and Topic Filters MUST be at least one character long [MQTT-4.7.3-1].",
+        "Topic Names and Topic Filters are case sensitive.",
+        "Topic Names and Topic Filters can include the space character.",
+        "A leading or trailing '/' creates a distinct Topic Name or Topic Filter.",
+        "A Topic Name or Topic Filter consisting only of the '/' character is valid.",
+        "Topic Names and Topic Filters MUST NOT include the null character (Unicode U+0000) [Unicode] [MQTT-4.7.3-2].",
+        "Topic Names and Topic Filters are UTF-8 Encoded Strings; they MUST NOT encode to more than 65,535 bytes [MQTT-4.7.3-3].",
+        "There is no limit to the number of levels in a Topic Name or Topic Filter, other than that imposed by the overall length of a UTF-8 Encoded String.",
+        "When the Server performs subscription matching, the Server MUST NOT perform any normalization of Topic Names or Topic Filters, or any modification or substitution of unrecognized characters [MQTT-4.7.3-4].",
+        "Each non-wildcarded level in the Topic Filter has to match the corresponding level in the Topic Name character for character for the match to succeed.",
+        "The UTF-8 encoding rules mean that the comparison of Topic Filter and Topic Name could be performed either by comparing the encoded UTF-8 bytes, or by comparing decoded Unicode characters.",
+        "'ACCOUNTS' and 'Accounts' are two different Topic Names.",
+        "'Accounts payable' is a valid Topic Name.",
+        "An Application Message is sent to each Client Subscription whose Topic Filter matches the Topic Name attached to an Application Message.",
+        "The topic resource MAY be either predefined in the Server by an administrator or the topic resource MAY be dynamically created by the Server when the Server receives the first subscription or an Application Message with that Topic Name."
+    ],
+    "4.12.1 Re-authentication": [
+        "If the Client supplied an Authentication Method in the CONNECT packet, the Client can initiate a re-authentication at any time after receiving a CONNACK.",
+        "The Client initiates re-authentication by sending an AUTH packet with a Reason Code of 0x19 (Re-authentication).",
+        "The Client MUST set the Authentication Method to the same value as the Authentication Method originally used to authenticate the Network Connection [MQTT-4.12.1-1].",
+        "If the authentication method requires Client data first, this AUTH packet contains the first piece of authentication data as the Authentication Data.",
+        "The Server responds to this re-authentication request by sending an AUTH packet to the Client with a Reason Code of 0x00 (Success) to indicate that the re-authentication is complete, or a Reason Code of 0x18 (Continue authentication) to indicate that more authentication data is needed.",
+        "The Client can respond with additional authentication data by sending an AUTH packet with a Reason Code of 0x18 (Continue authentication).",
+        "If the re-authentication fails, the Client or Server SHOULD send DISCONNECT with an appropriate Reason Code as described in section 4.13, and MUST close the Network Connection [MQTT-4.12.1-2].",
+        "For instance, if the Server does not allow the User Name to be changed, the Server can fail any re-authentication attempt which changes the User Name."
+    ],
+    "4.11 Server redirection": [
+        "A Server can request that the Client uses another Server by sending CONNACK or DISCONNECT with Reason Codes 0x9C (Use another server), or 0x9D (Server moved) as described in section 4.13.",
+        "When sending one of these Reason Codes, the Server MAY also include a Server Reference property to indicate the location of the Server or Servers the Client SHOULD use.",
+        "The Reason Code 0x9C (Use another server) specifies that the Client SHOULD temporarily switch to using another Server.",
+        "The other Server is either already known to the Client, or is specified using a Server Reference.",
+        "The Reason Code 0x9D (Server moved) specifies that the Client SHOULD permanently switch to using another Server.",
+        "The other Server is either already known to the Client, or is specified using a Server Reference.",
+        "The Server Reference is a UTF-8 Encoded String.",
+        "**Non-normative comment** The name within a Server Reference commonly represents a host name, DNS name [RFC1035], SRV name [RFC2782] , or literal IP address.",
+        "**Non-normative comment** Examples of the Server Reference are: myserver.xyz.org myserver.xyz.org:8883 10.10.151.22:8883 [fe80::9610:3eff:fe1c]:1883 The Server is allowed to not ever send a Server Reference, and the Client is allowed to ignore a Server Reference."
+    ],
+    "4.10.1 Basic Request Response (non-normative)": [
+        "A Request Message is an Application Message with a Response Topic.",
+        "Another MQTT Client (the Responder) has subscribed to a Topic Filter which matches the Topic Name used when the Request Message was published.",
+        "There could be multiple Responders subscribed to this Topic Name or there could be none.",
+        "The Responder takes the appropriate action based on the Request Message, and then publishes a Response Message to the Topic Name in the Response Topic property that was carried in the Request Message.",
+        "However, some other Client might be subscribed to the Response Topic in which case the Response Message will also be received and processed by that Client.",
+        "If the Request Message contains a Correlation Data property, the Responder copies this property into the Response Message and the Correlation Data is used by the receiver of the Response Message to associate the Response Message with the original request.",
+        "The Response Message does not include a Response Topic property.",
+        "The MQTT Server forwards the Response Topic and Correlation Data Property in the Request Message and the Correlation Data in the Response Message.",
+        "The Requester normally subscribes to the Response Topic before publishing a Request Message.",
+        "If there are no subscribers to the Response Topic when the Response Message is sent, the Response Message will not be delivered to any Client.",
+        "The Request Message and Response Message can be of any QoS, and the Responder can be using a Session with a non-zero Session Expiry Interval.",
+        "It is common to send Request Messages at QoS 0 and only when the Responder is expected to be connected.",
+        "However, sending Request Messages at QoS 0 and only when the Responder is expected to be connected is not necessary.",
+        "The Responder can use a Shared Subscription to allow for a pool of responding Clients.",
+        "Note however that when using Shared Subscriptions the order of message delivery is not guaranteed between multiple Clients.",
+        "It is the responsibility of the Requester to make sure the Requester has the necessary authority to publish to the request topic, and to subscribe to the Topic Name that the Requester sets in the Response Topic property.",
+        "It is the responsibility of the Responder to make sure the Responder has the authority to subscribe to the request topic and publish to the Response Topic.",
+        "While topic authorization is outside of this specification, it is recommended that Servers implement such authorization."
+    ],
+    "4.13.1 Malformed Packet and Protocol Errors": [
+        "If the sender is compliant with this specification the sender will not send Malformed Packets or cause Protocol Errors.",
+        "However, if a Client sends MQTT Control Packets before the Client receives CONNACK, the Client might cause a Protocol Error because the Client made an incorrect assumption about the Server capabilities.",
+        "Refer to section 3.1.4 CONNECT Actions.",
+        "The Reason Codes used for Malformed Packet and Protocol Errors are: 0x81 Malformed Packet, 0x82 Protocol Error, 0x93 Receive Maximum exceeded, 0x95 Packet too large, 0x9A Retain not supported, 0x9B QoS not supported, 0x9E Shared Subscriptions not supported, 0xA1 Subscription Identifiers not supported, 0xA2 Wildcard Subscriptions not supported.",
+        "When a Client detects a Malformed Packet or Protocol Error, and a Reason Code is given in the specification, the Client SHOULD close the Network Connection.",
+        "In the case of an error in a AUTH packet the Client MAY send a DISCONNECT packet containing the reason code, before closing the Network Connection.",
+        "In the case of an error in any other packet the Client SHOULD send a DISCONNECT packet containing the reason code before closing the Network Connection.",
+        "Use Reason Code 0x81 (Malformed Packet) or 0x82 (Protocol Error) unless a more specific Reason Code has been defined in section 3.14.2.1 Disconnect Reason Code.",
+        "When a Server detects a Malformed Packet or Protocol Error, and a Reason Code is given in the specification, the Server MUST close the Network Connection [MQTT-4.13.1-1].",
+        "In the case of an error in a CONNECT packet the Server MAY send a CONNACK packet containing the Reason Code, before closing the Network Connection.",
+        "In the case of an error in any other packet the Server SHOULD send a DISCONNECT packet containing the Reason Code before closing the Network Connection.",
+        "Use Reason Code 0x81 (Malformed Packet) or 0x82 (Protocol Error) unless a more specific Reason Code has been defined in section 3.2.2.2 - Connect Reason Code or in section 3.14.2.1 Disconnect Reason Code."
+    ],
+    "4.12 Enhanced authentication": [
+        "The MQTT CONNECT packet supports basic authentication of a Network Connection using the User Name and Password fields.",
+        "While these fields are named for a simple password authentication, they can be used to carry other forms of authentication such as passing a token as the Password.",
+        "Enhanced authentication might involve the exchange of AUTH packets between the Client and the Server after the CONNECT and before the CONNACK packets.",
+        "To begin an enhanced authentication, the Client includes an Authentication Method in the CONNECT packet.",
+        "The Authentication Method specifies the authentication method to use.",
+        "If the Server does not support the Authentication Method supplied by the Client, the Server MAY send a CONNACK with a Reason Code of 0x8C (Bad authentication method) or 0x87 (Not Authorized) as described in section 4.13 and MUST close the Network Connection [MQTT-4.12.0-1].",
+        "The Authentication Method is an agreement between the Client and Server about the meaning of the data sent in the Authentication Data and any of the other fields in CONNECT, and the exchanges and processing needed by the Client and Server to complete the authentication.",
+        "**Non-normative comment** The Authentication Method is commonly a SASL mechanism, and using such a registered name aids interchange.",
+        "However, the Authentication Method is not constrained to using registered SASL mechanisms.",
+        "If the Authentication Method selected by the Client specifies that the Client sends data first, the Client SHOULD include an Authentication Data property in the CONNECT packet.",
+        "The Authentication Data property can be used to provide data as specified by the Authentication Method.",
+        "The contents of the Authentication Data are defined by the authentication method.",
+        "If the Server requires additional information to complete the authentication, the Server can send an AUTH packet to the Client.",
+        "The AUTH packet MUST contain a Reason Code of 0x18 (Continue authentication) [MQTT-4.12.0-2].",
+        "If the authentication method requires the Server to send authentication data to the Client, the authentication data is sent in the Authentication Data.",
+        "The Client responds to an AUTH packet from the Server by sending a further AUTH packet.",
+        "The further AUTH packet MUST contain a Reason Code of 0x18 (Continue authentication) [MQTT-4.12.0-3].",
+        "If the authentication method requires the Client to send authentication data for the Server, the authentication data is sent in the Authentication Data.",
+        "The Client and Server exchange AUTH packets as needed until the Server accepts the authentication by sending a CONNACK with a Reason Code of 0.",
+        "If the acceptance of the authentication requires data to be sent to the Client, the data is sent in the Authentication Data.",
+        "The Client can close the connection at any point in this process.",
+        "The Client MAY send a DISCONNECT packet before closing the connection.",
+        "The Server MAY send a CONNACK with a Reason Code of 0x80 or above as described in section 4.13, and MUST close the Network Connection [MQTT-4.12.0-4].",
+        "If the initial CONNECT packet included an Authentication Method property then all AUTH packets, and any successful CONNACK packet MUST include an Authentication Method Property with the same value as in the CONNECT packet [MQTT-4.12.0-5].",
+        "If the Client does not include an Authentication Method in the CONNECT, the Server MUST NOT send an AUTH packet, and the Server MUST NOT send an Authentication Method in the CONNACK packet [MQTT-4.12.0-6].",
+        "If the Client does not include an Authentication Method in the CONNECT, the Client MUST NOT send an AUTH packet to the Server [MQTT-4.12.0-7].",
+        "If the Client does not include an Authentication Method in the CONNECT packet, the Server SHOULD authenticate using some or all of the information in the CONNECT packet, TLS session, and Network Connection.",
+        "Non-normative example showing a SCRAM challenge: Client to Server: CONNECT Authentication Method=\"SCRAM-SHA-1\" Authentication Data=client-first-data.",
+        "Server to Client: AUTH rc=0x18 Authentication Method=\"SCRAM-SHA-1\" Authentication Data=server-first-data.",
+        "Client to Server AUTH rc=0x18 Authentication Method=\"SCRAM-SHA-1\" Authentication Data=client-final-data.",
+        "Server to Client CONNACK rc=0 Authentication Method=\"SCRAM-SHA-1\" Authentication Data=server-final-data.",
+        "Non-normative example showing a Kerberos challenge: Client to Server CONNECT Authentication Method=\"GS2-KRB5\".",
+        "Server to Client AUTH rc=0x18 Authentication Method=\"GS2-KRB5\".",
+        "Client to Server AUTH rc=0x18 Authentication Method=\"GS2-KRB5\" Authentication Data=initial context token.",
+        "Server to Client AUTH rc=0x18 Authentication Method=\"GS2-KRB5\" Authentication Data=reply context token.",
+        "Client to Server AUTH rc=0x18 Authentication Method=\"GS2-KRB5\".",
+        "Server to Client CONNACK rc=0 Authentication Method=\"GS2-KRB5\" Authentication Data=outcome of authentication."
+    ],
+    "4.8.2 Shared Subscriptions": [
+        "A Shared Subscription can be associated with multiple subscribing MQTT Sessions.",
+        "Like a Non-shared Subscription, a Shared Subscription has a Topic Filter and Subscription Options; however, a publication that matches the Shared Subscription's Topic Filter is only sent to one of the Shared Subscription's subscribing Sessions.",
+        "A Shared Subscription is identified using a special style of Topic Filter.",
+        "The format of the Shared Subscription's Topic Filter is: share/{ShareName}/{filter}.",
+        "The 'share' is a literal string that marks the Topic Filter as being a Shared Subscription Topic Filter.",
+        "The {filter} part of the string has the same syntax and semantics as a Topic Filter in a non-shared subscription.",
+        "A Shared Subscription's Topic Filter MUST start with 'share/' and MUST contain a ShareName that is at least one character long [MQTT-4.8.2-1].",
+        "The '/' character MUST be followed by a Topic Filter [MQTT-4.8.2-2] as described in section 4.7.",
+        "A ShareName is included in the Shared Subscription's Topic Filter so that there can be more than one Shared Subscription on a Server that has the same {filter} component.",
+        "Typically, applications use the ShareName to represent the group of subscribing Sessions that are sharing the subscription.",
+        "Examples: Shared subscriptions 'share/consumer1/sport/tennis/+' and 'share/consumer2/sport/tennis/+' are distinct shared subscriptions and so can be associated with different groups of Sessions.",
+        "Both shared subscriptions match the same topics as a non-shared subscription to 'sport/tennis/+'.",
+        "If a message were to be published that matches 'sport/tennis/+', then a copy would be sent to exactly one of the Sessions subscribed to 'share/consumer1/sport/tennis/+', a separate copy of the message would be sent to exactly one of the Sessions subscribed to 'share/consumer2/sport/tennis/+', and further copies would be sent to any Clients with non-shared subscriptions to 'sport/tennis/+'.",
+        "Shared subscription 'share/consumer1//finance' matches the same topics as a non-shared subscription to '/finance'.",
+        "A Shared Subscription is created by using a Shared Subscription Topic Filter in a SUBSCRIBE request.",
+        "So long as only one Session subscribes to a particular Shared Subscription, the shared subscription behaves like a non-shared subscription, except that the 'share' and {ShareName} portions of the Topic Filter are not taken into account when matching against publications.",
+        "Once a Shared Subscription exists, it is possible for other Sessions to subscribe with the same Shared Subscription Topic Filter.",
+        "The new Session is associated with the Shared Subscription as an additional subscriber.",
+        "Each subsequent Application Message that matches the Shared Subscription is now sent to one and only one of the Sessions that are subscribed to the Shared Subscription.",
+        "A Session can explicitly detach itself from a Shared Subscription by sending an UNSUBSCRIBE Packet that contains the full Shared Subscription Topic Filter.",
+        "A Shared Subscription lasts for as long as the Shared Subscription is associated with at least one Session (i.e.",
+        "a Session that has issued a successful SUBSCRIBE request to the Shared Subscription's Topic Filter and that has not completed a corresponding UNSUBSCRIBE).",
+        "A Shared Subscription survives when the Session that originally created the Shared Subscription unsubscribes, unless there are no other Sessions left when this happens.",
+        "Notes on Shared Subscriptions: If there's more than one Session subscribed to the Shared Subscription, the Server implementation is free to choose, on a message by message basis, which Session to use and what criteria the Server uses to make this selection.",
+        "Different subscribing Clients are permitted to ask for different Requested QoS levels in their SUBSCRIBE packets.",
+        "The Server decides which Maximum QoS to grant to each Client, and it is permitted to grant different Maximum QoS levels to different subscribers.",
+        "When sending an Application Message to a Client, the Server MUST respect the granted QoS for the Client's subscription [MQTT-4.8.2-3], in the same way that it does when sending a message to a Subscriber.",
+        "If the Server is in the process of sending a QoS 2 message to its chosen subscribing Client and the connection to the Client breaks before delivery is complete, the Server MUST complete the delivery of the message to that Client when the Client reconnects [MQTT-4.8.2-4] as described in section 4.3.3.",
+        "If the Client's Session terminates before the Client reconnects, the Server MUST NOT send the Application Message to any other subscribed Client [MQTT-4.8.2-5].",
+        "If the Server is in the process of sending a QoS 1 message to its chosen subscribing Client and the connection to that Client breaks before the Server has received an acknowledgement from the Client, the Server MAY wait for the Client to reconnect and retransmit the message to that Client.",
+        "If the Client's Session terminates before the Client reconnects, the Server SHOULD send the Application Message to another Client that is subscribed to the same Shared Subscription.",
+        "The Server MAY attempt to send the message to another Client as soon as the Server loses its connection to the first Client.",
+        "If a Client responds with a PUBACK or PUBREC containing a Reason Code of 0x80 or greater to a PUBLISH packet from the Server, the Server MUST discard the Application Message and not attempt to send it to any other Subscriber [MQTT-4.8.2-6].",
+        "A Client is permitted to submit a second SUBSCRIBE request to a Shared Subscription on a Session that's already subscribed to that Shared Subscription.",
+        "For example, the Client might do this to change the Requested QoS for its subscription or because the Client was uncertain that the previous subscribe completed before the previous connection was closed.",
+        "This does not increase the number of times that the Session is associated with the Shared Subscription, so the Session will leave the Shared Subscription on the Session's first UNSUBSCRIBE.",
+        "Each Shared Subscription is independent from any other.",
+        "It is possible to have two Shared Subscriptions with overlapping filters.",
+        "In such cases a message that matches both Shared Subscriptions will be processed separately by both of them.",
+        "If a Client has a Shared Subscription and a Non-shared Subscription and a message matches both of them, the Client will receive a copy of the message by virtue of the Client having the Non-shared Subscription.",
+        "A second copy of the message will be delivered to one of the subscribers to the Shared Subscription, and this could result in a second copy being sent to the Client."
+    ]
+}
